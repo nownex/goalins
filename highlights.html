@@ -2,413 +2,549 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>ملخصات المباريات | GOALINS</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="شاهد ملخصات مباريات كرة القدم وأهم اللقطات على GOALINS">
+<title>ملخصات المباريات | GOALINS</title>
 
-    <meta name="theme-color"
-          content="#07111f">
+<meta name="description"
+      content="شاهد ملخصات وأهداف أهم مباريات كرة القدم">
 
-    <link rel="stylesheet"
-          href="style.css">
+<meta name="theme-color"
+      content="#07111f">
 
-    <style>
+<link rel="stylesheet" href="style.css">
 
-        /* ================= PAGE ================= */
 
-        .videos-page {
-            min-height: calc(100vh - 72px);
-            padding: 42px 0 80px;
-        }
+<style>
 
-        .page-top {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
+/* =====================================================
+   GOALINS — HIGHLIGHTS
+   ===================================================== */
 
-            gap: 20px;
+.highlights-page {
 
-            margin-bottom: 28px;
-        }
+    min-height:
+        calc(100vh - 80px);
 
-        .page-title span {
-            color: var(--accent);
+    padding:
+        35px 0 70px;
 
-            font-size: 13px;
-            font-weight: 800;
-        }
+}
 
-        .page-title h1 {
-            margin-top: 5px;
 
-            font-size: 34px;
-        }
+/* =====================================================
+   TITLE
+   ===================================================== */
 
-        .page-title p {
-            margin-top: 7px;
+.page-title {
 
-            color: var(--muted);
+    margin-bottom: 25px;
 
-            font-size: 14px;
-        }
+}
 
-        .back-home {
-            color: var(--accent);
+.page-title small {
 
-            font-size: 14px;
-            font-weight: 700;
-        }
+    color:
+        var(--accent);
 
+    font-weight:
+        800;
 
-        /* ================= FILTER ================= */
+}
 
-        .video-filter {
-            display: flex;
-            gap: 9px;
+.page-title h1 {
 
-            margin-bottom: 25px;
+    margin:
+        6px 0;
 
-            overflow-x: auto;
+    font-size:
+        32px;
 
-            padding-bottom: 3px;
-        }
+}
 
-        .filter-btn {
-            flex-shrink: 0;
+.page-title p {
 
-            padding: 11px 18px;
+    margin:
+        0;
 
-            border: 1px solid var(--border);
-            border-radius: 10px;
+    color:
+        var(--muted);
 
-            background: var(--card);
-            color: #cbd5e1;
+    font-size:
+        14px;
 
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
+}
 
-            cursor: pointer;
 
-            transition: 0.2s ease;
-        }
+/* =====================================================
+   FILTERS
+   ===================================================== */
 
-        .filter-btn:hover {
-            background: var(--card-hover);
-        }
+.filters {
 
-        .filter-btn.active {
-            background: rgba(37,211,102,0.12);
+    display:
+        grid;
 
-            border-color: var(--accent);
+    grid-template-columns:
+        1fr 1fr;
 
-            color: var(--accent);
-        }
+    gap:
+        12px;
 
+    margin-bottom:
+        25px;
 
-        /* ================= VIDEO GRID ================= */
+}
 
-        .video-grid {
-            display: grid;
 
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
+.filter {
 
-            gap: 16px;
-        }
+    width:
+        100%;
 
+    padding:
+        13px;
 
-        /* ================= VIDEO CARD ================= */
+    border:
+        1px solid var(--border);
 
-        .video-card {
-            overflow: hidden;
+    border-radius:
+        12px;
 
-            background: var(--card);
+    background:
+        var(--card);
 
-            border: 1px solid var(--border);
+    color:
+        white;
 
-            border-radius: 17px;
+    font-family:
+        inherit;
 
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease;
-        }
+    cursor:
+        pointer;
 
-        .video-card:hover {
-            transform: translateY(-4px);
+}
 
-            background: var(--card-hover);
 
-            border-color:
-                rgba(37,211,102,0.25);
-        }
+/* =====================================================
+   SECTION HEADER
+   ===================================================== */
 
+.section-header {
 
-        /* ================= THUMBNAIL ================= */
+    display:
+        flex;
 
-        .video-thumb {
-            position: relative;
+    align-items:
+        center;
 
-            aspect-ratio: 16 / 9;
+    justify-content:
+        space-between;
 
-            overflow: hidden;
+    margin-bottom:
+        15px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #0d2238,
-                    #081321
-                );
-        }
+}
 
-        .video-thumb img {
-            width: 100%;
-            height: 100%;
+.section-header h2 {
 
-            display: block;
+    margin:
+        0;
 
-            object-fit: cover;
-        }
+    font-size:
+        20px;
 
+}
 
-        /* PLAY */
+.section-header span {
 
-        .play-button {
-            position: absolute;
+    color:
+        var(--muted);
 
-            top: 50%;
-            left: 50%;
+    font-size:
+        12px;
 
-            transform:
-                translate(-50%, -50%);
+}
 
-            width: 54px;
-            height: 54px;
 
-            display: grid;
-            place-items: center;
+/* =====================================================
+   VIDEO GRID
+   ===================================================== */
 
-            border-radius: 50%;
+.video-grid {
 
-            background:
-                rgba(37,211,102,0.95);
+    display:
+        grid;
 
-            color: #06130b;
+    grid-template-columns:
+        repeat(2, 1fr);
 
-            font-size: 21px;
+    gap:
+        16px;
 
-            box-shadow:
-                0 8px 30px
-                rgba(0,0,0,0.35);
-        }
+}
 
 
-        /* TYPE */
+/* =====================================================
+   VIDEO CARD
+   ===================================================== */
 
-        .video-type {
-            position: absolute;
+.video-card {
 
-            top: 10px;
-            right: 10px;
+    overflow:
+        hidden;
 
-            padding: 5px 9px;
+    background:
+        var(--card);
 
-            border-radius: 7px;
+    border:
+        1px solid var(--border);
 
-            background:
-                rgba(0,0,0,0.72);
+    border-radius:
+        17px;
 
-            color: white;
+    transition:
+        transform .2s ease,
+        border-color .2s ease;
 
-            font-size: 10px;
-            font-weight: 800;
-        }
+}
 
+.video-card:hover {
 
-        /* ================= CARD BODY ================= */
+    transform:
+        translateY(-3px);
 
-        .video-body {
-            padding: 15px;
-        }
+    border-color:
+        rgba(37,211,102,.45);
 
-        .video-title {
-            margin-bottom: 9px;
+}
 
-            font-size: 16px;
-            font-weight: 800;
 
-            line-height: 1.5;
-        }
+/* =====================================================
+   THUMBNAIL
+   ===================================================== */
 
-        .video-meta {
-            display: flex;
+.thumbnail {
 
-            align-items: center;
-            justify-content: space-between;
+    position:
+        relative;
 
-            gap: 10px;
+    aspect-ratio:
+        16 / 9;
 
-            color: var(--muted);
+    background:
+        #0b1b2e;
 
-            font-size: 11px;
-        }
+    overflow:
+        hidden;
 
-        .video-league {
-            overflow: hidden;
+}
 
-            white-space: nowrap;
 
-            text-overflow: ellipsis;
-        }
+.thumbnail img {
 
-        .video-date {
-            flex-shrink: 0;
-        }
+    width:
+        100%;
 
+    height:
+        100%;
 
-        /* ================= EMPTY ================= */
+    object-fit:
+        cover;
 
-        .state-box {
-            min-height: 300px;
+}
 
-            grid-column: 1 / -1;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.play {
 
-            flex-direction: column;
+    position:
+        absolute;
 
-            text-align: center;
+    top:
+        50%;
 
-            padding: 35px;
+    left:
+        50%;
 
-            border: 1px dashed
-                rgba(255,255,255,0.12);
+    transform:
+        translate(-50%, -50%);
 
-            border-radius: 18px;
+    width:
+        54px;
 
-            background:
-                rgba(255,255,255,0.015);
-        }
+    height:
+        54px;
 
-        .state-icon {
-            width: 68px;
-            height: 68px;
+    display:
+        flex;
 
-            display: grid;
-            place-items: center;
+    align-items:
+        center;
 
-            margin-bottom: 16px;
+    justify-content:
+        center;
 
-            border-radius: 50%;
+    border-radius:
+        50%;
 
-            background:
-                rgba(37,211,102,0.1);
+    background:
+        rgba(37,211,102,.95);
 
-            color: var(--accent);
+    color:
+        #06121f;
 
-            font-size: 28px;
-        }
+    font-size:
+        22px;
 
-        .state-box h2 {
-            margin-bottom: 7px;
+    box-shadow:
+        0 5px 25px rgba(0,0,0,.4);
 
-            font-size: 19px;
-        }
+}
 
-        .state-box p {
-            max-width: 470px;
 
-            color: var(--muted);
+.duration {
 
-            font-size: 13px;
+    position:
+        absolute;
 
-            line-height: 1.8;
-        }
+    bottom:
+        8px;
 
+    left:
+        8px;
 
-        /* ================= LOADING ================= */
+    padding:
+        4px 7px;
 
-        .loader {
-            width: 35px;
-            height: 35px;
+    border-radius:
+        6px;
 
-            margin-bottom: 16px;
+    background:
+        rgba(0,0,0,.75);
 
-            border: 3px solid
-                rgba(255,255,255,0.1);
+    color:
+        white;
 
-            border-top-color:
-                var(--accent);
+    font-size:
+        10px;
 
-            border-radius: 50%;
+}
 
-            animation:
-                spin 0.8s linear infinite;
-        }
 
-        @keyframes spin {
+/* =====================================================
+   CARD CONTENT
+   ===================================================== */
 
-            to {
-                transform: rotate(360deg);
-            }
+.video-content {
 
-        }
+    padding:
+        14px;
 
+}
 
-        /* ================= MOBILE ================= */
 
-        @media (max-width: 850px) {
+.video-title {
 
-            .video-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
+    margin:
+        0 0 9px;
 
-        }
+    font-size:
+        15px;
 
+    line-height:
+        1.6;
 
-        @media (max-width: 600px) {
+    font-weight:
+        800;
 
-            .videos-page {
-                padding: 30px 0 60px;
-            }
+}
 
-            .page-top {
-                align-items: flex-start;
 
-                flex-direction: column;
-            }
+.video-meta {
 
-            .page-title h1 {
-                font-size: 29px;
-            }
+    display:
+        flex;
 
-            .video-grid {
-                grid-template-columns: 1fr;
+    align-items:
+        center;
 
-                gap: 13px;
-            }
+    justify-content:
+        space-between;
 
-            .video-body {
-                padding: 14px;
-            }
+    color:
+        var(--muted);
 
-            .video-title {
-                font-size: 15px;
-            }
+    font-size:
+        11px;
 
-        }
+}
 
-    </style>
+
+.video-league {
+
+    color:
+        var(--accent);
+
+}
+
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.state {
+
+    min-height:
+        280px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-direction:
+        column;
+
+    text-align:
+        center;
+
+    border:
+        1px dashed
+        rgba(255,255,255,.13);
+
+    border-radius:
+        18px;
+
+    padding:
+        30px;
+
+}
+
+
+.state-icon {
+
+    font-size:
+        40px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.state h2 {
+
+    margin:
+        0 0 8px;
+
+}
+
+
+.state p {
+
+    margin:
+        0;
+
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* =====================================================
+   LOADER
+   ===================================================== */
+
+.loader {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    border-radius:
+        50%;
+
+    border:
+        3px solid
+        rgba(255,255,255,.10);
+
+    border-top-color:
+        var(--accent);
+
+    animation:
+        spin .8s linear infinite;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+@keyframes spin {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media(max-width:650px) {
+
+    .highlights-page {
+
+        padding:
+            30px 0 60px;
+
+    }
+
+    .page-title h1 {
+
+        font-size:
+            28px;
+
+    }
+
+    .filters {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .video-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -416,585 +552,483 @@
 <body>
 
 
-<!-- ================= HEADER ================= -->
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header class="header">
 
-    <div class="container header-inner">
-
-        <a href="index.html"
-           class="logo">
-
-            <span>GOAL</span>INS
-
-        </a>
+<div class="container header-inner">
 
 
-        <button
-            class="menu-btn"
-            id="menuBtn"
-            aria-label="فتح القائمة"
-            aria-expanded="false">
+<a
+    href="index.html"
+    class="logo">
 
-            ☰
+    <span>GOAL</span>INS
 
-        </button>
+</a>
 
 
-        <nav id="nav">
+<button
+    class="menu-btn"
+    id="menuBtn"
+    aria-label="القائمة"
+    aria-expanded="false">
 
-            <a href="matches.html">
-                المباريات
-            </a>
+    ☰
 
-            <a href="national-teams.html">
-                المنتخبات
-            </a>
+</button>
 
-            <a href="highlights.html">
-                الملخصات
-            </a>
 
-            <a href="goals.html">
-                الأهداف
-            </a>
+<nav id="nav">
 
-        </nav>
+    <a href="matches.html">
+        المباريات
+    </a>
 
-    </div>
+    <a href="national-teams.html">
+        المنتخبات
+    </a>
+
+    <a href="highlights.html">
+        الملخصات
+    </a>
+
+    <a href="goals.html">
+        الأهداف
+    </a>
+
+</nav>
+
+
+</div>
 
 </header>
 
 
 
-<!-- ================= MAIN ================= -->
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
 
-<main class="videos-page">
+<main class="highlights-page">
 
-    <div class="container">
-
-
-        <!-- TITLE -->
-
-        <div class="page-top">
-
-            <div class="page-title">
-
-                <span>
-                    GOALINS VIDEO
-                </span>
-
-                <h1>
-                    ملخصات المباريات
-                </h1>
-
-                <p>
-                    أهم ملخصات مباريات كرة القدم
-                    في مكان واحد.
-                </p>
-
-            </div>
+<div class="container">
 
 
-            <a
-                href="index.html"
-                class="back-home">
+<!-- TITLE -->
 
-                ← الرئيسية
+<div class="page-title">
 
-            </a>
+    <small>
+        GOALINS VIDEO
+    </small>
 
-        </div>
+    <h1>
+        🎬 ملخصات المباريات
+    </h1>
+
+    <p>
+        شاهد ملخصات أهم مباريات كرة القدم
+    </p>
+
+</div>
 
 
 
-        <!-- FILTER -->
+<!-- =====================================================
+     FILTERS
+     ===================================================== -->
 
-        <div class="video-filter">
-
-            <button
-                class="filter-btn active"
-                data-filter="all">
-
-                الكل
-
-            </button>
+<div class="filters">
 
 
-            <button
-                class="filter-btn"
-                data-filter="england">
+<select
+    class="filter"
+    id="dateFilter">
 
-                🏴 إنجلترا
+    <option value="all">
+        جميع الأيام
+    </option>
 
-            </button>
+    <option value="today">
+        اليوم
+    </option>
 
+    <option value="yesterday">
+        أمس
+    </option>
 
-            <button
-                class="filter-btn"
-                data-filter="spain">
-
-                🇪🇸 إسبانيا
-
-            </button>
-
-
-            <button
-                class="filter-btn"
-                data-filter="italy">
-
-                🇮🇹 إيطاليا
-
-            </button>
-
-
-            <button
-                class="filter-btn"
-                data-filter="france">
-
-                🇫🇷 فرنسا
-
-            </button>
-
-
-            <button
-                class="filter-btn"
-                data-filter="champions">
-
-                🏆 دوري الأبطال
-
-            </button>
-
-        </div>
+</select>
 
 
 
-        <!-- VIDEOS -->
+<select
+    class="filter"
+    id="leagueFilter">
 
-        <div
-            class="video-grid"
-            id="videoGrid">
+    <option value="all">
+        جميع البطولات
+    </option>
 
-            <div class="state-box">
+    <option value="premier-league">
+        🇬🇧 الدوري الإنجليزي
+    </option>
 
-                <div class="loader"></div>
+    <option value="la-liga">
+        🇪🇸 الدوري الإسباني
+    </option>
 
-                <h2>
-                    جاري تحميل الملخصات
-                </h2>
+    <option value="ligue-1">
+        🇫🇷 الدوري الفرنسي
+    </option>
 
-                <p>
-                    لحظات من فضلك...
-                </p>
+    <option value="serie-a">
+        🇮🇹 الدوري الإيطالي
+    </option>
 
-            </div>
+    <option value="eredivisie">
+        🇳🇱 الدوري الهولندي
+    </option>
 
-        </div>
+    <option value="jupiler">
+        🇧🇪 الدوري البلجيكي
+    </option>
 
-    </div>
+    <option value="primeira-liga">
+        🇵🇹 الدوري البرتغالي
+    </option>
+
+    <option value="bundesliga">
+        🇩🇪 الدوري الألماني
+    </option>
+
+    <option value="champions-league">
+        🏆 دوري أبطال أوروبا
+    </option>
+
+    <option value="europa-league">
+        🏆 الدوري الأوروبي
+    </option>
+
+</select>
+
+</div>
+
+
+
+<!-- =====================================================
+     SECTION
+     ===================================================== -->
+
+<div class="section-header">
+
+    <h2>
+        أحدث الملخصات
+    </h2>
+
+    <span id="videoCount">
+        0 فيديو
+    </span>
+
+</div>
+
+
+
+<!-- =====================================================
+     VIDEOS
+     ===================================================== -->
+
+<div
+    class="video-grid"
+    id="videoGrid">
+
+
+<div class="state">
+
+    <div class="loader"></div>
+
+    <h2>
+        جاري تحميل الملخصات
+    </h2>
+
+    <p>
+        سيتم ربط الفيديوهات بمصدر الفيديو لاحقًا.
+    </p>
+
+</div>
+
+
+</div>
+
+
+</div>
 
 </main>
 
 
 
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <div class="container footer-inner">
-
-        <div class="footer-brand">
-
-            <div class="footer-logo">
-
-                <span>GOAL</span>INS
-
-            </div>
-
-            <p>
-                كل ما يهمك في كرة القدم.
-            </p>
-
-        </div>
-
-
-        <div class="footer-links">
-
-            <a href="matches.html">
-                المباريات
-            </a>
-
-            <a href="national-teams.html">
-                المنتخبات
-            </a>
-
-            <a href="highlights.html">
-                الملخصات
-            </a>
-
-            <a href="goals.html">
-                الأهداف
-            </a>
-
-        </div>
-
-
-        <div class="copyright">
-            © 2026 GOALINS
-        </div>
-
-    </div>
-
-</footer>
-
-
-
-<!-- ================= SCRIPT ================= -->
-
 <script>
 
+/* =====================================================
+   GOALINS — HIGHLIGHTS
+   ===================================================== */
+
+
+/*
+ * في هذه المرحلة لا نضع روابط فيديو عشوائية.
+ *
+ * سنربط هذه الصفحة لاحقًا بمصدر فيديو
+ * يسمح بعرض المحتوى بطريقة قانونية.
+ */
+
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
 const videoGrid =
-    document.getElementById("videoGrid");
-
-const filterButtons =
-    document.querySelectorAll(".filter-btn");
-
-let videos = [];
-
-let currentFilter = "all";
+    document.getElementById(
+        "videoGrid"
+    );
 
 
-/* ================= LOAD VIDEOS ================= */
-
-async function loadVideos() {
-
-    try {
-
-        const response =
-            await fetch(
-                "data/videos.json?cache=" +
-                Date.now()
-            );
+const videoCount =
+    document.getElementById(
+        "videoCount"
+    );
 
 
-        if (!response.ok) {
-
-            throw new Error(
-                "videos.json not found"
-            );
-
-        }
+const dateFilter =
+    document.getElementById(
+        "dateFilter"
+    );
 
 
-        const data =
-            await response.json();
+const leagueFilter =
+    document.getElementById(
+        "leagueFilter"
+    );
 
 
-        videos =
-            Array.isArray(data.videos)
-                ? data.videos
-                : [];
+
+/* =====================================================
+   PLACEHOLDER DATA
+   ===================================================== */
+
+const videos = [];
 
 
-        renderVideos();
-
-
-    } catch (error) {
-
-        console.log(error);
-
-        /*
-         * لا نعرض فيديوهات وهمية.
-         * الصفحة ستبقى جاهزة حتى يتم
-         * ربط مصدر الفيديو الرسمي.
-         */
-
-        videoGrid.innerHTML = `
-
-            <div class="state-box">
-
-                <div class="state-icon">
-                    🎥
-                </div>
-
-                <h2>
-                    الملخصات قادمة
-                </h2>
-
-                <p>
-                    نعمل على ربط GOALINS
-                    بمصدر موثوق للفيديوهات
-                    والملخصات الرسمية.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-/* ================= FILTER ================= */
-
-function filterVideos(video) {
-
-    if (currentFilter === "all") {
-        return true;
-    }
-
-    return video.category === currentFilter;
-
-}
-
-
-/* ================= RENDER ================= */
+/* =====================================================
+   RENDER
+   ===================================================== */
 
 function renderVideos() {
 
-    const filtered =
-        videos.filter(filterVideos);
+
+    /*
+     * لا توجد فيديوهات بعد.
+     *
+     * بعد ربط مصدر الفيديو سنملأ
+     * هذه المصفوفة تلقائيًا.
+     */
 
 
-    if (!filtered.length) {
+    if (
+        videos.length === 0
+    ) {
+
+
+        videoCount.textContent =
+            "0 فيديو";
+
 
         videoGrid.innerHTML = `
 
-            <div class="state-box">
+            <div class="state">
 
                 <div class="state-icon">
-                    🎥
+                    🎬
                 </div>
 
                 <h2>
-                    لا توجد ملخصات
+                    الملخصات قريبًا
                 </h2>
 
                 <p>
-                    لا توجد فيديوهات متاحة
-                    في القسم المختار حاليًا.
+                    قسم الفيديوهات جاهز.
+                    <br>
+                    سنربطه الآن بمصدر الملخصات.
                 </p>
 
             </div>
 
         `;
+
 
         return;
 
     }
 
 
+    videoCount.textContent =
+        videos.length +
+        " فيديو";
+
+
     videoGrid.innerHTML =
-        filtered
-            .map(video =>
-                createVideoCard(video)
+
+        videos
+            .map(
+                video =>
+                    createVideoCard(
+                        video
+                    )
             )
             .join("");
 
 }
 
 
-/* ================= VIDEO CARD ================= */
+/* =====================================================
+   VIDEO CARD
+   ===================================================== */
 
 function createVideoCard(video) {
-
-    const thumbnail =
-        video.thumbnail || "";
-
-
-    const title =
-        escapeHTML(
-            video.title || "ملخص المباراة"
-        );
-
-
-    const league =
-        escapeHTML(
-            video.league || ""
-        );
-
-
-    const date =
-        escapeHTML(
-            video.date || ""
-        );
-
-
-    const type =
-        escapeHTML(
-            video.type || "ملخص"
-        );
 
 
     return `
 
-        <a
-            class="video-card"
-            href="${safeURL(video.url)}"
-            target="_blank"
-            rel="noopener noreferrer">
+        <article
+            class="video-card">
 
 
-            <div class="video-thumb">
+            <div
+                class="thumbnail">
+
+
+                <img
+                    src="${video.thumbnail}"
+                    alt="${video.title}"
+                    loading="lazy">
+
+
+                <div
+                    class="play">
+
+                    ▶
+
+                </div>
+
 
                 ${
-                    thumbnail
-                    ? `
-                        <img
-                            src="${safeURL(thumbnail)}"
-                            alt="${title}"
-                            loading="lazy">
+                    video.duration
+                    ?
                     `
-                    : `
-                        <div
-                            style="
-                                width:100%;
-                                height:100%;
-                                display:grid;
-                                place-items:center;
-                                font-size:45px;
-                            ">
-                            ⚽
-                        </div>
+                    <span
+                        class="duration">
+
+                        ${video.duration}
+
+                    </span>
                     `
+                    :
+                    ""
                 }
 
 
-                <div class="video-type">
-                    ${type}
-                </div>
+            </div>
 
 
-                <div class="play-button">
-                    ▶
+            <div
+                class="video-content">
+
+
+                <h3
+                    class="video-title">
+
+                    ${video.title}
+
+                </h3>
+
+
+                <div
+                    class="video-meta">
+
+
+                    <span
+                        class="video-league">
+
+                        ${video.league}
+
+                    </span>
+
+
+                    <span>
+
+                        ${video.date}
+
+                    </span>
+
+
                 </div>
+
 
             </div>
 
 
-            <div class="video-body">
-
-                <div class="video-title">
-                    ${title}
-                </div>
-
-
-                <div class="video-meta">
-
-                    <span class="video-league">
-                        ${league}
-                    </span>
-
-                    <span class="video-date">
-                        ${date}
-                    </span>
-
-                </div>
-
-            </div>
-
-
-        </a>
+        </article>
 
     `;
 
 }
 
 
-/* ================= SAFE URL ================= */
+/* =====================================================
+   FILTER EVENTS
+   ===================================================== */
 
-function safeURL(url) {
-
-    try {
-
-        const parsed =
-            new URL(url, location.href);
-
-
-        if (
-            parsed.protocol !== "http:" &&
-            parsed.protocol !== "https:"
-        ) {
-
-            return "#";
-
-        }
+dateFilter.addEventListener(
+    "change",
+    renderVideos
+);
 
 
-        return parsed.href;
-
-    } catch {
-
-        return "#";
-
-    }
-
-}
+leagueFilter.addEventListener(
+    "change",
+    renderVideos
+);
 
 
-/* ================= ESCAPE ================= */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* ================= FILTER BUTTONS ================= */
-
-filterButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            filterButtons.forEach(btn => {
-
-                btn.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-            button.classList.add("active");
-
-
-            currentFilter =
-                button.dataset.filter;
-
-
-            renderVideos();
-
-        }
-    );
-
-});
-
-
-/* ================= MOBILE MENU ================= */
+/* =====================================================
+   MOBILE MENU
+   ===================================================== */
 
 const menuBtn =
-    document.getElementById("menuBtn");
+    document.getElementById(
+        "menuBtn"
+    );
+
 
 const nav =
-    document.getElementById("nav");
+    document.getElementById(
+        "nav"
+    );
 
 
-if (menuBtn && nav) {
+if (
+    menuBtn &&
+    nav
+) {
+
 
     menuBtn.addEventListener(
         "click",
         () => {
 
-            const isOpen =
+
+            const open =
                 nav.classList.toggle(
                     "active"
                 );
@@ -1002,7 +1036,7 @@ if (menuBtn && nav) {
 
             menuBtn.setAttribute(
                 "aria-expanded",
-                isOpen
+                open
                     ? "true"
                     : "false"
             );
@@ -1010,37 +1044,18 @@ if (menuBtn && nav) {
         }
     );
 
-
-    nav.querySelectorAll("a")
-        .forEach(link => {
-
-            link.addEventListener(
-                "click",
-                () => {
-
-                    nav.classList.remove(
-                        "active"
-                    );
-
-
-                    menuBtn.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-            );
-
-        });
-
 }
 
 
-/* ================= START ================= */
+/* =====================================================
+   START
+   ===================================================== */
 
-loadVideos();
+renderVideos();
 
 </script>
 
+
 </body>
+
 </html>
