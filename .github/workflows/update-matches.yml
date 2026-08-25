@@ -17,8 +17,17 @@ jobs:
 
     steps:
 
+      # =====================================================
+      # CHECKOUT
+      # =====================================================
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+
+      # =====================================================
+      # FETCH MATCHES
+      # =====================================================
 
       - name: Fetch football matches
         env:
@@ -47,7 +56,7 @@ jobs:
 
 
           # =====================================================
-          # CONFIG
+          # CONFIGURATION
           # =====================================================
 
           API_KEY = os.environ.get(
@@ -55,6 +64,7 @@ jobs:
           )
 
           if not API_KEY:
+
               raise RuntimeError(
                   "API_FOOTBALL_KEY is missing"
               )
@@ -65,23 +75,21 @@ jobs:
           )
 
 
-          # Algeria timezone
-          LOCAL_OFFSET = timedelta(
-              hours=1
-          )
+          TIMEZONE = "Africa/Algiers"
 
 
           # =====================================================
-          # DATE RANGE
+          # IMPORTANT DATE RANGE
           # =====================================================
           #
-          # Previous 7 days
+          # 7 DAYS BEFORE
           # +
-          # Today
+          # TODAY
           # +
-          # Next 7 days
+          # 7 DAYS AFTER
           #
-          # This is important for the Highlights engine.
+          # This allows the Highlights Engine
+          # to find recently finished matches.
           # =====================================================
 
           DAYS_BEFORE = 7
@@ -97,46 +105,33 @@ jobs:
 
 
           # =====================================================
-          # FETCH MATCHES
+          # FETCH ONE DAY
           # =====================================================
 
-          for day_offset in range(
-              -DAYS_BEFORE,
-              DAYS_AFTER + 1
-          ):
-
-              local_date = (
-                  now_utc
-                  + LOCAL_OFFSET
-                  + timedelta(
-                      days=day_offset
-                  )
-              ).date()
-
-
-              date_string = (
-                  local_date.isoformat()
-              )
-
+          def fetch_day(date_string):
 
               print(
-                  f"Fetching: {date_string}"
+                  "--------------------------------------"
+              )
+
+              print(
+                  f"Fetching matches for: {date_string}"
               )
 
 
-              query = urlencode({
+              params = urlencode({
 
                   "date":
                       date_string,
 
                   "timezone":
-                      "Africa/Algiers"
+                      TIMEZONE
 
               })
 
 
               url = (
-                  f"{BASE_URL}?{query}"
+                  f"{BASE_URL}?{params}"
               )
 
 
@@ -161,198 +156,297 @@ jobs:
 
                   with urlopen(
                       request,
-                      timeout=30
+                      timeout=45
                   ) as response:
 
+                      raw = response.read()
+
                       data = json.loads(
-                          response
-                          .read()
-                          .decode("utf-8")
+                          raw.decode("utf-8")
                       )
 
 
-              except Exception as e:
+              except Exception as error:
 
                   print(
-                      f"ERROR fetching {date_string}:",
-                      e
+                      f"ERROR fetching {date_string}:"
                   )
 
-                  continue
+                  print(error)
 
+                  return []
+
+
+              # -------------------------------------------------
+              # API ERRORS
+              # -------------------------------------------------
 
               if data.get("errors"):
 
                   print(
-                      "API errors:",
-                      data["errors"]
+                      "API-FOOTBALL ERRORS:"
+                  )
+
+                  print(
+                      json.dumps(
+                          data["errors"],
+                          ensure_ascii=False
+                      )
                   )
 
 
-              for item in data.get(
+              results = data.get(
                   "response",
                   []
-              ):
+              )
 
-                  fixture = item.get(
-                      "fixture",
-                      {}
+
+              print(
+                  f"Matches returned: {len(results)}"
+              )
+
+
+              return results
+
+
+          # =====================================================
+          # DATE LOOP
+          # =====================================================
+
+          for day_offset in range(
+              -DAYS_BEFORE,
+              DAYS_AFTER + 1
+          ):
+
+              local_date = (
+
+                  now_utc
+
+                  + timedelta(
+                      hours=1
                   )
 
-                  league = item.get(
-                      "league",
-                      {}
+                  + timedelta(
+                      days=day_offset
                   )
 
-                  teams = item.get(
-                      "teams",
-                      {}
-                  )
-
-                  goals = item.get(
-                      "goals",
-                      {}
-                  )
-
-                  status = fixture.get(
-                      "status",
-                      {}
-                  )
+              ).date()
 
 
-                  matches.append({
-
-                      "fixture_id":
-                          fixture.get("id"),
-
-
-                      "date":
-                          fixture.get("date"),
+              date_string = (
+                  local_date.isoformat()
+              )
 
 
-                      "timestamp":
-                          fixture.get("timestamp"),
+              day_matches = fetch_day(
+                  date_string
+              )
 
 
-                      "status":
-                          status.get("short"),
+              matches.extend(
+                  day_matches
+              )
 
 
-                      "status_long":
-                          status.get("long"),
-
-
-                      "elapsed":
-                          status.get("elapsed"),
-
-
-                      "league": {
-
-                          "id":
-                              league.get("id"),
-
-                          "name":
-                              league.get("name"),
-
-                          "country":
-                              league.get("country"),
-
-                          "logo":
-                              league.get("logo"),
-
-                          "flag":
-                              league.get("flag"),
-
-                          "round":
-                              league.get("round")
-
-                      },
-
-
-                      "home": {
-
-                          "id":
-                              teams
-                              .get("home", {})
-                              .get("id"),
-
-                          "name":
-                              teams
-                              .get("home", {})
-                              .get("name"),
-
-                          "logo":
-                              teams
-                              .get("home", {})
-                              .get("logo"),
-
-                          "winner":
-                              teams
-                              .get("home", {})
-                              .get("winner")
-
-                      },
-
-
-                      "away": {
-
-                          "id":
-                              teams
-                              .get("away", {})
-                              .get("id"),
-
-                          "name":
-                              teams
-                              .get("away", {})
-                              .get("name"),
-
-                          "logo":
-                              teams
-                              .get("away", {})
-                              .get("logo"),
-
-                          "winner":
-                              teams
-                              .get("away", {})
-                              .get("winner")
-
-                      },
-
-
-                      "goals": {
-
-                          "home":
-                              goals.get("home"),
-
-                          "away":
-                              goals.get("away")
-
-                      }
-
-                  })
-
-
-              # Small delay between requests
+              # API protection
               time.sleep(1)
 
 
           # =====================================================
-          # REMOVE DUPLICATE FIXTURES
+          # NORMALIZE MATCH DATA
+          # =====================================================
+
+          normalized_matches = []
+
+
+          for item in matches:
+
+              fixture = item.get(
+                  "fixture",
+                  {}
+              )
+
+              league = item.get(
+                  "league",
+                  {}
+              )
+
+              teams = item.get(
+                  "teams",
+                  {}
+              )
+
+              goals = item.get(
+                  "goals",
+                  {}
+              )
+
+              status = fixture.get(
+                  "status",
+                  {}
+              )
+
+
+              home = teams.get(
+                  "home",
+                  {}
+              )
+
+
+              away = teams.get(
+                  "away",
+                  {}
+              )
+
+
+              normalized_matches.append({
+
+                  # -------------------------------------------
+                  # FIXTURE
+                  # -------------------------------------------
+
+                  "fixture_id":
+                      fixture.get("id"),
+
+                  "date":
+                      fixture.get("date"),
+
+                  "timestamp":
+                      fixture.get("timestamp"),
+
+
+                  # -------------------------------------------
+                  # STATUS
+                  # -------------------------------------------
+
+                  "status":
+                      status.get("short"),
+
+                  "status_long":
+                      status.get("long"),
+
+                  "elapsed":
+                      status.get("elapsed"),
+
+
+                  # -------------------------------------------
+                  # LEAGUE
+                  # -------------------------------------------
+
+                  "league": {
+
+                      "id":
+                          league.get("id"),
+
+                      "name":
+                          league.get("name"),
+
+                      "country":
+                          league.get("country"),
+
+                      "logo":
+                          league.get("logo"),
+
+                      "flag":
+                          league.get("flag"),
+
+                      "round":
+                          league.get("round")
+
+                  },
+
+
+                  # -------------------------------------------
+                  # HOME
+                  # -------------------------------------------
+
+                  "home": {
+
+                      "id":
+                          home.get("id"),
+
+                      "name":
+                          home.get("name"),
+
+                      "logo":
+                          home.get("logo"),
+
+                      "winner":
+                          home.get("winner")
+
+                  },
+
+
+                  # -------------------------------------------
+                  # AWAY
+                  # -------------------------------------------
+
+                  "away": {
+
+                      "id":
+                          away.get("id"),
+
+                      "name":
+                          away.get("name"),
+
+                      "logo":
+                          away.get("logo"),
+
+                      "winner":
+                          away.get("winner")
+
+                  },
+
+
+                  # -------------------------------------------
+                  # GOALS
+                  # -------------------------------------------
+
+                  "goals": {
+
+                      "home":
+                          goals.get("home"),
+
+                      "away":
+                          goals.get("away")
+
+                  }
+
+              })
+
+
+          # =====================================================
+          # REMOVE INVALID FIXTURES
+          # =====================================================
+
+          normalized_matches = [
+
+              match
+
+              for match in normalized_matches
+
+              if match.get("fixture_id")
+
+          ]
+
+
+          # =====================================================
+          # REMOVE DUPLICATES
           # =====================================================
 
           unique_matches = {}
 
-          for match in matches:
+
+          for match in normalized_matches:
 
               fixture_id = match.get(
                   "fixture_id"
               )
 
-              if fixture_id:
 
-                  unique_matches[
-                      fixture_id
-                  ] = match
+              unique_matches[
+                  fixture_id
+              ] = match
 
 
           matches = list(
@@ -361,39 +455,133 @@ jobs:
 
 
           # =====================================================
-          # SORT
+          # SORT BY DATE
           # =====================================================
 
           matches.sort(
 
-              key=lambda x: (
-                  x.get("timestamp")
+              key=lambda match: (
+
+                  match.get(
+                      "timestamp"
+                  )
                   or 0
+
               )
 
           )
 
 
           # =====================================================
-          # DIAGNOSTIC
+          # DIAGNOSTICS
           # =====================================================
 
-          finished = [
+          finished_statuses = {
+              "FT",
+              "AET",
+              "PEN"
+          }
+
+
+          finished_matches = [
 
               match
 
               for match in matches
 
               if match.get("status")
-              in (
-                  "FT",
-                  "AET",
-                  "PEN"
-              )
+              in finished_statuses
 
           ]
 
 
+          upcoming_matches = [
+
+              match
+
+              for match in matches
+
+              if match.get("status")
+              not in finished_statuses
+
+          ]
+
+
+          # =====================================================
+          # LEAGUE DISTRIBUTION
+          # =====================================================
+
+          league_distribution = {}
+
+
+          for match in matches:
+
+              league = match.get(
+                  "league",
+                  {}
+              )
+
+
+              league_name = (
+                  league.get("name")
+                  or "Unknown"
+              )
+
+
+              league_distribution[
+                  league_name
+              ] = (
+
+                  league_distribution.get(
+                      league_name,
+                      0
+                  )
+
+                  + 1
+
+              )
+
+
+          # =====================================================
+          # FINISHED LEAGUE DISTRIBUTION
+          # =====================================================
+
+          finished_distribution = {}
+
+
+          for match in finished_matches:
+
+              league = match.get(
+                  "league",
+                  {}
+              )
+
+
+              league_name = (
+                  league.get("name")
+                  or "Unknown"
+              )
+
+
+              finished_distribution[
+                  league_name
+              ] = (
+
+                  finished_distribution.get(
+                      league_name,
+                      0
+                  )
+
+                  + 1
+
+              )
+
+
+          # =====================================================
+          # PRINT DIAGNOSTIC
+          # =====================================================
+
+          print("")
           print(
               "======================================"
           )
@@ -411,15 +599,99 @@ jobs:
           )
 
           print(
-              f"Finished matches: {len(finished)}"
+              f"Finished matches: "
+              f"{len(finished_matches)}"
           )
 
           print(
-              f"Date range: "
-              f"{DAYS_BEFORE} days before "
-              f"+ today + "
-              f"{DAYS_AFTER} days after"
+              f"Upcoming matches: "
+              f"{len(upcoming_matches)}"
           )
+
+          print(
+              f"Days before: {DAYS_BEFORE}"
+          )
+
+          print(
+              f"Days after: {DAYS_AFTER}"
+          )
+
+          print(
+              f"Timezone: {TIMEZONE}"
+          )
+
+          print(
+              "--------------------------------------"
+          )
+
+          print(
+              "League distribution:"
+          )
+
+
+          for league_name, count in sorted(
+              league_distribution.items()
+          ):
+
+              print(
+                  f"  {league_name}: {count}"
+              )
+
+
+          print(
+              "--------------------------------------"
+          )
+
+          print(
+              "Finished league distribution:"
+          )
+
+
+          if finished_distribution:
+
+              for league_name, count in sorted(
+                  finished_distribution.items()
+              ):
+
+                  print(
+                      f"  {league_name}: {count}"
+                  )
+
+          else:
+
+              print(
+                  "  NONE"
+              )
+
+
+          print(
+              "--------------------------------------"
+          )
+
+          print(
+              "Recent finished matches:"
+          )
+
+
+          for match in finished_matches[-20:]:
+
+              league = match.get(
+                  "league",
+                  {}
+              )
+
+              print(
+
+                  f"  "
+                  f"{str(match.get('date', ''))[:10]} | "
+                  f"{league.get('name', 'Football')} | "
+                  f"{match.get('home', {}).get('name', 'Home')} "
+                  f"vs "
+                  f"{match.get('away', {}).get('name', 'Away')} | "
+                  f"{match.get('status', '')}"
+
+              )
+
 
           print(
               "======================================"
@@ -438,7 +710,7 @@ jobs:
                   ).isoformat(),
 
               "timezone":
-                  "Africa/Algiers",
+                  TIMEZONE,
 
               "days_before":
                   DAYS_BEFORE,
@@ -449,11 +721,18 @@ jobs:
               "count":
                   len(matches),
 
+              "finished_count":
+                  len(finished_matches),
+
               "matches":
                   matches
 
           }
 
+
+          # =====================================================
+          # SAVE
+          # =====================================================
 
           os.makedirs(
               "data",
@@ -480,12 +759,27 @@ jobs:
               )
 
 
+          print("")
           print(
-              f"Saved {len(matches)} matches."
+              f"GOALINS: "
+              f"{len(matches)} matches saved."
+          )
+
+          print(
+              f"Finished: "
+              f"{len(finished_matches)}"
+          )
+
+          print(
+              "======================================"
           )
 
           PY
 
+
+      # =====================================================
+      # COMMIT
+      # =====================================================
 
       - name: Commit updated matches
         run: |
@@ -495,10 +789,21 @@ jobs:
           git config user.email \
             "actions@users.noreply.github.com"
 
+
           git add data/matches.json
 
-          git diff --cached --quiet || \
-            git commit \
+
+          if git diff --cached --quiet; then
+
+            echo "No match changes."
+
+            exit 0
+
+          fi
+
+
+          git commit \
             -m "Update football matches"
+
 
           git push
