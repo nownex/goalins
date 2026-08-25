@@ -1,29 +1,45 @@
 import json
 import os
 import re
+import unicodedata
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+
 import requests
-from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
 # GOALINS — YOUTUBE HIGHLIGHTS ENGINE
 # =========================================================
 
-API_KEY = os.environ.get("YOUTUBE_API_KEY")
+YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
+API_FOOTBALL_KEY = os.environ.get("API_FOOTBALL_KEY")
 
-if not API_KEY:
+if not YOUTUBE_API_KEY:
     raise RuntimeError("YOUTUBE_API_KEY is missing")
+
+if not API_FOOTBALL_KEY:
+    raise RuntimeError("API_FOOTBALL_KEY is missing")
 
 
 MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-YOUTUBE_SEARCH_URL = (
+API_FOOTBALL_URL = (
+    "https://v3.football.api-sports.io/fixtures"
+)
+
+YOUTUBE_URL = (
     "https://www.googleapis.com/youtube/v3/search"
 )
 
 LOOKBACK_DAYS = 7
 MAX_HIGHLIGHTS = 50
+
+# مهم حتى لا نستهلك YouTube quota بسرعة
+MAX_YOUTUBE_SEARCHES_PER_RUN = 4
+
+LOCAL_TZ = ZoneInfo("Africa/Algiers")
 
 
 # =========================================================
@@ -32,119 +48,35 @@ MAX_HIGHLIGHTS = 50
 
 ALLOWED_LEAGUES = {
 
-    # England
     39: "premier-league",
 
-    # Spain
     140: "la-liga",
 
-    # France
     61: "ligue-1",
 
-    # Italy
     135: "serie-a",
 
-    # Netherlands
     88: "eredivisie",
 
-    # Belgium
     144: "jupiler-pro-league",
 
-    # Portugal
     94: "primeira-liga",
 
-    # Germany
     78: "bundesliga",
 
-    # UEFA
     2: "champions-league",
+
     3: "europa-league",
+
     848: "conference-league",
 
-    # Major tournaments
     1: "world-cup",
+
     4: "euro",
+
     6: "afcon",
+
     9: "copa-america",
-}
-
-
-# =========================================================
-# LOAD MATCHES
-# =========================================================
-
-with open(
-    MATCHES_FILE,
-    "r",
-    encoding="utf-8"
-) as f:
-
-    data = json.load(f)
-
-
-if isinstance(data, dict):
-
-    matches = data.get(
-        "matches",
-        []
-    )
-
-elif isinstance(data, list):
-
-    matches = data
-
-else:
-
-    matches = []
-
-
-print("======================================")
-print("GOALINS HIGHLIGHTS DIAGNOSTIC")
-print("======================================")
-print(f"Total matches in matches.json: {len(matches)}")
-
-
-# =========================================================
-# LOAD OLD HIGHLIGHTS
-# =========================================================
-
-existing_highlights = []
-
-if os.path.exists(OUTPUT_FILE):
-
-    try:
-
-        with open(
-            OUTPUT_FILE,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
-            old_data = json.load(f)
-
-        if isinstance(old_data, dict):
-
-            existing_highlights = old_data.get(
-                "highlights",
-                []
-            )
-
-        elif isinstance(old_data, list):
-
-            existing_highlights = old_data
-
-    except Exception as e:
-
-        print(
-            "Could not read old highlights:",
-            e
-        )
-
-
-existing_ids = {
-    item.get("video_id")
-    for item in existing_highlights
-    if item.get("video_id")
 }
 
 
@@ -152,87 +84,20 @@ existing_ids = {
 # HELPERS
 # =========================================================
 
-def get_league(match):
+def normalize_text(value):
 
-    return (
-        match.get("league")
-        or match.get("competition")
-        or {}
+    text = unicodedata.normalize(
+        "NFKD",
+        str(value)
     )
 
-
-def get_teams(match):
-
-    teams = match.get(
-        "teams",
-        {}
+    text = "".join(
+        char
+        for char in text
+        if not unicodedata.combining(char)
     )
 
-    home = (
-        match.get("home")
-        or teams.get("home")
-        or {}
-    )
-
-    away = (
-        match.get("away")
-        or teams.get("away")
-        or {}
-    )
-
-    return home, away
-
-
-def get_date(match):
-
-    value = (
-        match.get("date")
-        or match.get(
-            "fixture",
-            {}
-        ).get("date")
-        or ""
-    )
-
-    return str(value)[:10]
-
-
-def get_status(match):
-
-    status = match.get("status")
-
-    if isinstance(status, dict):
-
-        return str(
-            status.get(
-                "short",
-                ""
-            )
-        )
-
-    fixture_status = (
-        match
-        .get("fixture", {})
-        .get("status", {})
-    )
-
-    if isinstance(fixture_status, dict):
-
-        return str(
-            fixture_status.get(
-                "short",
-                ""
-            )
-        )
-
-    return str(
-        status or ""
-    )
-
-
-def normalize_text(text):
-
-    text = str(text).lower()
+    text = text.lower()
 
     text = re.sub(
         r"[^a-z0-9\u0600-\u06ff]+",
@@ -245,10 +110,7 @@ def normalize_text(text):
     )
 
 
-def team_in_title(
-    team,
-    title
-):
+def team_in_title(team, title):
 
     team = normalize_text(team)
     title = normalize_text(title)
@@ -259,339 +121,566 @@ def team_in_title(
     if team in title:
         return True
 
-    words = [
-        w for w in team.split()
-        if len(w) >= 3
+    team_words = [
+        word
+        for word in team.split()
+        if len(word) >= 3
     ]
 
-    if not words:
+    title_words = set(
+        title.split()
+    )
+
+    if not team_words:
         return False
+
+    if len(team_words) == 1:
+        return team_words[0] in title_words
 
     found = sum(
         1
-        for word in words
-        if word in title
+        for word in team_words
+        if word in title_words
     )
 
     return found >= max(
         1,
-        len(words) // 2
+        (len(team_words) + 1) // 2
     )
 
 
-# =========================================================
-# DIAGNOSTIC COUNTERS
-# =========================================================
+def get_league(match):
 
-allowed_count = 0
-finished_count = 0
-recent_count = 0
+    league = match.get("league")
 
-allowed_league_counts = {}
+    if isinstance(league, dict):
+        return league
 
-finished_matches = []
+    return {}
 
 
-today = datetime.now(
-    timezone.utc
-).date()
+def get_teams(match):
 
-minimum_date = (
-    today - timedelta(
-        days=LOOKBACK_DAYS
-    )
-)
+    home = match.get("home")
+    away = match.get("away")
+
+    if not isinstance(home, dict):
+        home = {}
+
+    if not isinstance(away, dict):
+        away = {}
+
+    return home, away
 
 
-# =========================================================
-# ANALYZE MATCHES
-# =========================================================
+def get_status(match):
 
-for match in matches:
+    status = match.get("status")
 
-    league = get_league(
-        match
-    )
+    if isinstance(status, dict):
+
+        return str(
+            status.get("short") or ""
+        ).upper()
+
+    return str(
+        status or ""
+    ).upper()
+
+
+def get_date(match):
+
+    value = match.get("date") or ""
+
+    return str(value)[:10]
+
+
+def load_json(path, default):
+
+    if not os.path.exists(path):
+        return default
 
     try:
 
-        league_id = int(
-            league.get("id")
+        with open(
+            path,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            return json.load(file)
+
+    except Exception as error:
+
+        print(
+            f"Could not read {path}:",
+            error
         )
 
-    except Exception:
-
-        continue
+        return default
 
 
-    # ---------------------------------------------
-    # ALLOWED LEAGUE
-    # ---------------------------------------------
+def save_json(path, data):
 
-    if league_id not in ALLOWED_LEAGUES:
-
-        continue
-
-
-    allowed_count += 1
-
-
-    league_name = (
-        league.get("name")
-        or ALLOWED_LEAGUES[league_id]
+    os.makedirs(
+        os.path.dirname(path),
+        exist_ok=True
     )
 
+    with open(
+        path,
+        "w",
+        encoding="utf-8"
+    ) as file:
 
-    allowed_league_counts[
-        league_name
-    ] = (
-        allowed_league_counts.get(
-            league_name,
-            0
-        ) + 1
+        json.dump(
+            data,
+            file,
+            ensure_ascii=False,
+            indent=2
+        )
+
+
+# =========================================================
+# API-FOOTBALL
+# =========================================================
+
+def convert_fixture(item):
+
+    fixture = item.get(
+        "fixture",
+        {}
     )
 
-
-    # ---------------------------------------------
-    # STATUS
-    # ---------------------------------------------
-
-    status = get_status(
-        match
+    league = item.get(
+        "league",
+        {}
     )
 
-
-    if status not in (
-        "FT",
-        "AET",
-        "PEN"
-    ):
-
-        continue
-
-
-    finished_count += 1
-
-
-    # ---------------------------------------------
-    # DATE
-    # ---------------------------------------------
-
-    match_date = get_date(
-        match
+    teams = item.get(
+        "teams",
+        {}
     )
 
-    try:
-
-        match_date_obj = datetime.strptime(
-            match_date,
-            "%Y-%m-%d"
-        ).date()
-
-    except Exception:
-
-        continue
-
-
-    if match_date_obj < minimum_date:
-
-        continue
-
-
-    recent_count += 1
-
-
-    home, away = get_teams(
-        match
+    goals = item.get(
+        "goals",
+        {}
     )
 
-    home_name = (
-        home.get("name")
-        or "Home"
+    status = fixture.get(
+        "status",
+        {}
     )
 
-    away_name = (
-        away.get("name")
-        or "Away"
-    )
-
-
-    fixture_id = (
-        match.get("fixture_id")
-        or match.get(
-            "fixture",
-            {}
-        ).get("id")
-    )
-
-
-    finished_matches.append({
+    return {
 
         "fixture_id":
-            fixture_id,
+            fixture.get("id"),
 
         "date":
-            match_date,
+            fixture.get("date"),
 
-        "league_id":
-            league_id,
+        "timestamp":
+            fixture.get("timestamp"),
 
-        "league":
-            league_name,
+        "status":
+            status.get("short"),
 
-        "home":
-            home_name,
+        "status_long":
+            status.get("long"),
 
-        "away":
-            away_name
+        "league": {
 
-    })
+            "id":
+                league.get("id"),
 
+            "name":
+                league.get("name"),
 
-# =========================================================
-# PRINT DIAGNOSTICS
-# =========================================================
+            "country":
+                league.get("country"),
 
-print("--------------------------------------")
-print(f"Allowed league matches: {allowed_count}")
-print(f"Finished allowed matches: {finished_count}")
-print(
-    f"Finished matches in last {LOOKBACK_DAYS} days: "
-    f"{recent_count}"
-)
+            "logo":
+                league.get("logo"),
 
-print("--------------------------------------")
-print("Allowed league distribution:")
+            "flag":
+                league.get("flag"),
 
-for name, count in sorted(
-    allowed_league_counts.items()
-):
+            "round":
+                league.get("round")
+        },
 
-    print(
-        f"  {name}: {count}"
-    )
+        "home": {
 
-print("--------------------------------------")
-print("Recent finished matches:")
+            "id":
+                teams.get(
+                    "home",
+                    {}
+                ).get("id"),
 
-for match in finished_matches:
+            "name":
+                teams.get(
+                    "home",
+                    {}
+                ).get("name"),
 
-    print(
-        f"  {match['date']} | "
-        f"{match['league']} | "
-        f"{match['home']} vs {match['away']}"
-    )
+            "logo":
+                teams.get(
+                    "home",
+                    {}
+                ).get("logo")
+        },
 
-print("======================================")
+        "away": {
 
+            "id":
+                teams.get(
+                    "away",
+                    {}
+                ).get("id"),
 
-# =========================================================
-# SEARCH YOUTUBE
-# =========================================================
+            "name":
+                teams.get(
+                    "away",
+                    {}
+                ).get("name"),
 
-def search_youtube(query):
+            "logo":
+                teams.get(
+                    "away",
+                    {}
+                ).get("logo")
+        },
 
-    params = {
+        "goals": {
 
-        "part": "snippet",
+            "home":
+                goals.get("home"),
 
-        "q": query,
-
-        "type": "video",
-
-        "maxResults": 10,
-
-        "order": "relevance",
-
-        "videoEmbeddable": "true",
-
-        "videoSyndicated": "true",
-
-        "videoDuration": "medium",
-
-        "key": API_KEY
-
+            "away":
+                goals.get("away")
+        }
     }
 
 
+def fetch_recent_fixtures():
+
+    today = datetime.now(
+        LOCAL_TZ
+    ).date()
+
+    start_date = (
+        today
+        - timedelta(
+            days=LOOKBACK_DAYS
+        )
+    )
+
+    params = {
+
+        "from":
+            start_date.isoformat(),
+
+        "to":
+            today.isoformat(),
+
+        "timezone":
+            "Africa/Algiers"
+    }
+
+    headers = {
+
+        "x-apisports-key":
+            API_FOOTBALL_KEY,
+
+        "Accept":
+            "application/json"
+    }
+
+    print(
+        "======================================"
+    )
+
+    print(
+        "API-FOOTBALL REFRESH"
+    )
+
+    print(
+        f"From: {start_date}"
+    )
+
+    print(
+        f"To:   {today}"
+    )
+
+    print(
+        "======================================"
+    )
+
     response = requests.get(
-        YOUTUBE_SEARCH_URL,
+        API_FOOTBALL_URL,
+        params=params,
+        headers=headers,
+        timeout=45
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    if data.get("errors"):
+
+        raise RuntimeError(
+            str(
+                data["errors"]
+            )
+        )
+
+    fixtures = [
+
+        convert_fixture(item)
+
+        for item in data.get(
+            "response",
+            []
+        )
+    ]
+
+    print(
+        f"API-Football fixtures: {len(fixtures)}"
+    )
+
+    return fixtures
+
+
+# =========================================================
+# LOAD EXISTING HIGHLIGHTS
+# =========================================================
+
+def load_existing_highlights():
+
+    data = load_json(
+        OUTPUT_FILE,
+        {}
+    )
+
+    if isinstance(data, dict):
+
+        highlights = data.get(
+            "highlights",
+            []
+        )
+
+    elif isinstance(data, list):
+
+        highlights = data
+
+    else:
+
+        highlights = []
+
+    return (
+        highlights
+        if isinstance(highlights, list)
+        else []
+    )
+
+
+# =========================================================
+# BUILD RECENT ALLOWED MATCHES
+# =========================================================
+
+def get_recent_allowed_matches(fixtures):
+
+    today = datetime.now(
+        LOCAL_TZ
+    ).date()
+
+    minimum_date = (
+        today
+        - timedelta(
+            days=LOOKBACK_DAYS
+        )
+    )
+
+    unique = {}
+
+    for match in fixtures:
+
+        league = get_league(
+            match
+        )
+
+        try:
+
+            league_id = int(
+                league.get("id")
+            )
+
+        except Exception:
+
+            continue
+
+        if league_id not in ALLOWED_LEAGUES:
+            continue
+
+        status = get_status(
+            match
+        )
+
+        status_long = str(
+            match.get(
+                "status_long"
+            ) or ""
+        ).lower()
+
+        finished = (
+
+            status in (
+                "FT",
+                "AET",
+                "PEN"
+            )
+
+            or
+
+            "finished" in status_long
+        )
+
+        if not finished:
+            continue
+
+        match_date = get_date(
+            match
+        )
+
+        try:
+
+            date_object = datetime.strptime(
+                match_date,
+                "%Y-%m-%d"
+            ).date()
+
+        except Exception:
+
+            continue
+
+        if not (
+            minimum_date
+            <= date_object
+            <= today
+        ):
+
+            continue
+
+        fixture_id = match.get(
+            "fixture_id"
+        )
+
+        if not fixture_id:
+            continue
+
+        unique[
+            int(fixture_id)
+        ] = match
+
+    matches = list(
+        unique.values()
+    )
+
+    matches.sort(
+        key=lambda item: (
+            get_date(item),
+            str(
+                item.get("date") or ""
+            )
+        ),
+        reverse=True
+    )
+
+    return matches
+
+
+# =========================================================
+# YOUTUBE SEARCH
+# =========================================================
+
+def search_youtube(
+    home,
+    away,
+    match_date
+):
+
+    query = (
+        f'"{home}" "{away}" highlights'
+    )
+
+    params = {
+
+        "part":
+            "snippet",
+
+        "q":
+            query,
+
+        "type":
+            "video",
+
+        "maxResults":
+            10,
+
+        "order":
+            "relevance",
+
+        "videoEmbeddable":
+            "true",
+
+        "videoSyndicated":
+            "true",
+
+        "videoDuration":
+            "medium",
+
+        "publishedAfter":
+            f"{match_date}T00:00:00Z",
+
+        "key":
+            YOUTUBE_API_KEY
+    }
+
+    response = requests.get(
+        YOUTUBE_URL,
         params=params,
         timeout=30
     )
 
-
     response.raise_for_status()
 
+    data = response.json()
 
-    result = response.json()
-
-
-    if "error" in result:
+    if data.get("error"):
 
         raise RuntimeError(
             str(
-                result["error"]
+                data["error"]
             )
         )
 
-
-    return result.get(
+    return data.get(
         "items",
         []
     )
 
 
 # =========================================================
-# SEARCH HIGHLIGHTS
+# SELECT VIDEO
 # =========================================================
 
-new_highlights = []
-
-
-for match in finished_matches:
-
-    home_name = match["home"]
-    away_name = match["away"]
-
-    fixture_id = match["fixture_id"]
-
-    query = (
-        f"{home_name} {away_name} "
-        f"highlights"
-    )
-
-
-    print("--------------------------------------")
-    print(
-        f"Searching YouTube: "
-        f"{home_name} vs {away_name}"
-    )
-
-
-    try:
-
-        videos = search_youtube(
-            query
-        )
-
-    except Exception as e:
-
-        print(
-            "YouTube error:",
-            e
-        )
-
-        continue
-
-
-    print(
-        f"YouTube results: {len(videos)}"
-    )
-
-
-    selected = None
-
+def select_video(
+    videos,
+    home,
+    away
+):
 
     for video in videos:
 
@@ -604,96 +693,61 @@ for match in finished_matches:
         if not video_id:
             continue
 
-
-        if video_id in existing_ids:
-            continue
-
-
         snippet = video.get(
             "snippet",
             {}
         )
-
 
         title = snippet.get(
             "title",
             ""
         )
 
-
-        print(
-            f"  Result: {title}"
-        )
-
-
-        # -----------------------------------------
-        # REJECT SHORTS
-        # -----------------------------------------
-
-        title_normalized = normalize_text(
+        normalized = normalize_text(
             title
         )
 
-        if (
-            "shorts" in title_normalized
-            or "#shorts" in title_normalized
+        # No Shorts
+        if "shorts" in normalized:
+            continue
+
+        if not team_in_title(
+            home,
+            title
         ):
-
             continue
 
-
-        # -----------------------------------------
-        # CHECK TEAMS
-        # -----------------------------------------
-
-        home_ok = team_in_title(
-            home_name,
+        if not team_in_title(
+            away,
             title
-        )
-
-        away_ok = team_in_title(
-            away_name,
-            title
-        )
-
-
-        if not home_ok or not away_ok:
-
+        ):
             continue
-
 
         thumbnails = snippet.get(
             "thumbnails",
             {}
         )
 
-
         thumbnail = (
+
             thumbnails
-            .get(
-                "high",
-                {}
-            )
+            .get("high", {})
+            .get("url")
+
+            or
+
+            thumbnails
+            .get("medium", {})
+            .get("url")
+
+            or
+
+            thumbnails
+            .get("default", {})
             .get("url")
         )
 
-
-        if not thumbnail:
-
-            thumbnail = (
-                thumbnails
-                .get(
-                    "medium",
-                    {}
-                )
-                .get("url")
-            )
-
-
-        selected = {
-
-            "fixture_id":
-                fixture_id,
+        return {
 
             "video_id":
                 video_id,
@@ -716,19 +770,242 @@ for match in finished_matches:
                     ""
                 ),
 
+            "embed":
+                (
+                    "https://www.youtube.com/embed/"
+                    + video_id
+                ),
+
+            "youtube_url":
+                (
+                    "https://www.youtube.com/watch?v="
+                    + video_id
+                )
+        }
+
+    return None
+
+
+# =========================================================
+# MAIN
+# =========================================================
+
+def main():
+
+    existing = (
+        load_existing_highlights()
+    )
+
+    existing_fixtures = {
+
+        item.get("fixture_id")
+
+        for item in existing
+
+        if item.get("fixture_id")
+    }
+
+    try:
+
+        fixtures = (
+            fetch_recent_fixtures()
+        )
+
+    except Exception as error:
+
+        print(
+            "API-Football ERROR:",
+            error
+        )
+
+        # Fallback to local matches
+        local = load_json(
+            MATCHES_FILE,
+            {}
+        )
+
+        if isinstance(local, dict):
+
+            fixtures = local.get(
+                "matches",
+                []
+            )
+
+        else:
+
+            fixtures = local
+
+    matches = (
+        get_recent_allowed_matches(
+            fixtures
+        )
+    )
+
+    print(
+        "======================================"
+    )
+
+    print(
+        "GOALINS HIGHLIGHTS DIAGNOSTIC"
+    )
+
+    print(
+        f"Recent allowed finished matches: "
+        f"{len(matches)}"
+    )
+
+    print(
+        "======================================"
+    )
+
+    for match in matches:
+
+        league = get_league(
+            match
+        )
+
+        home, away = get_teams(
+            match
+        )
+
+        print(
+            f"{get_date(match)} | "
+            f"{league.get('name', '')} | "
+            f"{home.get('name', '')} vs "
+            f"{away.get('name', '')}"
+        )
+
+    print(
+        "======================================"
+    )
+
+    new_highlights = []
+
+    searches = 0
+
+    for match in matches:
+
+        if searches >= (
+            MAX_YOUTUBE_SEARCHES_PER_RUN
+        ):
+            break
+
+        fixture_id = match.get(
+            "fixture_id"
+        )
+
+        if fixture_id in existing_fixtures:
+            continue
+
+        home, away = get_teams(
+            match
+        )
+
+        home_name = (
+            home.get("name")
+            or ""
+        )
+
+        away_name = (
+            away.get("name")
+            or ""
+        )
+
+        if not home_name or not away_name:
+            continue
+
+        print(
+            "--------------------------------------"
+        )
+
+        print(
+            f"Searching YouTube: "
+            f"{home_name} vs {away_name}"
+        )
+
+        searches += 1
+
+        try:
+
+            videos = search_youtube(
+                home_name,
+                away_name,
+                get_date(match)
+            )
+
+            selected = select_video(
+                videos,
+                home_name,
+                away_name
+            )
+
+        except Exception as error:
+
+            print(
+                "YouTube ERROR:",
+                error
+            )
+
+            continue
+
+        if not selected:
+
+            print(
+                "No matching video found."
+            )
+
+            continue
+
+        league = get_league(
+            match
+        )
+
+        try:
+
+            league_id = int(
+                league.get("id")
+            )
+
+        except Exception:
+
+            league_id = None
+
+        item = {
+
+            "fixture_id":
+                fixture_id,
+
+            "video_id":
+                selected["video_id"],
+
+            "title":
+                selected["title"],
+
+            "thumbnail":
+                selected["thumbnail"],
+
+            "channel":
+                selected["channel"],
+
+            "published_at":
+                selected["published_at"],
+
             "date":
-                match["date"],
+                get_date(match),
 
             "league_id":
-                match["league_id"],
+                league_id,
 
             "league":
-                match["league"],
+                league.get(
+                    "name",
+                    ""
+                ),
 
             "league_key":
-                ALLOWED_LEAGUES[
-                    match["league_id"]
-                ],
+                ALLOWED_LEAGUES.get(
+                    league_id
+                ),
 
             "home":
                 home_name,
@@ -737,158 +1014,137 @@ for match in finished_matches:
                 away_name,
 
             "embed":
-                (
-                    "https://www.youtube.com/embed/"
-                    f"{video_id}"
-                ),
+                selected["embed"],
 
             "youtube_url":
-                (
-                    "https://www.youtube.com/watch?v="
-                    f"{video_id}"
-                )
-
+                selected["youtube_url"]
         }
 
-
-        break
-
-
-    if selected:
-
-        print(
-            f"SELECTED VIDEO: "
-            f"{selected['title']}"
-        )
-
         new_highlights.append(
-            selected
+            item
         )
 
-        existing_ids.add(
-            selected["video_id"]
-        )
-
-    else:
-
-        print(
-            "No matching video found."
-        )
-
-
-# =========================================================
-# MERGE
-# =========================================================
-
-combined = []
-
-seen_videos = set()
-seen_fixtures = set()
-
-
-for item in new_highlights + existing_highlights:
-
-    video_id = item.get(
-        "video_id"
-    )
-
-    fixture_id = item.get(
-        "fixture_id"
-    )
-
-
-    if video_id and video_id in seen_videos:
-
-        continue
-
-
-    if fixture_id and fixture_id in seen_fixtures:
-
-        continue
-
-
-    combined.append(
-        item
-    )
-
-
-    if video_id:
-
-        seen_videos.add(
-            video_id
-        )
-
-
-    if fixture_id:
-
-        seen_fixtures.add(
+        existing_fixtures.add(
             fixture_id
         )
 
+        print(
+            "SELECTED:",
+            selected["title"]
+        )
 
-# =========================================================
-# SORT
-# =========================================================
+    # =====================================================
+    # MERGE
+    # =====================================================
 
-combined.sort(
-    key=lambda item: (
-        item.get("date", ""),
-        item.get("published_at", "")
-    ),
-    reverse=True
-)
+    combined = (
+        new_highlights
+        + existing
+    )
 
+    final = []
 
-combined = combined[
-    :MAX_HIGHLIGHTS
-]
+    seen_fixtures = set()
+    seen_videos = set()
 
+    for item in combined:
 
-# =========================================================
-# SAVE
-# =========================================================
+        fixture_id = item.get(
+            "fixture_id"
+        )
 
-output = {
+        video_id = item.get(
+            "video_id"
+        )
 
-    "updated_at":
-        datetime.now(
-            timezone.utc
-        ).isoformat(),
+        if (
+            fixture_id
+            and fixture_id in seen_fixtures
+        ):
+            continue
 
-    "count":
-        len(combined),
+        if (
+            video_id
+            and video_id in seen_videos
+        ):
+            continue
 
-    "highlights":
-        combined
+        final.append(
+            item
+        )
 
-}
+        if fixture_id:
+            seen_fixtures.add(
+                fixture_id
+            )
 
+        if video_id:
+            seen_videos.add(
+                video_id
+            )
 
-os.makedirs(
-    "data",
-    exist_ok=True
-)
+    final.sort(
+        key=lambda item: (
+            str(
+                item.get("date")
+                or ""
+            ),
+            str(
+                item.get("published_at")
+                or ""
+            )
+        ),
+        reverse=True
+    )
 
+    final = final[
+        :MAX_HIGHLIGHTS
+    ]
 
-with open(
-    OUTPUT_FILE,
-    "w",
-    encoding="utf-8"
-) as f:
+    # =====================================================
+    # SAVE
+    # =====================================================
 
-    json.dump(
-        output,
-        f,
-        ensure_ascii=False,
-        indent=2
+    output = {
+
+        "updated_at":
+            datetime.now(
+                timezone.utc
+            ).isoformat(),
+
+        "count":
+            len(final),
+
+        "highlights":
+            final
+    }
+
+    save_json(
+        OUTPUT_FILE,
+        output
+    )
+
+    print(
+        "======================================"
+    )
+
+    print(
+        f"GOALINS: {len(final)} highlights saved."
+    )
+
+    print(
+        f"New videos: {len(new_highlights)}"
+    )
+
+    print(
+        f"YouTube searches this run: {searches}"
+    )
+
+    print(
+        "======================================"
     )
 
 
-print("======================================")
-print(
-    f"GOALINS: {len(combined)} highlights saved."
-)
-print(
-    f"New videos: {len(new_highlights)}"
-)
-print("======================================")
+if __name__ == "__main__":
+
+    main()
