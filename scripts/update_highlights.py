@@ -3,39 +3,27 @@ import os
 import re
 import requests
 
-from datetime import (
-    datetime,
-    timezone,
-    timedelta
-)
+from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
-# GOALINS — YOUTUBE HIGHLIGHTS ENGINE
+# GOALINS — HIGHLIGHTS ENGINE
 # =========================================================
 
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
 if not API_KEY:
-    raise RuntimeError(
-        "YOUTUBE_API_KEY is missing"
-    )
+    raise RuntimeError("YOUTUBE_API_KEY is missing")
 
 
 MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-SEARCH_URL = (
-    "https://www.googleapis.com/youtube/v3/search"
-)
-
-VIDEOS_URL = (
-    "https://www.googleapis.com/youtube/v3/videos"
-)
-
-
 LOOKBACK_DAYS = 7
 MAX_HIGHLIGHTS = 50
+
+SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
+VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
 
 # =========================================================
@@ -44,36 +32,32 @@ MAX_HIGHLIGHTS = 50
 
 ALLOWED_LEAGUES = {
 
-    39: "premier-league",
-    140: "la-liga",
-    61: "ligue-1",
-    135: "serie-a",
-    88: "eredivisie",
-    144: "jupiler-pro-league",
-    94: "primeira-liga",
-    78: "bundesliga",
+    "premier league",
+    "la liga",
+    "ligue 1",
+    "serie a",
+    "bundesliga",
+    "eredivisie",
+    "primeira liga",
+    "jupiler pro league",
+    "pro league",
 
-    2: "champions-league",
-    3: "europa-league",
-    848: "conference-league",
+    "uefa champions league",
+    "uefa europa league",
+    "uefa europa conference league",
 
-    1: "world-cup",
-    4: "euro",
-    6: "afcon",
-    9: "copa-america",
+    "champions league",
+    "europa league",
+    "conference league",
 
 }
 
 
 # =========================================================
-# BLOCKED WORDS
-# =========================================================
-#
-# These words strongly indicate FIFA/PES/eFootball/
-# PlayStation/gameplay rather than a real football match.
+# BLOCK GAMING / FAKE FOOTBALL
 # =========================================================
 
-BLOCKED_WORDS = {
+BLOCKED_WORDS = [
 
     "fifa",
     "fifa 23",
@@ -87,7 +71,7 @@ BLOCKED_WORDS = {
     "fc 26",
 
     "efootball",
-    "e football",
+    "e-football",
 
     "pes",
     "pes 2021",
@@ -98,6 +82,7 @@ BLOCKED_WORDS = {
     "pes 2026",
 
     "playstation",
+    "play station",
     "ps4",
     "ps5",
 
@@ -106,18 +91,17 @@ BLOCKED_WORDS = {
     "gameplay",
     "game play",
 
-    "career mode",
-    "master league",
-
-    "virtual",
-    "simulation",
-    "simulated",
-
     "gaming",
     "video game",
     "videogame",
 
-}
+    "career mode",
+    "master league",
+
+    "simulation",
+    "simulated",
+
+]
 
 
 # =========================================================
@@ -140,21 +124,17 @@ if isinstance(data, dict):
         []
     )
 
-elif isinstance(data, list):
+else:
 
     matches = data
 
-else:
 
-    matches = []
-
-
-print("=" * 50)
+print("=" * 55)
 print("GOALINS HIGHLIGHTS ENGINE")
-print("=" * 50)
+print("=" * 55)
+
 print(
-    f"Total matches in matches.json: "
-    f"{len(matches)}"
+    f"Total matches in matches.json: {len(matches)}"
 )
 
 
@@ -162,85 +142,7 @@ print(
 # HELPERS
 # =========================================================
 
-def get_league(match):
-
-    return (
-        match.get("league")
-        or match.get("competition")
-        or {}
-    )
-
-
-def get_teams(match):
-
-    teams = match.get(
-        "teams",
-        {}
-    )
-
-    home = (
-        match.get("home")
-        or teams.get("home")
-        or {}
-    )
-
-    away = (
-        match.get("away")
-        or teams.get("away")
-        or {}
-    )
-
-    return home, away
-
-
-def get_date(match):
-
-    value = (
-        match.get("date")
-        or match.get(
-            "fixture",
-            {}
-        ).get("date")
-        or ""
-    )
-
-    return str(value)[:10]
-
-
-def get_status(match):
-
-    status = match.get("status")
-
-    if isinstance(status, dict):
-
-        return str(
-            status.get(
-                "short",
-                ""
-            )
-        )
-
-    fixture_status = (
-        match
-        .get("fixture", {})
-        .get("status", {})
-    )
-
-    if isinstance(fixture_status, dict):
-
-        return str(
-            fixture_status.get(
-                "short",
-                ""
-            )
-        )
-
-    return str(
-        status or ""
-    )
-
-
-def normalize_text(text):
+def normalize(text):
 
     text = str(
         text or ""
@@ -257,61 +159,170 @@ def normalize_text(text):
     )
 
 
-def contains_blocked_word(text):
+def get_status(match):
 
-    normalized = normalize_text(
+    status = match.get(
+        "status"
+    )
+
+    if isinstance(status, dict):
+
+        return str(
+            status.get(
+                "short",
+                ""
+            )
+        ).upper()
+
+    return str(
+        status or ""
+    ).upper()
+
+
+def get_date(match):
+
+    value = match.get(
+        "date",
+        ""
+    )
+
+    if not value:
+
+        fixture = match.get(
+            "fixture",
+            {}
+        )
+
+        value = fixture.get(
+            "date",
+            ""
+        )
+
+
+    return str(
+        value
+    )[:10]
+
+
+def get_league(match):
+
+    league = match.get(
+        "league",
+        {}
+    )
+
+    if not isinstance(
+        league,
+        dict
+    ):
+
+        return {
+            "id": None,
+            "name": str(
+                league
+            )
+        }
+
+    return league
+
+
+def get_team(
+    match,
+    side
+):
+
+    teams = match.get(
+        "teams",
+        {}
+    )
+
+
+    if isinstance(
+        teams,
+        dict
+    ):
+
+        team = teams.get(
+            side,
+            {}
+        )
+
+        if isinstance(
+            team,
+            dict
+        ):
+
+            return team
+
+
+    return match.get(
+        side,
+        {}
+    ) or {}
+
+
+def contains_blocked_word(
+    text
+):
+
+    normalized = normalize(
         text
     )
 
     for word in BLOCKED_WORDS:
 
-        blocked = normalize_text(
-            word
-        )
-
-        if not blocked:
-            continue
-
-        if blocked in normalized:
+        if normalize(word) in normalized:
 
             return True
 
     return False
 
 
-def team_in_title(
+def team_matches_title(
     team,
     title
 ):
 
-    team_normalized = normalize_text(
+    team = normalize(
         team
     )
 
-    title_normalized = normalize_text(
+    title = normalize(
         title
     )
 
-    if not team_normalized:
+
+    if not team:
+
         return False
 
-    if team_normalized in title_normalized:
+
+    if team in title:
+
         return True
+
 
     words = [
         word
-        for word in team_normalized.split()
+        for word in team.split()
         if len(word) >= 3
     ]
 
+
     if not words:
+
         return False
 
-    found = sum(
-        1
-        for word in words
-        if word in title_normalized
-    )
+
+    found = 0
+
+
+    for word in words:
+
+        if word in title:
+
+            found += 1
+
 
     return found >= max(
         1,
@@ -320,12 +331,13 @@ def team_in_title(
 
 
 # =========================================================
-# MATCH FILTER
+# DATE
 # =========================================================
 
 today = datetime.now(
     timezone.utc
 ).date()
+
 
 minimum_date = (
     today
@@ -335,34 +347,19 @@ minimum_date = (
 )
 
 
+# =========================================================
+# FILTER FINISHED REAL MATCHES
+# =========================================================
+
 finished_matches = []
 
 
 for match in matches:
 
-    league = get_league(
-        match
-    )
-
-    try:
-
-        league_id = int(
-            league.get("id")
-        )
-
-    except Exception:
-
-        continue
-
-
-    if league_id not in ALLOWED_LEAGUES:
-
-        continue
-
-
     status = get_status(
         match
     )
+
 
     if status not in (
         "FT",
@@ -373,14 +370,15 @@ for match in matches:
         continue
 
 
-    match_date = get_date(
+    date_string = get_date(
         match
     )
 
+
     try:
 
-        match_date_obj = datetime.strptime(
-            match_date,
+        match_date = datetime.strptime(
+            date_string,
             "%Y-%m-%d"
         ).date()
 
@@ -389,24 +387,65 @@ for match in matches:
         continue
 
 
-    if match_date_obj < minimum_date:
+    if match_date < minimum_date:
 
         continue
 
 
-    home, away = get_teams(
+    league = get_league(
         match
     )
 
 
-    home_name = (
-        home.get("name")
-        or ""
+    league_name = str(
+        league.get(
+            "name",
+            ""
+        )
     )
 
-    away_name = (
-        away.get("name")
-        or ""
+
+    league_normalized = normalize(
+        league_name
+    )
+
+
+    # ---------------------------------------------
+    # IMPORTANT:
+    # We use league NAME instead of relying only
+    # on league ID.
+    # ---------------------------------------------
+
+    if league_normalized not in ALLOWED_LEAGUES:
+
+        continue
+
+
+    home = get_team(
+        match,
+        "home"
+    )
+
+
+    away = get_team(
+        match,
+        "away"
+    )
+
+
+    home_name = str(
+        home.get(
+            "name",
+            ""
+        )
+    )
+
+
+    away_name = str(
+        away.get(
+            "name",
+            ""
+        )
     )
 
 
@@ -416,10 +455,17 @@ for match in matches:
 
 
     fixture_id = (
-        match.get("fixture_id")
+        match.get(
+            "fixture_id"
+        )
         or match
-        .get("fixture", {})
-        .get("id")
+        .get(
+            "fixture",
+            {}
+        )
+        .get(
+            "id"
+        )
     )
 
 
@@ -429,23 +475,18 @@ for match in matches:
             fixture_id,
 
         "date":
-            match_date,
+            date_string,
 
         "league_id":
-            league_id,
-
-        "league":
-            (
-                league.get("name")
-                or ALLOWED_LEAGUES[
-                    league_id
-                ]
+            league.get(
+                "id"
             ),
 
+        "league":
+            league_name,
+
         "league_key":
-            ALLOWED_LEAGUES[
-                league_id
-            ],
+            league_normalized,
 
         "home":
             home_name,
@@ -457,29 +498,39 @@ for match in matches:
 
 
 # =========================================================
-# SORT MATCHES
+# SORT
 # =========================================================
 
 finished_matches.sort(
-    key=lambda item: (
-        item.get("date", ""),
-        item.get("fixture_id") or 0
+    key=lambda x: (
+        x.get(
+            "date",
+            ""
+        ),
+        x.get(
+            "fixture_id"
+        ) or 0
     ),
     reverse=True
 )
 
 
 print(
-    f"Finished allowed matches in "
-    f"last {LOOKBACK_DAYS} days: "
+    f"Finished allowed matches "
+    f"in last {LOOKBACK_DAYS} days: "
     f"{len(finished_matches)}"
+)
+
+
+print(
+    "-" * 55
 )
 
 
 for match in finished_matches:
 
     print(
-        f"  {match['date']} | "
+        f"{match['date']} | "
         f"{match['league']} | "
         f"{match['home']} vs "
         f"{match['away']}"
@@ -490,9 +541,9 @@ for match in finished_matches:
 # YOUTUBE SEARCH
 # =========================================================
 
-def search_youtube(
+def youtube_search(
     query,
-    published_after=None
+    published_after
 ):
 
     params = {
@@ -521,17 +572,13 @@ def search_youtube(
         "videoDuration":
             "medium",
 
+        "publishedAfter":
+            published_after,
+
         "key":
             API_KEY
 
     }
-
-
-    if published_after:
-
-        params[
-            "publishedAfter"
-        ] = published_after
 
 
     response = requests.get(
@@ -544,29 +591,20 @@ def search_youtube(
     response.raise_for_status()
 
 
-    result = response.json()
+    data = response.json()
 
 
-    if result.get("error"):
-
-        raise RuntimeError(
-            str(
-                result["error"]
-            )
-        )
-
-
-    return result.get(
+    return data.get(
         "items",
         []
     )
 
 
 # =========================================================
-# GET VIDEO DETAILS
+# VIDEO DETAILS
 # =========================================================
 
-def get_video_details(
+def youtube_details(
     video_ids
 ):
 
@@ -578,7 +616,7 @@ def get_video_details(
     params = {
 
         "part":
-            "snippet,contentDetails,status",
+            "snippet,status",
 
         "id":
             ",".join(
@@ -601,45 +639,35 @@ def get_video_details(
     response.raise_for_status()
 
 
-    result = response.json()
+    data = response.json()
 
 
-    if result.get("error"):
-
-        raise RuntimeError(
-            str(
-                result["error"]
-            )
-        )
+    result = {}
 
 
-    details = {}
-
-
-    for item in result.get(
+    for item in data.get(
         "items",
         []
     ):
 
-        details[
+        result[
             item.get("id")
         ] = item
 
 
-    return details
+    return result
 
 
 # =========================================================
-# SEARCH HIGHLIGHTS
+# SEARCH
 # =========================================================
 
 highlights = []
 
-used_video_ids = set()
-used_fixture_ids = set()
+used_videos = set()
 
 
-searches_done = 0
+youtube_searches = 0
 
 
 for match in finished_matches:
@@ -649,26 +677,24 @@ for match in finished_matches:
         break
 
 
-    home_name = match["home"]
-    away_name = match["away"]
+    home = match["home"]
+    away = match["away"]
 
 
-    print("-" * 50)
+    print("=" * 55)
 
     print(
         f"Searching YouTube: "
-        f"{home_name} vs {away_name}"
+        f"{home} vs {away}"
     )
 
 
     query = (
-        f'"{home_name}" '
-        f'"{away_name}" '
-        f"highlights football"
+        f'"{home}" "{away}" '
+        f"highlights"
     )
 
 
-    # Search from match date onward.
     published_after = (
         f"{match['date']}T00:00:00Z"
     )
@@ -676,60 +702,58 @@ for match in finished_matches:
 
     try:
 
-        videos = search_youtube(
+        results = youtube_search(
             query,
             published_after
         )
 
-        searches_done += 1
+        youtube_searches += 1
+
 
     except Exception as e:
 
         print(
-            "YouTube search error:",
+            "YouTube ERROR:",
             e
         )
 
         continue
 
 
-    if not videos:
-
-        print(
-            "No YouTube results."
-        )
-
-        continue
+    ids = []
 
 
-    candidate_ids = []
-
-
-    for video in videos:
+    for item in results:
 
         video_id = (
-            video
-            .get("id", {})
-            .get("videoId")
+            item
+            .get(
+                "id",
+                {}
+            )
+            .get(
+                "videoId"
+            )
         )
+
 
         if video_id:
 
-            candidate_ids.append(
+            ids.append(
                 video_id
             )
 
 
     try:
 
-        video_details = get_video_details(
-            candidate_ids
+        details = youtube_details(
+            ids
         )
 
     except Exception as e:
 
         print(
-            "YouTube video details error:",
+            "Video details ERROR:",
             e
         )
 
@@ -739,12 +763,17 @@ for match in finished_matches:
     selected = None
 
 
-    for video in videos:
+    for item in results:
 
         video_id = (
-            video
-            .get("id", {})
-            .get("videoId")
+            item
+            .get(
+                "id",
+                {}
+            )
+            .get(
+                "videoId"
+            )
         )
 
 
@@ -753,70 +782,78 @@ for match in finished_matches:
             continue
 
 
-        if video_id in used_video_ids:
+        if video_id in used_videos:
 
             continue
 
 
-        details = video_details.get(
+        video = details.get(
             video_id
         )
 
 
-        if not details:
+        if not video:
 
             continue
 
 
-        snippet = details.get(
+        snippet = video.get(
             "snippet",
             {}
         )
 
 
-        title = snippet.get(
-            "title",
-            ""
+        title = str(
+            snippet.get(
+                "title",
+                ""
+            )
         )
 
 
-        description = snippet.get(
-            "description",
-            ""
+        description = str(
+            snippet.get(
+                "description",
+                ""
+            )
         )
 
 
-        channel_title = snippet.get(
-            "channelTitle",
-            ""
+        channel = str(
+            snippet.get(
+                "channelTitle",
+                ""
+            )
+        )
+
+
+        combined = (
+            title
+            + " "
+            + description
+            + " "
+            + channel
         )
 
 
         # ---------------------------------------------
-        # REJECT GAMING
+        # BLOCK GAMING
         # ---------------------------------------------
-
-        combined_text = (
-            f"{title} "
-            f"{description} "
-            f"{channel_title}"
-        )
-
 
         if contains_blocked_word(
-            combined_text
+            combined
         ):
 
             print(
-                f"REJECTED GAMING: "
-                f"{title}"
+                "REJECT GAMING:",
+                title
             )
 
             continue
 
 
         # ---------------------------------------------
-        # YOUTUBE CATEGORY
+        # SPORTS CATEGORY
         # ---------------------------------------------
 
         category_id = str(
@@ -830,50 +867,53 @@ for match in finished_matches:
         if category_id != "17":
 
             print(
-                f"REJECTED NON-SPORTS "
-                f"(category {category_id}): "
-                f"{title}"
+                "REJECT NON-SPORT:",
+                title
             )
 
             continue
 
 
         # ---------------------------------------------
-        # TEAM CHECK
+        # BOTH TEAMS MUST APPEAR
         # ---------------------------------------------
 
-        home_ok = team_in_title(
-            home_name,
+        if not team_matches_title(
+            home,
             title
-        )
-
-
-        away_ok = team_in_title(
-            away_name,
-            title
-        )
-
-
-        if not home_ok or not away_ok:
+        ):
 
             print(
-                f"REJECTED TEAMS: "
-                f"{title}"
+                "REJECT HOME TEAM:",
+                title
+            )
+
+            continue
+
+
+        if not team_matches_title(
+            away,
+            title
+        ):
+
+            print(
+                "REJECT AWAY TEAM:",
+                title
             )
 
             continue
 
 
         # ---------------------------------------------
-        # CHANNEL / TITLE QUALITY
+        # REJECT BAD VIDEO TYPES
         # ---------------------------------------------
 
-        title_normalized = normalize_text(
+        normalized_title = normalize(
             title
         )
 
 
-        bad_generic_terms = [
+        rejected_terms = [
 
             "prediction",
             "predictions",
@@ -881,21 +921,20 @@ for match in finished_matches:
             "reaction",
             "watch along",
             "watchalong",
-            "live",
-            "news",
-            "transfer"
+            "transfer",
+            "news"
 
         ]
 
 
         if any(
-            word in title_normalized
-            for word in bad_generic_terms
+            term in normalized_title
+            for term in rejected_terms
         ):
 
             print(
-                f"REJECTED NON-HIGHLIGHT: "
-                f"{title}"
+                "REJECT NON-HIGHLIGHT:",
+                title
             )
 
             continue
@@ -917,7 +956,9 @@ for match in finished_matches:
                 "high",
                 {}
             )
-            .get("url")
+            .get(
+                "url"
+            )
         )
 
 
@@ -929,7 +970,9 @@ for match in finished_matches:
                     "medium",
                     {}
                 )
-                .get("url")
+                .get(
+                    "url"
+                )
             )
 
 
@@ -952,7 +995,7 @@ for match in finished_matches:
                 thumbnail,
 
             "channel":
-                channel_title,
+                channel,
 
             "published_at":
                 snippet.get(
@@ -966,20 +1009,20 @@ for match in finished_matches:
             "date":
                 match["date"],
 
-            "league_id":
-                match["league_id"],
-
             "league":
                 match["league"],
 
             "league_key":
                 match["league_key"],
 
+            "league_id":
+                match["league_id"],
+
             "home":
-                home_name,
+                home,
 
             "away":
-                away_name,
+                away,
 
             "embed":
                 (
@@ -988,12 +1031,6 @@ for match in finished_matches:
                     "?rel=0"
                     "&modestbranding=1"
                     "&playsinline=1"
-                ),
-
-            "youtube_url":
-                (
-                    "https://www.youtube.com/watch?v="
-                    f"{video_id}"
                 )
 
         }
@@ -1005,8 +1042,8 @@ for match in finished_matches:
     if selected:
 
         print(
-            f"SELECTED: "
-            f"{selected['title']}"
+            "SELECTED:",
+            selected["title"]
         )
 
 
@@ -1015,32 +1052,32 @@ for match in finished_matches:
         )
 
 
-        used_video_ids.add(
+        used_videos.add(
             selected["video_id"]
         )
 
 
-        if selected["fixture_id"]:
-
-            used_fixture_ids.add(
-                selected["fixture_id"]
-            )
-
     else:
 
         print(
-            "No valid real-football video found."
+            "NO VALID REAL FOOTBALL VIDEO"
         )
 
 
 # =========================================================
-# SORT
+# SAVE
 # =========================================================
 
 highlights.sort(
-    key=lambda item: (
-        item.get("date", ""),
-        item.get("published_at", "")
+    key=lambda x: (
+        x.get(
+            "date",
+            ""
+        ),
+        x.get(
+            "published_at",
+            ""
+        )
     ),
     reverse=True
 )
@@ -1050,10 +1087,6 @@ highlights = highlights[
     :MAX_HIGHLIGHTS
 ]
 
-
-# =========================================================
-# OUTPUT
-# =========================================================
 
 output = {
 
@@ -1092,10 +1125,10 @@ with open(
 
 
 # =========================================================
-# FINAL DIAGNOSTIC
+# FINAL
 # =========================================================
 
-print("=" * 50)
+print("=" * 55)
 
 print(
     f"GOALINS: "
@@ -1105,11 +1138,11 @@ print(
 
 print(
     f"YouTube searches: "
-    f"{searches_done}"
+    f"{youtube_searches}"
 )
 
 print(
     "Gaming videos rejected automatically."
 )
 
-print("=" * 50)
+print("=" * 55)
