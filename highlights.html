@@ -313,37 +313,8 @@
 }
 
 
-.duration {
-
-    position:
-        absolute;
-
-    bottom:
-        8px;
-
-    left:
-        8px;
-
-    padding:
-        4px 7px;
-
-    border-radius:
-        6px;
-
-    background:
-        rgba(0,0,0,.75);
-
-    color:
-        white;
-
-    font-size:
-        10px;
-
-}
-
-
 /* =====================================================
-   CARD CONTENT
+   CONTENT
    ===================================================== */
 
 .video-content {
@@ -382,14 +353,14 @@
     justify-content:
         space-between;
 
+    gap:
+        10px;
+
     color:
         var(--muted);
 
     font-size:
         11px;
-
-    gap:
-        10px;
 
 }
 
@@ -401,10 +372,6 @@
 
 }
 
-
-/* =====================================================
-   CHANNEL
-   ===================================================== */
 
 .video-channel {
 
@@ -430,7 +397,7 @@
 
 
 /* =====================================================
-   EMPTY / ERROR STATE
+   STATE
    ===================================================== */
 
 .state {
@@ -546,6 +513,189 @@
 
 
 /* =====================================================
+   VIDEO MODAL
+   ===================================================== */
+
+.video-modal {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        9999;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(0,0,0,.88);
+
+    backdrop-filter:
+        blur(8px);
+
+}
+
+
+.video-modal.active {
+
+    display:
+        flex;
+
+}
+
+
+.video-modal-box {
+
+    width:
+        min(1000px, 100%);
+
+    background:
+        #07111f;
+
+    border:
+        1px solid
+        rgba(37,211,102,.35);
+
+    border-radius:
+        18px;
+
+    overflow:
+        hidden;
+
+    box-shadow:
+        0 20px 80px rgba(0,0,0,.7);
+
+}
+
+
+.video-modal-header {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    padding:
+        12px 16px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+
+.video-modal-title {
+
+    margin:
+        0;
+
+    font-size:
+        14px;
+
+    line-height:
+        1.5;
+
+    font-weight:
+        800;
+
+}
+
+
+.close-video {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    border:
+        0;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:
+        white;
+
+    font-size:
+        22px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.close-video:hover {
+
+    background:
+        rgba(255,255,255,.15);
+
+}
+
+
+.video-frame {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        16 / 9;
+
+    background:
+        black;
+
+}
+
+
+.video-frame iframe {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    border:
+        0;
+
+}
+
+
+/* =====================================================
    MOBILE
    ===================================================== */
 
@@ -576,6 +726,20 @@
 
         grid-template-columns:
             1fr;
+
+    }
+
+    .video-modal {
+
+        padding:
+            8px;
+
+    }
+
+    .video-modal-box {
+
+        border-radius:
+            12px;
 
     }
 
@@ -644,7 +808,6 @@
 </header>
 
 
-
 <!-- =====================================================
      MAIN
      ===================================================== -->
@@ -653,10 +816,6 @@
 
 <div class="container">
 
-
-<!-- =====================================================
-     TITLE
-     ===================================================== -->
 
 <div class="page-title">
 
@@ -673,7 +832,6 @@
     </p>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -700,7 +858,6 @@
     </option>
 
 </select>
-
 
 
 <select
@@ -760,9 +917,8 @@
 </div>
 
 
-
 <!-- =====================================================
-     SECTION HEADER
+     SECTION
      ===================================================== -->
 
 <div class="section-header">
@@ -778,30 +934,23 @@
 </div>
 
 
-
-<!-- =====================================================
-     VIDEO GRID
-     ===================================================== -->
-
 <div
     class="video-grid"
     id="videoGrid">
 
+    <div class="state">
 
-<div class="state">
+        <div class="loader"></div>
 
-    <div class="loader"></div>
+        <h2>
+            جاري تحميل الملخصات
+        </h2>
 
-    <h2>
-        جاري تحميل الملخصات
-    </h2>
+        <p>
+            يتم جلب أحدث الفيديوهات...
+        </p>
 
-    <p>
-        يتم جلب أحدث الفيديوهات...
-    </p>
-
-</div>
-
+    </div>
 
 </div>
 
@@ -811,11 +960,80 @@
 </main>
 
 
+<!-- =====================================================
+     VIDEO MODAL
+     ===================================================== -->
+
+<div
+    class="video-modal"
+    id="videoModal"
+    aria-hidden="true">
+
+
+    <div
+        class="video-modal-box">
+
+
+        <div
+            class="video-modal-header">
+
+
+            <h3
+                class="video-modal-title"
+                id="modalTitle">
+
+                ملخص المباراة
+
+            </h3>
+
+
+            <button
+                class="close-video"
+                id="closeVideo"
+                aria-label="إغلاق">
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            class="video-frame">
+
+
+            <iframe
+                id="videoFrame"
+                src=""
+                title="GOALINS Video"
+                allow="
+                    accelerometer;
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    gyroscope;
+                    picture-in-picture;
+                    web-share;
+                    fullscreen
+                "
+                allowfullscreen>
+            </iframe>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
 
 <script>
 
 /* =====================================================
-   GOALINS — LIVE HIGHLIGHTS ENGINE
+   GOALINS — LIVE HIGHLIGHTS
    ===================================================== */
 
 
@@ -847,9 +1065,29 @@ const leagueFilter =
     );
 
 
-/* =====================================================
-   DATA
-   ===================================================== */
+const videoModal =
+    document.getElementById(
+        "videoModal"
+    );
+
+
+const videoFrame =
+    document.getElementById(
+        "videoFrame"
+    );
+
+
+const modalTitle =
+    document.getElementById(
+        "modalTitle"
+    );
+
+
+const closeVideo =
+    document.getElementById(
+        "closeVideo"
+    );
+
 
 let videos = [];
 
@@ -858,7 +1096,9 @@ let videos = [];
    ESCAPE HTML
    ===================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     return String(
         value ?? ""
@@ -898,6 +1138,7 @@ function getAlgeriaDate(
     const now =
         new Date();
 
+
     const algeriaTime =
         new Date(
             now.toLocaleString(
@@ -919,6 +1160,7 @@ function getAlgeriaDate(
     const year =
         algeriaTime.getFullYear();
 
+
     const month =
         String(
             algeriaTime.getMonth() + 1
@@ -926,6 +1168,7 @@ function getAlgeriaDate(
             2,
             "0"
         );
+
 
     const day =
         String(
@@ -936,13 +1179,15 @@ function getAlgeriaDate(
         );
 
 
-    return `${year}-${month}-${day}`;
+    return (
+        `${year}-${month}-${day}`
+    );
 
 }
 
 
 /* =====================================================
-   LOAD JSON
+   LOAD HIGHLIGHTS
    ===================================================== */
 
 async function loadHighlights() {
@@ -994,17 +1239,6 @@ async function loadHighlights() {
 
 
         if (
-            Array.isArray(
-                data
-            )
-        ) {
-
-            videos =
-                data;
-
-        }
-
-        else if (
             data &&
             Array.isArray(
                 data.highlights
@@ -1023,21 +1257,14 @@ async function loadHighlights() {
         }
 
 
-        console.log(
-            "GOALINS highlights:",
-            videos
-        );
-
-
         renderVideos();
-
 
     }
 
     catch (error) {
 
         console.error(
-            "GOALINS:",
+            "GOALINS highlights error:",
             error
         );
 
@@ -1059,9 +1286,8 @@ async function loadHighlights() {
                 </h2>
 
                 <p>
-                    تأكد من وجود
-                    data/highlights.json
-                    ثم حاول تحديث الصفحة.
+                    تأكد من وجود ملف
+                    highlights.json
                 </p>
 
             </div>
@@ -1074,7 +1300,7 @@ async function loadHighlights() {
 
 
 /* =====================================================
-   FILTER VIDEOS
+   FILTER
    ===================================================== */
 
 function getFilteredVideos() {
@@ -1082,10 +1308,6 @@ function getFilteredVideos() {
     let result =
         [...videos];
 
-
-    /* ---------------------------------------------
-       LEAGUE
-       --------------------------------------------- */
 
     const selectedLeague =
         leagueFilter.value;
@@ -1104,10 +1326,6 @@ function getFilteredVideos() {
 
     }
 
-
-    /* ---------------------------------------------
-       DATE
-       --------------------------------------------- */
 
     const selectedDate =
         dateFilter.value;
@@ -1155,7 +1373,7 @@ function getFilteredVideos() {
 
 
 /* =====================================================
-   RENDER VIDEOS
+   RENDER
    ===================================================== */
 
 function renderVideos() {
@@ -1201,9 +1419,13 @@ function renderVideos() {
     videoGrid.innerHTML =
         filtered
         .map(
-            video =>
+            (
+                video,
+                index
+            ) =>
                 createVideoCard(
-                    video
+                    video,
+                    index
                 )
         )
         .join("");
@@ -1212,18 +1434,13 @@ function renderVideos() {
 
 
 /* =====================================================
-   CREATE VIDEO CARD
+   CARD
    ===================================================== */
 
 function createVideoCard(
-    video
+    video,
+    index
 ) {
-
-    const videoId =
-        escapeHtml(
-            video.video_id
-        );
-
 
     const title =
         escapeHtml(
@@ -1240,7 +1457,7 @@ function createVideoCard(
             (
                 video.video_id
                 ?
-                `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                `https://i.ytimg.com/vi/${video.video_id}/hqdefault.jpg`
                 :
                 ""
             )
@@ -1271,64 +1488,21 @@ function createVideoCard(
         );
 
 
-    const youtubeUrl =
-        escapeHtml(
-            video.youtube_url
-            ||
-            (
-                video.video_id
-                ?
-                `https://www.youtube.com/watch?v=${videoId}`
-                :
-                "#"
-            )
-        );
-
-
     return `
 
         <article
             class="video-card"
-            onclick="openVideo('${youtubeUrl}')">
+            data-index="${index}">
 
 
             <div
                 class="thumbnail">
 
 
-                ${
-                    thumbnail
-                    ?
-
-                    `
-
-                    <img
-                        src="${thumbnail}"
-                        alt="${title}"
-                        loading="lazy">
-
-                    `
-
-                    :
-
-                    `
-
-                    <div
-                        style="
-                            width:100%;
-                            height:100%;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            font-size:45px;
-                        ">
-
-                        🎬
-
-                    </div>
-
-                    `
-                }
+                <img
+                    src="${thumbnail}"
+                    alt="${title}"
+                    loading="lazy">
 
 
                 <div
@@ -1409,16 +1583,66 @@ function createVideoCard(
 
 
 /* =====================================================
-   OPEN YOUTUBE VIDEO
+   CARD CLICK
+   ===================================================== */
+
+videoGrid.addEventListener(
+    "click",
+    event => {
+
+        const card =
+            event.target.closest(
+                ".video-card"
+            );
+
+
+        if (!card) {
+
+            return;
+
+        }
+
+
+        const index =
+            Number(
+                card.dataset.index
+            );
+
+
+        const filtered =
+            getFilteredVideos();
+
+
+        const video =
+            filtered[index];
+
+
+        if (!video) {
+
+            return;
+
+        }
+
+
+        openVideo(
+            video
+        );
+
+    }
+);
+
+
+/* =====================================================
+   OPEN VIDEO INSIDE GOALINS
    ===================================================== */
 
 function openVideo(
-    url
+    video
 ) {
 
     if (
-        !url ||
-        url === "#"
+        !video ||
+        !video.video_id
     ) {
 
         return;
@@ -1426,13 +1650,124 @@ function openVideo(
     }
 
 
-    window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
+    const videoId =
+        video.video_id;
+
+
+    /*
+     * YouTube embed stays inside GOALINS.
+     *
+     * No window.open()
+     * No direct youtube.com/watch URL.
+     */
+
+
+    videoFrame.src =
+        "https://www.youtube-nocookie.com/"
+        + "embed/"
+        + encodeURIComponent(
+            videoId
+        )
+        + "?autoplay=1"
+        + "&rel=0"
+        + "&modestbranding=1"
+        + "&playsinline=1";
+
+
+    modalTitle.textContent =
+        video.title
+        ||
+        "ملخص المباراة";
+
+
+    videoModal.classList.add(
+        "active"
     );
 
+
+    videoModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
 }
+
+
+/* =====================================================
+   CLOSE VIDEO
+   ===================================================== */
+
+function closeVideoPlayer() {
+
+    videoFrame.src = "";
+
+
+    videoModal.classList.remove(
+        "active"
+    );
+
+
+    videoModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+closeVideo.addEventListener(
+    "click",
+    closeVideoPlayer
+);
+
+
+/* =====================================================
+   CLOSE BY BACKDROP
+   ===================================================== */
+
+videoModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target
+            === videoModal
+        ) {
+
+            closeVideoPlayer();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ESC KEY
+   ===================================================== */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeVideoPlayer();
+
+        }
+
+    }
+);
 
 
 /* =====================================================
