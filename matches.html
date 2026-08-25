@@ -11,13 +11,12 @@
 <title>المباريات | GOALINS</title>
 
 <meta name="description"
-      content="مباريات أهم الدوريات والبطولات العالمية">
+      content="أهم مباريات كرة القدم اليوم والقادمة">
 
 <meta name="theme-color"
       content="#07111f">
 
-<link rel="stylesheet"
-      href="style.css">
+<link rel="stylesheet" href="style.css">
 
 
 <style>
@@ -33,7 +32,7 @@
 
 
 /* =====================================================
-   PAGE TITLE
+   TITLE
    ===================================================== */
 
 .page-title {
@@ -78,14 +77,7 @@
     color: white;
 
     font-family: inherit;
-
     cursor: pointer;
-
-    transition: .2s ease;
-}
-
-.date-btn:hover {
-    background: var(--card-hover);
 }
 
 .date-btn strong {
@@ -117,7 +109,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-
     margin-bottom: 18px;
 }
 
@@ -140,14 +131,9 @@
     font-family: inherit;
 }
 
-.date-picker input:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
 
 /* =====================================================
-   LEAGUE FILTER
+   FILTER
    ===================================================== */
 
 .filter-box {
@@ -180,14 +166,9 @@
     cursor: pointer;
 }
 
-.filter-box select:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
 
 /* =====================================================
-   RESULTS INFO
+   INFO
    ===================================================== */
 
 .results-info {
@@ -220,7 +201,7 @@
 
 
 /* =====================================================
-   LEAGUE
+   LEAGUE BOX
    ===================================================== */
 
 .league-box {
@@ -245,9 +226,7 @@
 
 .league-title {
     display: flex;
-
     align-items: center;
-
     gap: 9px;
 }
 
@@ -347,6 +326,7 @@
 
 .score {
     font-size: 19px;
+
     font-weight: 900;
 }
 
@@ -390,7 +370,6 @@
 
 .state-icon {
     font-size: 38px;
-
     margin-bottom: 12px;
 }
 
@@ -563,7 +542,7 @@
 <div class="container">
 
 
-<!-- PAGE TITLE -->
+<!-- TITLE -->
 
 <div class="page-title">
 
@@ -639,7 +618,9 @@
 
 
 
-<!-- DATE -->
+<!-- =====================================================
+     DATE PICKER
+     ===================================================== -->
 
 <div class="date-picker">
 
@@ -755,7 +736,9 @@
 
 
 
-<!-- INFO -->
+<!-- =====================================================
+     INFO
+     ===================================================== -->
 
 <div class="results-info">
 
@@ -778,7 +761,9 @@
 
 
 
-<!-- MATCHES -->
+<!-- =====================================================
+     MATCHES
+     ===================================================== -->
 
 <div
     class="matches-list"
@@ -809,11 +794,159 @@
 
 
 
-<!-- =====================================================
-     JAVASCRIPT
-     ===================================================== -->
-
 <script>
+
+/* =====================================================
+   GOALINS MATCH ENGINE
+   ===================================================== */
+
+
+/* =====================================================
+   ALLOWED LEAGUE IDS
+   ===================================================== */
+
+/*
+ * مهم جدًا:
+ *
+ * نعتمد على ID وليس اسم الدوري.
+ *
+ * لذلك:
+ *
+ * Premier League England = 39
+ *
+ * Premier League Kuwait
+ * Premier League Kazakhstan
+ * وغيرها
+ *
+ * لن تظهر.
+ *
+ * كذلك أي دوري نسائي أو درجة ثانية
+ * لن يظهر لأنه غير موجود هنا.
+ */
+
+const ALLOWED_LEAGUES = {
+
+
+    /* ================================================
+       🇬🇧 ENGLAND
+       ================================================ */
+
+    39:
+        "premier-league",
+
+
+    /* ================================================
+       🇪🇸 SPAIN
+       ================================================ */
+
+    140:
+        "la-liga",
+
+
+    /* ================================================
+       🇫🇷 FRANCE
+       ================================================ */
+
+    61:
+        "ligue-1",
+
+
+    /* ================================================
+       🇮🇹 ITALY
+       ================================================ */
+
+    135:
+        "serie-a",
+
+
+    /* ================================================
+       🇳🇱 NETHERLANDS
+       ================================================ */
+
+    88:
+        "eredivisie",
+
+
+    /* ================================================
+       🇧🇪 BELGIUM
+       ================================================ */
+
+    144:
+        "jupiler",
+
+
+    /* ================================================
+       🇵🇹 PORTUGAL
+       ================================================ */
+
+    94:
+        "primeira-liga",
+
+
+    /* ================================================
+       🇩🇪 GERMANY
+       ================================================ */
+
+    78:
+        "bundesliga",
+
+
+    /* ================================================
+       🏆 UEFA CHAMPIONS LEAGUE
+       ================================================ */
+
+    2:
+        "champions-league",
+
+
+    /* ================================================
+       🏆 UEFA EUROPA LEAGUE
+       ================================================ */
+
+    3:
+        "europa-league",
+
+
+    /* ================================================
+       🏆 UEFA CONFERENCE LEAGUE
+       ================================================ */
+
+    848:
+        "conference-league",
+
+
+    /* ================================================
+       🌍 WORLD CUP
+       ================================================ */
+
+    1:
+        "world-cup",
+
+
+    /* ================================================
+       🇪🇺 EURO
+       ================================================ */
+
+    4:
+        "euro",
+
+
+    /* ================================================
+       🌍 AFRICA CUP OF NATIONS
+       ================================================ */
+
+    6:
+        "afcon",
+
+
+    /* ================================================
+       🌎 COPA AMERICA
+       ================================================ */
+
+    9:
+        "copa-america"
+
+};
 
 
 /* =====================================================
@@ -858,8 +991,10 @@ const dateButtons =
 
 let matches = [];
 
+
 let selectedDate =
     localDate(0);
+
 
 let selectedLeague =
     "all";
@@ -871,7 +1006,8 @@ let selectedLeague =
 
 function localDate(offset = 0) {
 
-    const d = new Date();
+    const d =
+        new Date();
 
     d.setDate(
         d.getDate() + offset
@@ -880,15 +1016,11 @@ function localDate(offset = 0) {
     return (
 
         d.getFullYear() +
-
         "-" +
-
         String(
             d.getMonth() + 1
         ).padStart(2, "0") +
-
         "-" +
-
         String(
             d.getDate()
         ).padStart(2, "0")
@@ -899,12 +1031,13 @@ function localDate(offset = 0) {
 
 
 /* =====================================================
-   LOAD JSON
+   LOAD MATCHES
    ===================================================== */
 
 async function loadMatches() {
 
     try {
+
 
         const response =
             await fetch(
@@ -930,11 +1063,16 @@ async function loadMatches() {
             await response.json();
 
 
+        /*
+         * دعم شكل matches.json الحالي
+         */
+
         if (
             Array.isArray(data)
         ) {
 
-            matches = data;
+            matches =
+                data;
 
         }
 
@@ -978,8 +1116,8 @@ async function loadMatches() {
 
 
     }
-
     catch(error) {
+
 
         console.error(
             "GOALINS ERROR:",
@@ -1015,7 +1153,7 @@ async function loadMatches() {
 
 
 /* =====================================================
-   LEAGUE DATA
+   GET LEAGUE
    ===================================================== */
 
 function getLeague(match) {
@@ -1033,109 +1171,46 @@ function getLeague(match) {
 }
 
 
-function leagueName(match) {
-
-    return String(
-        getLeague(match).name || ""
-    )
-    .toLowerCase()
-    .trim();
-
-}
-
-
 /* =====================================================
-   EXCLUDE WOMEN / YOUTH / LOWER DIVISIONS
+   GET LEAGUE ID
    ===================================================== */
 
-function isForbiddenCompetition(match) {
+function getLeagueId(match) {
 
-    const name =
-        leagueName(match);
-
-
-    const country =
-        String(
-            getLeague(match).country ||
-            ""
-        ).toLowerCase();
+    const league =
+        getLeague(match);
 
 
-    const forbidden = [
-
-        /* Women */
-
-        "women",
-        "woman",
-        "women's",
-        "womens",
-        "feminine",
-        "femminile",
-        "damallsvenskan",
-        "division 1 women",
-        "premier league women",
-        "ligue 1 women",
-        "liga f",
-        "serie a women",
-        "bundesliga women",
-
-        /* Youth */
-
-        "u18",
-        "u19",
-        "u20",
-        "u21",
-        "u23",
-        "youth",
-        "junior",
-
-        /* Lower divisions */
-
-        "championship",
-        "league one",
-        "league two",
-        "ligue 2",
-        "ligue 3",
-        "segunda",
-        "segunda división",
-        "segunda division",
-        "serie b",
-        "serie c",
-        "2. bundesliga",
-        "3. liga",
-        "eerste divisie",
-        "keuken kampioen",
-        "challenger pro league",
-        "segunda liga",
-        "liga 2",
-
-        /* Club friendlies */
-
-        "friendlies clubs",
-        "club friendly",
-        "club friendlies",
-        "clubs friendlies"
-
-    ];
-
-
-    return forbidden.some(
-        term =>
-            name.includes(term)
+    return Number(
+        league.id
     );
 
 }
 
 
 /* =====================================================
-   ALLOWED COMPETITIONS
+   ALLOWED LEAGUE
    ===================================================== */
 
 function allowedLeague(match) {
 
 
+    const leagueId =
+        getLeagueId(match);
+
+
+    /*
+     * إذا لم يكن ID موجودًا
+     * في القائمة البيضاء
+     *
+     * يتم رفض المباراة.
+     */
+
     if (
-        isForbiddenCompetition(match)
+        !Object.prototype.hasOwnProperty.call(
+            ALLOWED_LEAGUES,
+            leagueId
+        )
     ) {
 
         return null;
@@ -1143,226 +1218,9 @@ function allowedLeague(match) {
     }
 
 
-    const name =
-        leagueName(match);
-
-
-    /* =================================================
-       ENGLAND — PREMIER LEAGUE
-       ================================================= */
-
-    if (
-        name === "premier league"
-    ) {
-
-        return "premier-league";
-
-    }
-
-
-    /* =================================================
-       SPAIN — LA LIGA
-       ================================================= */
-
-    if (
-        name === "la liga" ||
-        name === "laliga" ||
-        name.includes("la liga")
-    ) {
-
-        return "la-liga";
-
-    }
-
-
-    /* =================================================
-       FRANCE — LIGUE 1
-       ================================================= */
-
-    if (
-        name === "ligue 1"
-    ) {
-
-        return "ligue-1";
-
-    }
-
-
-    /* =================================================
-       ITALY — SERIE A
-       ================================================= */
-
-    if (
-        name === "serie a"
-    ) {
-
-        return "serie-a";
-
-    }
-
-
-    /* =================================================
-       NETHERLANDS — EREDIVISIE
-       ================================================= */
-
-    if (
-        name === "eredivisie"
-    ) {
-
-        return "eredivisie";
-
-    }
-
-
-    /* =================================================
-       BELGIUM — PRO LEAGUE
-       ================================================= */
-
-    if (
-        name === "jupiler pro league" ||
-        name === "pro league" ||
-        name.includes("jupiler pro league")
-    ) {
-
-        return "jupiler";
-
-    }
-
-
-    /* =================================================
-       PORTUGAL — PRIMEIRA LIGA
-       ================================================= */
-
-    if (
-        name === "primeira liga" ||
-        name === "liga portugal" ||
-        name.includes("primeira liga")
-    ) {
-
-        return "primeira-liga";
-
-    }
-
-
-    /* =================================================
-       GERMANY — BUNDESLIGA
-       ================================================= */
-
-    if (
-        name === "bundesliga"
-    ) {
-
-        return "bundesliga";
-
-    }
-
-
-    /* =================================================
-       UEFA CHAMPIONS LEAGUE
-       ================================================= */
-
-    if (
-        name === "uefa champions league" ||
-        name === "champions league" ||
-        name.includes("champions league")
-    ) {
-
-        return "champions-league";
-
-    }
-
-
-    /* =================================================
-       UEFA EUROPA LEAGUE
-       ================================================= */
-
-    if (
-        name === "uefa europa league" ||
-        name === "europa league" ||
-        name.includes("europa league")
-    ) {
-
-        return "europa-league";
-
-    }
-
-
-    /* =================================================
-       UEFA CONFERENCE LEAGUE
-       ================================================= */
-
-    if (
-        name === "uefa europa conference league" ||
-        name === "europa conference league" ||
-        name.includes("conference league")
-    ) {
-
-        return "conference-league";
-
-    }
-
-
-    /* =================================================
-       WORLD CUP
-       ================================================= */
-
-    if (
-        name === "world cup"
-    ) {
-
-        return "world-cup";
-
-    }
-
-
-    /* =================================================
-       EURO
-       ================================================= */
-
-    if (
-        name === "euro championship" ||
-        name === "european championship" ||
-        name === "euro"
-    ) {
-
-        return "euro";
-
-    }
-
-
-    /* =================================================
-       AFRICA CUP OF NATIONS
-       ================================================= */
-
-    if (
-        name === "africa cup of nations" ||
-        name === "afcon"
-    ) {
-
-        return "afcon";
-
-    }
-
-
-    /* =================================================
-       COPA AMERICA
-       ================================================= */
-
-    if (
-        name === "copa america"
-    ) {
-
-        return "copa-america";
-
-    }
-
-
-    /*
-     * أي بطولة غير موجودة في القائمة
-     * يتم رفضها.
-     */
-
-    return null;
+    return ALLOWED_LEAGUES[
+        leagueId
+    ];
 
 }
 
@@ -1428,7 +1286,7 @@ function awayTeam(match) {
 
 
 /* =====================================================
-   GOALS
+   HOME GOALS
    ===================================================== */
 
 function homeGoals(match) {
@@ -1445,6 +1303,10 @@ function homeGoals(match) {
 
 }
 
+
+/* =====================================================
+   AWAY GOALS
+   ===================================================== */
 
 function awayGoals(match) {
 
@@ -1486,6 +1348,7 @@ function matchStatus(match) {
 
 function matchTime(match) {
 
+
     const value =
 
         match.date ||
@@ -1520,11 +1383,17 @@ function matchTime(match) {
 
 
 /* =====================================================
-   FILTER MATCHES
+   FILTER
    ===================================================== */
 
 function getFilteredMatches() {
 
+
+    /*
+     * أول فلتر:
+     *
+     * التاريخ
+     */
 
     let result =
 
@@ -1536,19 +1405,26 @@ function getFilteredMatches() {
 
 
     /*
-     * whitelist
+     * ثاني فلتر:
+     *
+     * القائمة البيضاء
+     *
+     * هنا يتم استبعاد كل شيء
+     * غير موجود في ALLOWED_LEAGUES.
      */
 
     result =
 
         result.filter(
             match =>
-                allowedLeague(match)
+                allowedLeague(match) !== null
         );
 
 
     /*
-     * selected league
+     * ثالث فلتر:
+     *
+     * الدوري المختار
      */
 
     if (
@@ -1559,7 +1435,9 @@ function getFilteredMatches() {
 
             result.filter(
                 match =>
-                    allowedLeague(match) ===
+                    allowedLeague(
+                        match
+                    ) ===
                     selectedLeague
             );
 
@@ -1593,9 +1471,14 @@ function render() {
         );
 
 
+    /*
+     * لا توجد مباريات
+     */
+
     if (
         result.length === 0
     ) {
+
 
         matchesList.innerHTML = `
 
@@ -1610,20 +1493,27 @@ function render() {
                 </h2>
 
                 <p>
-                    لا توجد مباريات من البطولات
-                    الرئيسية المحددة في هذا التاريخ.
+                    لا توجد مباريات من
+                    البطولات التي اخترناها
+                    في هذا التاريخ.
                 </p>
 
             </div>
 
         `;
 
+
         return;
 
     }
 
 
-    /* GROUP BY LEAGUE */
+    /*
+     * GROUP BY LEAGUE ID
+     *
+     * مهم:
+     * نستخدم ID وليس اسم الدوري.
+     */
 
     const groups = {};
 
@@ -1631,19 +1521,25 @@ function render() {
     result.forEach(
         match => {
 
+
             const league =
                 getLeague(match);
 
 
+            const leagueId =
+                getLeagueId(match);
+
+
             const key =
-                league.id ||
-                league.name ||
-                "other";
+                String(
+                    leagueId
+                );
 
 
             if (
                 !groups[key]
             ) {
+
 
                 groups[key] = {
 
@@ -1672,7 +1568,9 @@ function render() {
 
             .map(
                 group =>
-                    createLeague(group)
+                    createLeague(
+                        group
+                    )
             )
 
             .join("");
@@ -1688,7 +1586,8 @@ function createLeague(group) {
 
 
     const league =
-        group.league || {};
+        group.league ||
+        {};
 
 
     const logo =
@@ -1710,13 +1609,16 @@ function createLeague(group) {
 
     return `
 
-        <section class="league-box">
+        <section
+            class="league-box">
 
 
-            <div class="league-head">
+            <div
+                class="league-head">
 
 
-                <div class="league-title">
+                <div
+                    class="league-title">
 
                     ${logo}
 
@@ -1749,7 +1651,9 @@ function createLeague(group) {
 
 
             ${group.matches
-                .map(createMatch)
+                .map(
+                    createMatch
+                )
                 .join("")}
 
 
@@ -1815,12 +1719,17 @@ function createMatch(match) {
     let center;
 
 
+    /*
+     * FINISHED
+     */
+
     if (finished) {
 
 
         center = `
 
-            <div class="score">
+            <div
+                class="score">
 
                 ${homeGoals(match)}
 
@@ -1831,20 +1740,29 @@ function createMatch(match) {
             </div>
 
 
-            <div class="status">
+            <div
+                class="status">
+
                 انتهت
+
             </div>
 
         `;
 
     }
 
+
+    /*
+     * LIVE
+     */
+
     else if (live) {
 
 
         center = `
 
-            <div class="score live">
+            <div
+                class="score live">
 
                 🔴
 
@@ -1857,28 +1775,40 @@ function createMatch(match) {
             </div>
 
 
-            <div class="status live">
+            <div
+                class="status live">
+
                 مباشر
+
             </div>
 
         `;
 
     }
 
+
+    /*
+     * UPCOMING
+     */
+
     else {
 
 
         center = `
 
-            <div class="time">
+            <div
+                class="time">
 
                 ${matchTime(match)}
 
             </div>
 
 
-            <div class="status">
+            <div
+                class="status">
+
                 لم تبدأ
+
             </div>
 
         `;
@@ -1888,10 +1818,14 @@ function createMatch(match) {
 
     return `
 
-        <div class="match">
+        <div
+            class="match">
 
 
-            <div class="team home">
+            <!-- HOME -->
+
+            <div
+                class="team home">
 
 
                 <span>
@@ -1925,14 +1859,22 @@ function createMatch(match) {
             </div>
 
 
-            <div class="center">
+
+            <!-- CENTER -->
+
+            <div
+                class="center">
 
                 ${center}
 
             </div>
 
 
-            <div class="team away">
+
+            <!-- AWAY -->
+
+            <div
+                class="team away">
 
 
                 ${
@@ -1974,7 +1916,7 @@ function createMatch(match) {
 
 
 /* =====================================================
-   DATE FORMAT
+   FORMAT DATE
    ===================================================== */
 
 function formatDate(value) {
@@ -2031,7 +1973,8 @@ function safeURL(url) {
         return u.href;
 
 
-    } catch {
+    }
+    catch {
 
         return "";
 
@@ -2084,6 +2027,7 @@ function escapeHTML(value) {
 dateButtons.forEach(
     button => {
 
+
         button.addEventListener(
             "click",
             () => {
@@ -2113,7 +2057,8 @@ dateButtons.forEach(
                     );
 
 
-                dateInput.value = "";
+                dateInput.value =
+                    "";
 
 
                 render();
@@ -2170,8 +2115,10 @@ leagueFilter.addEventListener(
     "change",
     () => {
 
+
         selectedLeague =
             leagueFilter.value;
+
 
         render();
 
@@ -2200,9 +2147,11 @@ if (
     nav
 ) {
 
+
     menuBtn.addEventListener(
         "click",
         () => {
+
 
             const open =
                 nav.classList.toggle(
