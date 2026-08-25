@@ -42,7 +42,8 @@
 
 .page-title {
 
-    margin-bottom: 25px;
+    margin-bottom:
+        25px;
 
 }
 
@@ -211,6 +212,9 @@
         transform .2s ease,
         border-color .2s ease;
 
+    cursor:
+        pointer;
+
 }
 
 .video-card:hover {
@@ -255,6 +259,9 @@
 
     object-fit:
         cover;
+
+    display:
+        block;
 
 }
 
@@ -381,6 +388,9 @@
     font-size:
         11px;
 
+    gap:
+        10px;
+
 }
 
 
@@ -393,7 +403,34 @@
 
 
 /* =====================================================
-   EMPTY STATE
+   CHANNEL
+   ===================================================== */
+
+.video-channel {
+
+    margin-top:
+        8px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        11px;
+
+    white-space:
+        nowrap;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+}
+
+
+/* =====================================================
+   EMPTY / ERROR STATE
    ===================================================== */
 
 .state {
@@ -617,7 +654,9 @@
 <div class="container">
 
 
-<!-- TITLE -->
+<!-- =====================================================
+     TITLE
+     ===================================================== -->
 
 <div class="page-title">
 
@@ -692,7 +731,7 @@
         🇳🇱 الدوري الهولندي
     </option>
 
-    <option value="jupiler">
+    <option value="jupiler-pro-league">
         🇧🇪 الدوري البلجيكي
     </option>
 
@@ -712,6 +751,10 @@
         🏆 الدوري الأوروبي
     </option>
 
+    <option value="conference-league">
+        🏆 دوري المؤتمر الأوروبي
+    </option>
+
 </select>
 
 </div>
@@ -719,7 +762,7 @@
 
 
 <!-- =====================================================
-     SECTION
+     SECTION HEADER
      ===================================================== -->
 
 <div class="section-header">
@@ -729,7 +772,7 @@
     </h2>
 
     <span id="videoCount">
-        0 فيديو
+        جاري التحميل...
     </span>
 
 </div>
@@ -737,7 +780,7 @@
 
 
 <!-- =====================================================
-     VIDEOS
+     VIDEO GRID
      ===================================================== -->
 
 <div
@@ -754,7 +797,7 @@
     </h2>
 
     <p>
-        سيتم ربط الفيديوهات بمصدر الفيديو لاحقًا.
+        يتم جلب أحدث الفيديوهات...
     </p>
 
 </div>
@@ -772,16 +815,8 @@
 <script>
 
 /* =====================================================
-   GOALINS — HIGHLIGHTS
+   GOALINS — LIVE HIGHLIGHTS ENGINE
    ===================================================== */
-
-
-/*
- * في هذه المرحلة لا نضع روابط فيديو عشوائية.
- *
- * سنربط هذه الصفحة لاحقًا بمصدر فيديو
- * يسمح بعرض المحتوى بطريقة قانونية.
- */
 
 
 /* =====================================================
@@ -812,32 +847,199 @@ const leagueFilter =
     );
 
 
-
 /* =====================================================
-   PLACEHOLDER DATA
+   DATA
    ===================================================== */
 
-const videos = [];
+let videos = [];
 
 
 /* =====================================================
-   RENDER
+   ESCAPE HTML
    ===================================================== */
 
-function renderVideos() {
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
 
 
-    /*
-     * لا توجد فيديوهات بعد.
-     *
-     * بعد ربط مصدر الفيديو سنملأ
-     * هذه المصفوفة تلقائيًا.
-     */
+/* =====================================================
+   ALGERIA DATE
+   ===================================================== */
+
+function getAlgeriaDate(
+    offsetDays = 0
+) {
+
+    const now =
+        new Date();
+
+    const algeriaTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone:
+                        "Africa/Algiers"
+                }
+            )
+        );
 
 
-    if (
-        videos.length === 0
-    ) {
+    algeriaTime.setDate(
+        algeriaTime.getDate()
+        + offsetDays
+    );
+
+
+    const year =
+        algeriaTime.getFullYear();
+
+    const month =
+        String(
+            algeriaTime.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const day =
+        String(
+            algeriaTime.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+/* =====================================================
+   LOAD JSON
+   ===================================================== */
+
+async function loadHighlights() {
+
+    videoGrid.innerHTML = `
+
+        <div class="state">
+
+            <div class="loader"></div>
+
+            <h2>
+                جاري تحميل الملخصات
+            </h2>
+
+            <p>
+                يتم جلب أحدث الفيديوهات...
+            </p>
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "data/highlights.json?v="
+                + Date.now(),
+                {
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP "
+                + response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            Array.isArray(
+                data
+            )
+        ) {
+
+            videos =
+                data;
+
+        }
+
+        else if (
+            data &&
+            Array.isArray(
+                data.highlights
+            )
+        ) {
+
+            videos =
+                data.highlights;
+
+        }
+
+        else {
+
+            videos = [];
+
+        }
+
+
+        console.log(
+            "GOALINS highlights:",
+            videos
+        );
+
+
+        renderVideos();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "GOALINS:",
+            error
+        );
 
 
         videoCount.textContent =
@@ -849,69 +1051,284 @@ function renderVideos() {
             <div class="state">
 
                 <div class="state-icon">
-                    🎬
+                    ⚠️
                 </div>
 
                 <h2>
-                    الملخصات قريبًا
+                    تعذر تحميل الملخصات
                 </h2>
 
                 <p>
-                    قسم الفيديوهات جاهز.
-                    <br>
-                    سنربطه الآن بمصدر الملخصات.
+                    تأكد من وجود
+                    data/highlights.json
+                    ثم حاول تحديث الصفحة.
                 </p>
 
             </div>
 
         `;
 
+    }
+
+}
+
+
+/* =====================================================
+   FILTER VIDEOS
+   ===================================================== */
+
+function getFilteredVideos() {
+
+    let result =
+        [...videos];
+
+
+    /* ---------------------------------------------
+       LEAGUE
+       --------------------------------------------- */
+
+    const selectedLeague =
+        leagueFilter.value;
+
+
+    if (
+        selectedLeague !== "all"
+    ) {
+
+        result =
+            result.filter(
+                video =>
+                    video.league_key
+                    === selectedLeague
+            );
+
+    }
+
+
+    /* ---------------------------------------------
+       DATE
+       --------------------------------------------- */
+
+    const selectedDate =
+        dateFilter.value;
+
+
+    if (
+        selectedDate === "today"
+    ) {
+
+        const today =
+            getAlgeriaDate(0);
+
+
+        result =
+            result.filter(
+                video =>
+                    video.date
+                    === today
+            );
+
+    }
+
+
+    if (
+        selectedDate === "yesterday"
+    ) {
+
+        const yesterday =
+            getAlgeriaDate(-1);
+
+
+        result =
+            result.filter(
+                video =>
+                    video.date
+                    === yesterday
+            );
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =====================================================
+   RENDER VIDEOS
+   ===================================================== */
+
+function renderVideos() {
+
+    const filtered =
+        getFilteredVideos();
+
+
+    videoCount.textContent =
+        filtered.length
+        + " فيديو";
+
+
+    if (
+        filtered.length === 0
+    ) {
+
+        videoGrid.innerHTML = `
+
+            <div class="state">
+
+                <div class="state-icon">
+                    🎬
+                </div>
+
+                <h2>
+                    لا توجد ملخصات
+                </h2>
+
+                <p>
+                    لا توجد فيديوهات مطابقة للفلاتر الحالية.
+                </p>
+
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    videoCount.textContent =
-        videos.length +
-        " فيديو";
-
-
     videoGrid.innerHTML =
-
-        videos
-            .map(
-                video =>
-                    createVideoCard(
-                        video
-                    )
-            )
-            .join("");
+        filtered
+        .map(
+            video =>
+                createVideoCard(
+                    video
+                )
+        )
+        .join("");
 
 }
 
 
 /* =====================================================
-   VIDEO CARD
+   CREATE VIDEO CARD
    ===================================================== */
 
-function createVideoCard(video) {
+function createVideoCard(
+    video
+) {
+
+    const videoId =
+        escapeHtml(
+            video.video_id
+        );
+
+
+    const title =
+        escapeHtml(
+            video.title
+            ||
+            `${video.home || ""} vs ${video.away || ""}`
+        );
+
+
+    const thumbnail =
+        escapeHtml(
+            video.thumbnail
+            ||
+            (
+                video.video_id
+                ?
+                `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                :
+                ""
+            )
+        );
+
+
+    const league =
+        escapeHtml(
+            video.league
+            ||
+            "Football"
+        );
+
+
+    const date =
+        escapeHtml(
+            video.date
+            ||
+            ""
+        );
+
+
+    const channel =
+        escapeHtml(
+            video.channel
+            ||
+            ""
+        );
+
+
+    const youtubeUrl =
+        escapeHtml(
+            video.youtube_url
+            ||
+            (
+                video.video_id
+                ?
+                `https://www.youtube.com/watch?v=${videoId}`
+                :
+                "#"
+            )
+        );
 
 
     return `
 
         <article
-            class="video-card">
+            class="video-card"
+            onclick="openVideo('${youtubeUrl}')">
 
 
             <div
                 class="thumbnail">
 
 
-                <img
-                    src="${video.thumbnail}"
-                    alt="${video.title}"
-                    loading="lazy">
+                ${
+                    thumbnail
+                    ?
+
+                    `
+
+                    <img
+                        src="${thumbnail}"
+                        alt="${title}"
+                        loading="lazy">
+
+                    `
+
+                    :
+
+                    `
+
+                    <div
+                        style="
+                            width:100%;
+                            height:100%;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-size:45px;
+                        ">
+
+                        🎬
+
+                    </div>
+
+                    `
+                }
 
 
                 <div
@@ -920,22 +1337,6 @@ function createVideoCard(video) {
                     ▶
 
                 </div>
-
-
-                ${
-                    video.duration
-                    ?
-                    `
-                    <span
-                        class="duration">
-
-                        ${video.duration}
-
-                    </span>
-                    `
-                    :
-                    ""
-                }
 
 
             </div>
@@ -948,7 +1349,7 @@ function createVideoCard(video) {
                 <h3
                     class="video-title">
 
-                    ${video.title}
+                    ${title}
 
                 </h3>
 
@@ -960,19 +1361,41 @@ function createVideoCard(video) {
                     <span
                         class="video-league">
 
-                        ${video.league}
+                        ${league}
 
                     </span>
 
 
                     <span>
 
-                        ${video.date}
+                        ${date}
 
                     </span>
 
 
                 </div>
+
+
+                ${
+                    channel
+
+                    ?
+
+                    `
+
+                    <div
+                        class="video-channel">
+
+                        ▶ ${channel}
+
+                    </div>
+
+                    `
+
+                    :
+
+                    ""
+                }
 
 
             </div>
@@ -981,6 +1404,33 @@ function createVideoCard(video) {
         </article>
 
     `;
+
+}
+
+
+/* =====================================================
+   OPEN YOUTUBE VIDEO
+   ===================================================== */
+
+function openVideo(
+    url
+) {
+
+    if (
+        !url ||
+        url === "#"
+    ) {
+
+        return;
+
+    }
+
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
 
 }
 
@@ -1022,11 +1472,9 @@ if (
     nav
 ) {
 
-
     menuBtn.addEventListener(
         "click",
         () => {
-
 
             const open =
                 nav.classList.toggle(
@@ -1037,8 +1485,8 @@ if (
             menuBtn.setAttribute(
                 "aria-expanded",
                 open
-                    ? "true"
-                    : "false"
+                ? "true"
+                : "false"
             );
 
         }
@@ -1051,7 +1499,7 @@ if (
    START
    ===================================================== */
 
-renderVideos();
+loadHighlights();
 
 </script>
 
