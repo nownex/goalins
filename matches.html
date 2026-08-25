@@ -11,7 +11,7 @@
 <title>المباريات | GOALINS</title>
 
 <meta name="description"
-      content="مباريات كرة القدم اليوم ونتائج أهم البطولات">
+      content="مباريات أهم الدوريات والبطولات العالمية">
 
 <meta name="theme-color"
       content="#07111f">
@@ -27,178 +27,122 @@
    ===================================================== */
 
 .matches-page {
-
+    min-height: calc(100vh - 80px);
     padding: 35px 0 70px;
-
-    min-height:
-        calc(100vh - 80px);
-
 }
 
 
 /* =====================================================
-   HEADER
+   PAGE TITLE
    ===================================================== */
 
 .page-title {
-
     margin-bottom: 25px;
-
 }
-
 
 .page-title small {
-
     color: var(--accent);
-
     font-weight: 800;
-
 }
-
 
 .page-title h1 {
-
     margin: 6px 0;
-
     font-size: 32px;
-
 }
 
-
 .page-title p {
-
     margin: 0;
-
     color: var(--muted);
-
     font-size: 14px;
-
 }
 
 
 /* =====================================================
-   DATE FILTER
+   DATE BUTTONS
    ===================================================== */
 
 .date-buttons {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-
     margin-bottom: 12px;
-
 }
 
-
 .date-btn {
+    padding: 13px 8px;
 
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--card);
-
-    color: white;
-
+    border: 1px solid var(--border);
     border-radius: 13px;
 
-    padding: 13px 8px;
+    background: var(--card);
+    color: white;
 
     font-family: inherit;
 
     cursor: pointer;
 
+    transition: .2s ease;
 }
 
+.date-btn:hover {
+    background: var(--card-hover);
+}
 
 .date-btn strong {
-
     display: block;
-
 }
-
 
 .date-btn small {
-
     display: block;
-
     margin-top: 3px;
-
     color: var(--muted);
-
 }
-
 
 .date-btn.active {
-
-    border-color:
-        var(--accent);
-
-    background:
-        rgba(37,211,102,.10);
-
-    color:
-        var(--accent);
-
+    border-color: var(--accent);
+    background: rgba(37,211,102,.10);
+    color: var(--accent);
 }
 
-
 .date-btn.active small {
-
-    color:
-        var(--accent);
-
+    color: var(--accent);
 }
 
 
 /* =====================================================
-   DATE INPUT
+   DATE PICKER
    ===================================================== */
 
 .date-picker {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
     margin-bottom: 18px;
-
 }
-
 
 .date-picker label {
-
     color: var(--muted);
-
     font-size: 13px;
-
 }
 
-
 .date-picker input {
-
     flex: 1;
 
     padding: 12px;
 
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
     border-radius: 11px;
 
-    background:
-        var(--card);
-
+    background: var(--card);
     color: white;
 
     font-family: inherit;
+}
 
+.date-picker input:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 
@@ -207,14 +151,10 @@
    ===================================================== */
 
 .filter-box {
-
     margin-bottom: 25px;
-
 }
 
-
 .filter-box label {
-
     display: block;
 
     color: var(--muted);
@@ -222,28 +162,27 @@
     font-size: 13px;
 
     margin-bottom: 7px;
-
 }
 
-
 .filter-box select {
-
     width: 100%;
 
     padding: 13px;
 
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
     border-radius: 12px;
 
-    background:
-        var(--card);
-
+    background: var(--card);
     color: white;
 
     font-family: inherit;
 
+    cursor: pointer;
+}
+
+.filter-box select:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 
@@ -252,12 +191,9 @@
    ===================================================== */
 
 .results-info {
-
     display: flex;
 
-    justify-content:
-        space-between;
-
+    justify-content: space-between;
     align-items: center;
 
     color: var(--muted);
@@ -265,14 +201,10 @@
     font-size: 13px;
 
     margin-bottom: 14px;
-
 }
 
-
 .results-info strong {
-
     color: white;
-
 }
 
 
@@ -281,13 +213,9 @@
    ===================================================== */
 
 .matches-list {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 12px;
-
 }
 
 
@@ -296,74 +224,48 @@
    ===================================================== */
 
 .league-box {
-
     overflow: hidden;
 
-    background:
-        var(--card);
+    background: var(--card);
 
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
     border-radius: 17px;
-
 }
 
-
 .league-head {
-
     display: flex;
 
     align-items: center;
-
-    justify-content:
-        space-between;
+    justify-content: space-between;
 
     padding: 13px 15px;
 
-    border-bottom:
-        1px solid var(--border);
-
+    border-bottom: 1px solid var(--border);
 }
 
-
 .league-title {
-
     display: flex;
 
     align-items: center;
 
     gap: 9px;
-
 }
 
-
 .league-title img {
-
     width: 30px;
-
     height: 30px;
 
     object-fit: contain;
-
 }
-
 
 .league-name {
-
-    font-weight: 800;
-
     font-size: 14px;
-
+    font-weight: 800;
 }
 
-
 .league-country {
-
     color: var(--muted);
-
     font-size: 11px;
-
 }
 
 
@@ -372,7 +274,6 @@
    ===================================================== */
 
 .match {
-
     display: grid;
 
     grid-template-columns:
@@ -384,16 +285,11 @@
 
     padding: 12px 15px;
 
-    border-bottom:
-        1px solid var(--border);
-
+    border-bottom: 1px solid var(--border);
 }
 
-
 .match:last-child {
-
     border-bottom: 0;
-
 }
 
 
@@ -402,7 +298,6 @@
    ===================================================== */
 
 .team {
-
     display: flex;
 
     align-items: center;
@@ -412,40 +307,25 @@
     font-size: 13px;
 
     font-weight: 800;
-
 }
-
 
 .team.home {
-
-    justify-content:
-        flex-end;
-
+    justify-content: flex-end;
     text-align: right;
-
 }
-
 
 .team.away {
-
-    justify-content:
-        flex-start;
-
+    justify-content: flex-start;
     text-align: left;
-
 }
 
-
 .team img {
-
     width: 42px;
-
     height: 42px;
 
     object-fit: contain;
 
     flex-shrink: 0;
-
 }
 
 
@@ -454,63 +334,45 @@
    ===================================================== */
 
 .center {
-
     text-align: center;
-
 }
 
-
 .time {
-
-    color:
-        var(--accent);
+    color: var(--accent);
 
     font-size: 15px;
 
     font-weight: 900;
-
 }
-
 
 .score {
-
     font-size: 19px;
-
     font-weight: 900;
-
 }
 
-
 .status {
-
     margin-top: 4px;
 
     color: var(--muted);
 
     font-size: 10px;
-
 }
 
-
 .live {
-
     color: #ff5364;
-
 }
 
 
 /* =====================================================
-   EMPTY / LOADING
+   STATE
    ===================================================== */
 
 .state {
-
     min-height: 280px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     flex-direction: column;
@@ -524,41 +386,33 @@
     border-radius: 18px;
 
     padding: 30px;
-
 }
 
-
 .state-icon {
-
     font-size: 38px;
 
     margin-bottom: 12px;
-
 }
-
 
 .state h2 {
-
     margin-bottom: 7px;
-
 }
 
-
 .state p {
-
     color: var(--muted);
 
     font-size: 13px;
 
     line-height: 1.8;
-
 }
 
 
+/* =====================================================
+   LOADER
+   ===================================================== */
+
 .loader {
-
     width: 38px;
-
     height: 38px;
 
     border-radius: 50%;
@@ -574,17 +428,12 @@
         spin .8s linear infinite;
 
     margin-bottom: 15px;
-
 }
-
 
 @keyframes spin {
 
     to {
-
-        transform:
-            rotate(360deg);
-
+        transform: rotate(360deg);
     }
 
 }
@@ -597,77 +446,46 @@
 @media(max-width:650px) {
 
     .matches-page {
-
-        padding:
-            30px 0 60px;
-
+        padding: 30px 0 60px;
     }
-
 
     .page-title h1 {
-
         font-size: 28px;
-
     }
-
 
     .date-buttons {
-
         gap: 7px;
-
     }
-
 
     .date-btn {
-
-        padding:
-            12px 5px;
-
+        padding: 12px 5px;
         font-size: 12px;
-
     }
 
-
     .match {
-
         grid-template-columns:
             1fr 60px 1fr;
 
         padding:
             10px 7px;
-
     }
-
 
     .team {
-
         font-size: 10px;
-
         gap: 5px;
-
     }
-
 
     .team img {
-
         width: 33px;
-
         height: 33px;
-
     }
-
 
     .time {
-
         font-size: 12px;
-
     }
 
-
     .score {
-
         font-size: 16px;
-
     }
 
 }
@@ -689,10 +507,11 @@
 <div class="container header-inner">
 
 
-<a href="index.html"
-   class="logo">
+<a
+    href="index.html"
+    class="logo">
 
-<span>GOAL</span>INS
+    <span>GOAL</span>INS
 
 </a>
 
@@ -700,30 +519,31 @@
 <button
     class="menu-btn"
     id="menuBtn"
-    aria-label="القائمة">
+    aria-label="القائمة"
+    aria-expanded="false">
 
-☰
+    ☰
 
 </button>
 
 
 <nav id="nav">
 
-<a href="matches.html">
-المباريات
-</a>
+    <a href="matches.html">
+        المباريات
+    </a>
 
-<a href="national-teams.html">
-المنتخبات
-</a>
+    <a href="national-teams.html">
+        المنتخبات
+    </a>
 
-<a href="highlights.html">
-الملخصات
-</a>
+    <a href="highlights.html">
+        الملخصات
+    </a>
 
-<a href="goals.html">
-الأهداف
-</a>
+    <a href="goals.html">
+        الأهداف
+    </a>
 
 </nav>
 
@@ -743,19 +563,21 @@
 <div class="container">
 
 
+<!-- PAGE TITLE -->
+
 <div class="page-title">
 
-<small>
-GOALINS FOOTBALL
-</small>
+    <small>
+        GOALINS FOOTBALL
+    </small>
 
-<h1>
-المباريات
-</h1>
+    <h1>
+        المباريات
+    </h1>
 
-<p>
-أهم مباريات اليوم والقادم من البطولات الكبرى
-</p>
+    <p>
+        أهم مباريات الدوريات والبطولات الكبرى
+    </p>
 
 </div>
 
@@ -772,13 +594,13 @@ GOALINS FOOTBALL
     class="date-btn active"
     data-offset="0">
 
-<strong>
-اليوم
-</strong>
+    <strong>
+        اليوم
+    </strong>
 
-<small>
-مباريات اليوم
-</small>
+    <small>
+        مباريات اليوم
+    </small>
 
 </button>
 
@@ -787,13 +609,13 @@ GOALINS FOOTBALL
     class="date-btn"
     data-offset="1">
 
-<strong>
-غدًا
-</strong>
+    <strong>
+        غدًا
+    </strong>
 
-<small>
-مباريات الغد
-</small>
+    <small>
+        مباريات الغد
+    </small>
 
 </button>
 
@@ -802,13 +624,13 @@ GOALINS FOOTBALL
     class="date-btn"
     data-offset="2">
 
-<strong>
-بعد غد
-</strong>
+    <strong>
+        بعد غد
+    </strong>
 
-<small>
-القادم
-</small>
+    <small>
+        المباريات القادمة
+    </small>
 
 </button>
 
@@ -817,10 +639,12 @@ GOALINS FOOTBALL
 
 
 
+<!-- DATE -->
+
 <div class="date-picker">
 
 <label for="date">
-تاريخ:
+    تاريخ:
 </label>
 
 <input
@@ -838,7 +662,7 @@ GOALINS FOOTBALL
 <div class="filter-box">
 
 <label for="leagueFilter">
-الدوري / البطولة
+    الدوري / البطولة
 </label>
 
 
@@ -846,87 +670,82 @@ GOALINS FOOTBALL
 
 
 <option value="all">
-كل البطولات الرئيسية
+    كل البطولات الرئيسية
 </option>
 
 
 <option value="premier-league">
-الدوري الإنجليزي الممتاز
-</option>
-
-
-<option value="ligue-1">
-الدوري الفرنسي
+    🇬🇧 الدوري الإنجليزي الممتاز
 </option>
 
 
 <option value="la-liga">
-الدوري الإسباني
+    🇪🇸 الدوري الإسباني
+</option>
+
+
+<option value="ligue-1">
+    🇫🇷 الدوري الفرنسي
 </option>
 
 
 <option value="serie-a">
-الدوري الإيطالي
-</option>
-
-
-<option value="bundesliga">
-الدوري الألماني
-</option>
-
-
-<option value="primeira-liga">
-الدوري البرتغالي
+    🇮🇹 الدوري الإيطالي
 </option>
 
 
 <option value="eredivisie">
-الدوري الهولندي
+    🇳🇱 الدوري الهولندي
 </option>
 
 
 <option value="jupiler">
-الدوري البلجيكي
+    🇧🇪 الدوري البلجيكي
 </option>
 
 
-<option value="super-lig">
-الدوري التركي
+<option value="primeira-liga">
+    🇵🇹 الدوري البرتغالي
 </option>
 
 
-<option value="super-league-greece">
-الدوري اليوناني
-</option>
-
-
-<option value="saudi-pro">
-الدوري السعودي
-</option>
-
-
-<option value="uae-pro">
-الدوري الإماراتي
+<option value="bundesliga">
+    🇩🇪 الدوري الألماني
 </option>
 
 
 <option value="champions-league">
-دوري أبطال أوروبا
+    🏆 دوري أبطال أوروبا
 </option>
 
 
 <option value="europa-league">
-الدوري الأوروبي
+    🏆 الدوري الأوروبي
 </option>
 
 
 <option value="conference-league">
-دوري المؤتمر الأوروبي
+    🏆 دوري المؤتمر الأوروبي
 </option>
 
 
 <option value="world-cup">
-كأس العالم
+    🌍 كأس العالم
+</option>
+
+
+<option value="euro">
+    🏆 كأس أمم أوروبا
+</option>
+
+
+<option value="afcon">
+    🏆 كأس أمم أفريقيا
+</option>
+
+
+<option value="copa-america">
+    🏆 كوبا أمريكا
 </option>
 
 
@@ -936,21 +755,19 @@ GOALINS FOOTBALL
 
 
 
-<!-- =====================================================
-     INFO
-     ===================================================== -->
+<!-- INFO -->
 
 <div class="results-info">
 
 <span id="dateText">
-مباريات اليوم
+    مباريات اليوم
 </span>
 
 
 <span>
 
 <strong id="count">
-0
+    0
 </strong>
 
 مباراة
@@ -961,9 +778,7 @@ GOALINS FOOTBALL
 
 
 
-<!-- =====================================================
-     MATCHES
-     ===================================================== -->
+<!-- MATCHES -->
 
 <div
     class="matches-list"
@@ -972,15 +787,15 @@ GOALINS FOOTBALL
 
 <div class="state">
 
-<div class="loader"></div>
+    <div class="loader"></div>
 
-<h2>
-جاري تحميل المباريات
-</h2>
+    <h2>
+        جاري تحميل المباريات
+    </h2>
 
-<p>
-لحظات من فضلك...
-</p>
+    <p>
+        لحظات من فضلك...
+    </p>
 
 </div>
 
@@ -994,11 +809,11 @@ GOALINS FOOTBALL
 
 
 
-<script>
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
 
-/* =====================================================
-   GOALINS MATCHES ENGINE
-   ===================================================== */
+<script>
 
 
 /* =====================================================
@@ -1043,10 +858,8 @@ const dateButtons =
 
 let matches = [];
 
-
 let selectedDate =
     localDate(0);
-
 
 let selectedLeague =
     "all";
@@ -1058,14 +871,11 @@ let selectedLeague =
 
 function localDate(offset = 0) {
 
-    const d =
-        new Date();
-
+    const d = new Date();
 
     d.setDate(
         d.getDate() + offset
     );
-
 
     return (
 
@@ -1095,7 +905,6 @@ function localDate(offset = 0) {
 async function loadMatches() {
 
     try {
-
 
         const response =
             await fetch(
@@ -1180,25 +989,25 @@ async function loadMatches() {
 
         matchesList.innerHTML = `
 
-<div class="state">
+            <div class="state">
 
-<div class="state-icon">
-⚠️
-</div>
+                <div class="state-icon">
+                    ⚠️
+                </div>
 
-<h2>
-تعذر تحميل المباريات
-</h2>
+                <h2>
+                    تعذر تحميل المباريات
+                </h2>
 
-<p>
-تعذر قراءة ملف المباريات.
-<br>
-data/matches.json
-</p>
+                <p>
+                    تعذر قراءة ملف المباريات.
+                    <br>
+                    data/matches.json
+                </p>
 
-</div>
+            </div>
 
-`;
+        `;
 
     }
 
@@ -1206,7 +1015,7 @@ data/matches.json
 
 
 /* =====================================================
-   GET LEAGUE
+   LEAGUE DATA
    ===================================================== */
 
 function getLeague(match) {
@@ -1224,43 +1033,126 @@ function getLeague(match) {
 }
 
 
-/* =====================================================
-   LEAGUE NAME
-   ===================================================== */
-
 function leagueName(match) {
 
     return String(
-
-        getLeague(match).name ||
-
-        ""
-
-    ).toLowerCase();
+        getLeague(match).name || ""
+    )
+    .toLowerCase()
+    .trim();
 
 }
 
 
 /* =====================================================
-   ONLY MAIN LEAGUES
+   EXCLUDE WOMEN / YOUTH / LOWER DIVISIONS
+   ===================================================== */
+
+function isForbiddenCompetition(match) {
+
+    const name =
+        leagueName(match);
+
+
+    const country =
+        String(
+            getLeague(match).country ||
+            ""
+        ).toLowerCase();
+
+
+    const forbidden = [
+
+        /* Women */
+
+        "women",
+        "woman",
+        "women's",
+        "womens",
+        "feminine",
+        "femminile",
+        "damallsvenskan",
+        "division 1 women",
+        "premier league women",
+        "ligue 1 women",
+        "liga f",
+        "serie a women",
+        "bundesliga women",
+
+        /* Youth */
+
+        "u18",
+        "u19",
+        "u20",
+        "u21",
+        "u23",
+        "youth",
+        "junior",
+
+        /* Lower divisions */
+
+        "championship",
+        "league one",
+        "league two",
+        "ligue 2",
+        "ligue 3",
+        "segunda",
+        "segunda división",
+        "segunda division",
+        "serie b",
+        "serie c",
+        "2. bundesliga",
+        "3. liga",
+        "eerste divisie",
+        "keuken kampioen",
+        "challenger pro league",
+        "segunda liga",
+        "liga 2",
+
+        /* Club friendlies */
+
+        "friendlies clubs",
+        "club friendly",
+        "club friendlies",
+        "clubs friendlies"
+
+    ];
+
+
+    return forbidden.some(
+        term =>
+            name.includes(term)
+    );
+
+}
+
+
+/* =====================================================
+   ALLOWED COMPETITIONS
    ===================================================== */
 
 function allowedLeague(match) {
+
+
+    if (
+        isForbiddenCompetition(match)
+    ) {
+
+        return null;
+
+    }
 
 
     const name =
         leagueName(match);
 
 
-    /*
-     * =================================================
-     * ENGLAND
-     * =================================================
-     */
+    /* =================================================
+       ENGLAND — PREMIER LEAGUE
+       ================================================= */
 
     if (
-        name ===
-            "premier league"
+        name === "premier league"
     ) {
 
         return "premier-league";
@@ -1268,15 +1160,27 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * FRANCE
-     * =================================================
-     */
+    /* =================================================
+       SPAIN — LA LIGA
+       ================================================= */
 
     if (
-        name ===
-            "ligue 1"
+        name === "la liga" ||
+        name === "laliga" ||
+        name.includes("la liga")
+    ) {
+
+        return "la-liga";
+
+    }
+
+
+    /* =================================================
+       FRANCE — LIGUE 1
+       ================================================= */
+
+    if (
+        name === "ligue 1"
     ) {
 
         return "ligue-1";
@@ -1284,42 +1188,12 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * SPAIN
-     * =================================================
-     */
+    /* =================================================
+       ITALY — SERIE A
+       ================================================= */
 
     if (
-        name ===
-            "la liga"
-    ) {
-
-        return "la-liga";
-
-    }
-
-
-    if (
-        name.includes(
-            "laliga"
-        )
-    ) {
-
-        return "la-liga";
-
-    }
-
-
-    /*
-     * =================================================
-     * ITALY
-     * =================================================
-     */
-
-    if (
-        name ===
-            "serie a"
+        name === "serie a"
     ) {
 
         return "serie-a";
@@ -1327,58 +1201,12 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * GERMANY
-     * =================================================
-     */
+    /* =================================================
+       NETHERLANDS — EREDIVISIE
+       ================================================= */
 
     if (
-        name ===
-            "bundesliga"
-    ) {
-
-        return "bundesliga";
-
-    }
-
-
-    /*
-     * =================================================
-     * PORTUGAL
-     * =================================================
-     */
-
-    if (
-        name ===
-            "primeira liga"
-    ) {
-
-        return "primeira-liga";
-
-    }
-
-
-    if (
-        name.includes(
-            "liga portugal"
-        )
-    ) {
-
-        return "primeira-liga";
-
-    }
-
-
-    /*
-     * =================================================
-     * NETHERLANDS
-     * =================================================
-     */
-
-    if (
-        name ===
-            "eredivisie"
+        name === "eredivisie"
     ) {
 
         return "eredivisie";
@@ -1386,16 +1214,14 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * BELGIUM
-     * =================================================
-     */
+    /* =================================================
+       BELGIUM — PRO LEAGUE
+       ================================================= */
 
     if (
-        name.includes(
-            "jupiler pro league"
-        )
+        name === "jupiler pro league" ||
+        name === "pro league" ||
+        name.includes("jupiler pro league")
     ) {
 
         return "jupiler";
@@ -1403,138 +1229,42 @@ function allowedLeague(match) {
     }
 
 
+    /* =================================================
+       PORTUGAL — PRIMEIRA LIGA
+       ================================================= */
+
     if (
-        name ===
-            "pro league"
+        name === "primeira liga" ||
+        name === "liga portugal" ||
+        name.includes("primeira liga")
     ) {
 
-        return "jupiler";
+        return "primeira-liga";
 
     }
 
 
-    /*
-     * =================================================
-     * TURKEY
-     * =================================================
-     */
+    /* =================================================
+       GERMANY — BUNDESLIGA
+       ================================================= */
 
     if (
-        name.includes(
-            "super lig"
-        )
+        name === "bundesliga"
     ) {
 
-        return "super-lig";
+        return "bundesliga";
 
     }
 
 
-    if (
-        name.includes(
-            "süper lig"
-        )
-    ) {
-
-        return "super-lig";
-
-    }
-
-
-    /*
-     * =================================================
-     * GREECE
-     * =================================================
-     */
+    /* =================================================
+       UEFA CHAMPIONS LEAGUE
+       ================================================= */
 
     if (
-        name.includes(
-            "super league"
-        ) &&
-        !name.includes(
-            "champions"
-        )
-    ) {
-
-        return "super-league-greece";
-
-    }
-
-
-    /*
-     * =================================================
-     * SAUDI ARABIA
-     * =================================================
-     */
-
-    if (
-        name.includes(
-            "saudi pro league"
-        )
-    ) {
-
-        return "saudi-pro";
-
-    }
-
-
-    if (
-        name.includes(
-            "professional league"
-        ) &&
-        getLeague(match)
-            .country ===
-            "Saudi-Arabia"
-    ) {
-
-        return "saudi-pro";
-
-    }
-
-
-    /*
-     * =================================================
-     * UAE
-     * =================================================
-     */
-
-    if (
-        name.includes(
-            "uae pro league"
-        )
-    ) {
-
-        return "uae-pro";
-
-    }
-
-
-    if (
-        name.includes(
-            "pro league"
-        ) &&
-        getLeague(match)
-            .country ===
-            "United-Arab-Emirates"
-    ) {
-
-        return "uae-pro";
-
-    }
-
-
-    /*
-     * =================================================
-     * CHAMPIONS LEAGUE
-     * =================================================
-     */
-
-    if (
-        name.includes(
-            "uefa champions league"
-        ) ||
-        name ===
-            "champions league"
+        name === "uefa champions league" ||
+        name === "champions league" ||
+        name.includes("champions league")
     ) {
 
         return "champions-league";
@@ -1542,18 +1272,14 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * EUROPA LEAGUE
-     * =================================================
-     */
+    /* =================================================
+       UEFA EUROPA LEAGUE
+       ================================================= */
 
     if (
-        name.includes(
-            "uefa europa league"
-        ) ||
-        name ===
-            "europa league"
+        name === "uefa europa league" ||
+        name === "europa league" ||
+        name.includes("europa league")
     ) {
 
         return "europa-league";
@@ -1561,16 +1287,14 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * CONFERENCE LEAGUE
-     * =================================================
-     */
+    /* =================================================
+       UEFA CONFERENCE LEAGUE
+       ================================================= */
 
     if (
-        name.includes(
-            "conference league"
-        )
+        name === "uefa europa conference league" ||
+        name === "europa conference league" ||
+        name.includes("conference league")
     ) {
 
         return "conference-league";
@@ -1578,16 +1302,12 @@ function allowedLeague(match) {
     }
 
 
-    /*
-     * =================================================
-     * WORLD CUP
-     * =================================================
-     */
+    /* =================================================
+       WORLD CUP
+       ================================================= */
 
     if (
-        name.includes(
-            "world cup"
-        )
+        name === "world cup"
     ) {
 
         return "world-cup";
@@ -1595,9 +1315,51 @@ function allowedLeague(match) {
     }
 
 
+    /* =================================================
+       EURO
+       ================================================= */
+
+    if (
+        name === "euro championship" ||
+        name === "european championship" ||
+        name === "euro"
+    ) {
+
+        return "euro";
+
+    }
+
+
+    /* =================================================
+       AFRICA CUP OF NATIONS
+       ================================================= */
+
+    if (
+        name === "africa cup of nations" ||
+        name === "afcon"
+    ) {
+
+        return "afcon";
+
+    }
+
+
+    /* =================================================
+       COPA AMERICA
+       ================================================= */
+
+    if (
+        name === "copa america"
+    ) {
+
+        return "copa-america";
+
+    }
+
+
     /*
-     * أي بطولة أخرى:
-     * ممنوعة.
+     * أي بطولة غير موجودة في القائمة
+     * يتم رفضها.
      */
 
     return null;
@@ -1628,7 +1390,7 @@ function matchDate(match) {
 
 
 /* =====================================================
-   HOME
+   HOME TEAM
    ===================================================== */
 
 function homeTeam(match) {
@@ -1647,7 +1409,7 @@ function homeTeam(match) {
 
 
 /* =====================================================
-   AWAY
+   AWAY TEAM
    ===================================================== */
 
 function awayTeam(match) {
@@ -1703,7 +1465,7 @@ function awayGoals(match) {
    STATUS
    ===================================================== */
 
-function status(match) {
+function matchStatus(match) {
 
     return String(
 
@@ -1743,22 +1505,25 @@ function matchTime(match) {
 
 
     return d.toLocaleTimeString(
+
         "ar-DZ",
+
         {
             hour: "2-digit",
             minute: "2-digit",
             hour12: false
         }
+
     );
 
 }
 
 
 /* =====================================================
-   FILTER
+   FILTER MATCHES
    ===================================================== */
 
-function filteredMatches() {
+function getFilteredMatches() {
 
 
     let result =
@@ -1771,7 +1536,7 @@ function filteredMatches() {
 
 
     /*
-     * الدرجة الأولى والمسابقات الكبرى فقط
+     * whitelist
      */
 
     result =
@@ -1783,21 +1548,18 @@ function filteredMatches() {
 
 
     /*
-     * فلتر المستخدم
+     * selected league
      */
 
     if (
-        selectedLeague !==
-        "all"
+        selectedLeague !== "all"
     ) {
 
         result =
 
             result.filter(
                 match =>
-                    allowedLeague(
-                        match
-                    ) ===
+                    allowedLeague(match) ===
                     selectedLeague
             );
 
@@ -1817,7 +1579,7 @@ function render() {
 
 
     const result =
-        filteredMatches();
+        getFilteredMatches();
 
 
     count.textContent =
@@ -1837,40 +1599,37 @@ function render() {
 
         matchesList.innerHTML = `
 
-<div class="state">
+            <div class="state">
 
-<div class="state-icon">
-⚽
-</div>
+                <div class="state-icon">
+                    ⚽
+                </div>
 
-<h2>
-لا توجد مباريات
-</h2>
+                <h2>
+                    لا توجد مباريات
+                </h2>
 
-<p>
-لا توجد مباريات من البطولات
-الرئيسية في هذا التاريخ.
-</p>
+                <p>
+                    لا توجد مباريات من البطولات
+                    الرئيسية المحددة في هذا التاريخ.
+                </p>
 
-</div>
+            </div>
 
-`;
+        `;
 
         return;
 
     }
 
 
-    /*
-     * GROUP BY LEAGUE
-     */
+    /* GROUP BY LEAGUE */
 
     const groups = {};
 
 
     result.forEach(
         match => {
-
 
             const league =
                 getLeague(match);
@@ -1910,12 +1669,12 @@ function render() {
     matchesList.innerHTML =
 
         Object.values(groups)
+
             .map(
                 group =>
-                    createLeague(
-                        group
-                    )
+                    createLeague(group)
             )
+
             .join("");
 
 }
@@ -1929,8 +1688,7 @@ function createLeague(group) {
 
 
     const league =
-        group.league ||
-        {};
+        group.league || {};
 
 
     const logo =
@@ -1938,66 +1696,66 @@ function createLeague(group) {
         ?
         `
 
-<img
-    src="${safeURL(
-        league.logo
-    )}"
-    alt=""
-    loading="lazy">
+            <img
+                src="${safeURL(
+                    league.logo
+                )}"
+                alt=""
+                loading="lazy">
 
-`
+        `
         :
         "";
 
 
     return `
 
-<section class="league-box">
+        <section class="league-box">
 
 
-<div class="league-head">
+            <div class="league-head">
 
 
-<div class="league-title">
+                <div class="league-title">
 
-${logo}
-
-
-<span class="league-name">
-
-${escapeHTML(
-    league.name ||
-    "بطولة"
-)}
-
-</span>
-
-</div>
+                    ${logo}
 
 
-<span class="league-country">
+                    <span
+                        class="league-name">
 
-${escapeHTML(
-    league.country ||
-    ""
-)}
+                        ${escapeHTML(
+                            league.name ||
+                            "بطولة"
+                        )}
 
-</span>
+                    </span>
 
-
-</div>
-
-
-${group.matches
-    .map(
-        createMatch
-    )
-    .join("")}
+                </div>
 
 
-</section>
+                <span
+                    class="league-country">
 
-`;
+                    ${escapeHTML(
+                        league.country ||
+                        ""
+                    )}
+
+                </span>
+
+
+            </div>
+
+
+            ${group.matches
+                .map(createMatch)
+                .join("")}
+
+
+        </section>
+
+    `;
 
 }
 
@@ -2018,33 +1776,43 @@ function createMatch(match) {
 
 
     const gameStatus =
-        status(match);
+        matchStatus(match);
+
+
+    const liveStatuses = [
+
+        "1H",
+        "2H",
+        "HT",
+        "ET",
+        "P",
+        "LIVE"
+
+    ];
+
+
+    const finishedStatuses = [
+
+        "FT",
+        "AET",
+        "PEN"
+
+    ];
 
 
     const live =
-        [
-            "1H",
-            "2H",
-            "HT",
-            "ET",
-            "P",
-            "LIVE"
-        ].includes(
+        liveStatuses.includes(
             gameStatus
         );
 
 
     const finished =
-        [
-            "FT",
-            "AET",
-            "PEN"
-        ].includes(
+        finishedStatuses.includes(
             gameStatus
         );
 
 
-    let center = "";
+    let center;
 
 
     if (finished) {
@@ -2052,156 +1820,155 @@ function createMatch(match) {
 
         center = `
 
-<div class="score">
+            <div class="score">
 
-${homeGoals(match)}
+                ${homeGoals(match)}
 
--
+                -
 
-${awayGoals(match)}
+                ${awayGoals(match)}
 
-</div>
+            </div>
 
-<div class="status">
-انتهت
-</div>
 
-`;
+            <div class="status">
+                انتهت
+            </div>
+
+        `;
 
     }
-
 
     else if (live) {
 
 
         center = `
 
-<div class="score live">
+            <div class="score live">
 
-🔴
+                🔴
 
-${homeGoals(match)}
+                ${homeGoals(match)}
 
--
+                -
 
-${awayGoals(match)}
+                ${awayGoals(match)}
 
-</div>
+            </div>
 
-<div class="status live">
-مباشر
-</div>
 
-`;
+            <div class="status live">
+                مباشر
+            </div>
+
+        `;
 
     }
-
 
     else {
 
 
         center = `
 
-<div class="time">
+            <div class="time">
 
-${matchTime(match)}
+                ${matchTime(match)}
 
-</div>
+            </div>
 
-<div class="status">
-لم تبدأ
-</div>
 
-`;
+            <div class="status">
+                لم تبدأ
+            </div>
+
+        `;
 
     }
 
 
     return `
 
-<div class="match">
+        <div class="match">
 
 
-<div class="team home">
+            <div class="team home">
 
 
-<span>
+                <span>
 
-${escapeHTML(
-    home.name ||
-    "الفريق"
-)}
+                    ${escapeHTML(
+                        home.name ||
+                        "الفريق"
+                    )}
 
-</span>
-
-
-${
-home.logo
-?
-`
-
-<img
-    src="${safeURL(
-        home.logo
-    )}"
-    alt=""
-    loading="lazy">
-
-`
-:
-""
-}
+                </span>
 
 
-</div>
+                ${
+                    home.logo
+                    ?
+                    `
+
+                        <img
+                            src="${safeURL(
+                                home.logo
+                            )}"
+                            alt=""
+                            loading="lazy">
+
+                    `
+                    :
+                    ""
+                }
 
 
-
-<div class="center">
-
-${center}
-
-</div>
+            </div>
 
 
+            <div class="center">
 
-<div class="team away">
+                ${center}
 
-
-${
-away.logo
-?
-`
-
-<img
-    src="${safeURL(
-        away.logo
-    )}"
-    alt=""
-    loading="lazy">
-
-`
-:
-""
-}
+            </div>
 
 
-<span>
-
-${escapeHTML(
-    away.name ||
-    "الفريق"
-)}
-
-</span>
+            <div class="team away">
 
 
-</div>
+                ${
+                    away.logo
+                    ?
+                    `
+
+                        <img
+                            src="${safeURL(
+                                away.logo
+                            )}"
+                            alt=""
+                            loading="lazy">
+
+                    `
+                    :
+                    ""
+                }
 
 
-</div>
+                <span>
 
-`;
+                    ${escapeHTML(
+                        away.name ||
+                        "الفريق"
+                    )}
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+    `;
 
 }
 
@@ -2221,13 +1988,14 @@ function formatDate(value) {
 
 
     return d.toLocaleDateString(
+
         "ar-DZ",
+
         {
-            day:
-                "numeric",
-            month:
-                "long"
+            day: "numeric",
+            month: "long"
         }
+
     );
 
 }
@@ -2251,10 +2019,8 @@ function safeURL(url) {
 
 
         if (
-            u.protocol !==
-                "http:" &&
-            u.protocol !==
-                "https:"
+            u.protocol !== "http:" &&
+            u.protocol !== "https:"
         ) {
 
             return "";
@@ -2265,9 +2031,7 @@ function safeURL(url) {
         return u.href;
 
 
-    }
-
-    catch {
+    } catch {
 
         return "";
 
@@ -2440,8 +2204,17 @@ if (
         "click",
         () => {
 
-            nav.classList.toggle(
-                "active"
+            const open =
+                nav.classList.toggle(
+                    "active"
+                );
+
+
+            menuBtn.setAttribute(
+                "aria-expanded",
+                open
+                    ? "true"
+                    : "false"
             );
 
         }
