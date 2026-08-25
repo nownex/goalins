@@ -10,6 +10,7 @@ permissions:
   contents: write
 
 jobs:
+
   update-matches:
 
     runs-on: ubuntu-latest
@@ -22,6 +23,7 @@ jobs:
       - name: Fetch football matches
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+
         run: |
 
           python3 <<'PY'
@@ -29,90 +31,220 @@ jobs:
           import json
           import os
           import time
-          from datetime import datetime, timedelta, timezone
-          from urllib.request import Request, urlopen
+
+          from datetime import (
+              datetime,
+              timedelta,
+              timezone
+          )
+
+          from urllib.request import (
+              Request,
+              urlopen
+          )
+
           from urllib.parse import urlencode
 
-          API_KEY = os.environ.get("API_FOOTBALL_KEY")
+
+          # =====================================================
+          # CONFIG
+          # =====================================================
+
+          API_KEY = os.environ.get(
+              "API_FOOTBALL_KEY"
+          )
 
           if not API_KEY:
-              raise RuntimeError("API_FOOTBALL_KEY is missing")
+              raise RuntimeError(
+                  "API_FOOTBALL_KEY is missing"
+              )
 
-          BASE_URL = "https://v3.football.api-sports.io/fixtures"
 
-          # الجزائر = Africa/Algiers
-          # نستخدم UTC+1 بشكل ثابت هنا.
-          LOCAL_OFFSET = timedelta(hours=1)
+          BASE_URL = (
+              "https://v3.football.api-sports.io/fixtures"
+          )
 
-          today_utc = datetime.now(timezone.utc)
+
+          # Algeria timezone
+          LOCAL_OFFSET = timedelta(
+              hours=1
+          )
+
+
+          # =====================================================
+          # DATE RANGE
+          # =====================================================
+          #
+          # Previous 7 days
+          # +
+          # Today
+          # +
+          # Next 7 days
+          #
+          # This is important for the Highlights engine.
+          # =====================================================
+
+          DAYS_BEFORE = 7
+          DAYS_AFTER = 7
+
+
+          now_utc = datetime.now(
+              timezone.utc
+          )
+
 
           matches = []
 
-          for day_offset in range(7):
+
+          # =====================================================
+          # FETCH MATCHES
+          # =====================================================
+
+          for day_offset in range(
+              -DAYS_BEFORE,
+              DAYS_AFTER + 1
+          ):
 
               local_date = (
-                  today_utc + LOCAL_OFFSET
-                  + timedelta(days=day_offset)
+                  now_utc
+                  + LOCAL_OFFSET
+                  + timedelta(
+                      days=day_offset
+                  )
               ).date()
 
-              date_string = local_date.isoformat()
 
-              print(f"Fetching: {date_string}")
-
-              query = urlencode({
-                  "date": date_string,
-                  "timezone": "Africa/Algiers"
-              })
-
-              url = f"{BASE_URL}?{query}"
-
-              request = Request(
-                  url,
-                  headers={
-                      "x-apisports-key": API_KEY,
-                      "Accept": "application/json"
-                  }
+              date_string = (
+                  local_date.isoformat()
               )
 
-              with urlopen(request, timeout=30) as response:
 
-                  data = json.loads(
-                      response.read().decode("utf-8")
+              print(
+                  f"Fetching: {date_string}"
+              )
+
+
+              query = urlencode({
+
+                  "date":
+                      date_string,
+
+                  "timezone":
+                      "Africa/Algiers"
+
+              })
+
+
+              url = (
+                  f"{BASE_URL}?{query}"
+              )
+
+
+              request = Request(
+
+                  url,
+
+                  headers={
+
+                      "x-apisports-key":
+                          API_KEY,
+
+                      "Accept":
+                          "application/json"
+
+                  }
+
+              )
+
+
+              try:
+
+                  with urlopen(
+                      request,
+                      timeout=30
+                  ) as response:
+
+                      data = json.loads(
+                          response
+                          .read()
+                          .decode("utf-8")
+                      )
+
+
+              except Exception as e:
+
+                  print(
+                      f"ERROR fetching {date_string}:",
+                      e
                   )
 
+                  continue
+
+
               if data.get("errors"):
+
                   print(
                       "API errors:",
                       data["errors"]
                   )
 
-              for item in data.get("response", []):
 
-                  fixture = item.get("fixture", {})
-                  league = item.get("league", {})
-                  teams = item.get("teams", {})
-                  goals = item.get("goals", {})
-                  status = fixture.get("status", {})
+              for item in data.get(
+                  "response",
+                  []
+              ):
+
+                  fixture = item.get(
+                      "fixture",
+                      {}
+                  )
+
+                  league = item.get(
+                      "league",
+                      {}
+                  )
+
+                  teams = item.get(
+                      "teams",
+                      {}
+                  )
+
+                  goals = item.get(
+                      "goals",
+                      {}
+                  )
+
+                  status = fixture.get(
+                      "status",
+                      {}
+                  )
+
 
                   matches.append({
 
                       "fixture_id":
                           fixture.get("id"),
 
+
                       "date":
                           fixture.get("date"),
+
 
                       "timestamp":
                           fixture.get("timestamp"),
 
+
                       "status":
                           status.get("short"),
+
 
                       "status_long":
                           status.get("long"),
 
+
                       "elapsed":
                           status.get("elapsed"),
+
 
                       "league": {
 
@@ -136,37 +268,56 @@ jobs:
 
                       },
 
+
                       "home": {
 
                           "id":
-                              teams.get("home", {}).get("id"),
+                              teams
+                              .get("home", {})
+                              .get("id"),
 
                           "name":
-                              teams.get("home", {}).get("name"),
+                              teams
+                              .get("home", {})
+                              .get("name"),
 
                           "logo":
-                              teams.get("home", {}).get("logo"),
+                              teams
+                              .get("home", {})
+                              .get("logo"),
 
                           "winner":
-                              teams.get("home", {}).get("winner")
+                              teams
+                              .get("home", {})
+                              .get("winner")
 
                       },
+
 
                       "away": {
 
                           "id":
-                              teams.get("away", {}).get("id"),
+                              teams
+                              .get("away", {})
+                              .get("id"),
 
                           "name":
-                              teams.get("away", {}).get("name"),
+                              teams
+                              .get("away", {})
+                              .get("name"),
 
                           "logo":
-                              teams.get("away", {}).get("logo"),
+                              teams
+                              .get("away", {})
+                              .get("logo"),
 
                           "winner":
-                              teams.get("away", {}).get("winner")
+                              teams
+                              .get("away", {})
+                              .get("winner")
 
                       },
+
 
                       "goals": {
 
@@ -180,28 +331,120 @@ jobs:
 
                   })
 
-              # نتجنب طلبات متتالية بسرعة
+
+              # Small delay between requests
               time.sleep(1)
 
 
-          # ترتيب المباريات حسب وقت البداية
-          matches.sort(
-              key=lambda x: (
-                  x.get("timestamp") or 0
+          # =====================================================
+          # REMOVE DUPLICATE FIXTURES
+          # =====================================================
+
+          unique_matches = {}
+
+          for match in matches:
+
+              fixture_id = match.get(
+                  "fixture_id"
               )
+
+              if fixture_id:
+
+                  unique_matches[
+                      fixture_id
+                  ] = match
+
+
+          matches = list(
+              unique_matches.values()
           )
 
+
+          # =====================================================
+          # SORT
+          # =====================================================
+
+          matches.sort(
+
+              key=lambda x: (
+                  x.get("timestamp")
+                  or 0
+              )
+
+          )
+
+
+          # =====================================================
+          # DIAGNOSTIC
+          # =====================================================
+
+          finished = [
+
+              match
+
+              for match in matches
+
+              if match.get("status")
+              in (
+                  "FT",
+                  "AET",
+                  "PEN"
+              )
+
+          ]
+
+
+          print(
+              "======================================"
+          )
+
+          print(
+              "GOALINS MATCHES DIAGNOSTIC"
+          )
+
+          print(
+              "======================================"
+          )
+
+          print(
+              f"Total matches: {len(matches)}"
+          )
+
+          print(
+              f"Finished matches: {len(finished)}"
+          )
+
+          print(
+              f"Date range: "
+              f"{DAYS_BEFORE} days before "
+              f"+ today + "
+              f"{DAYS_AFTER} days after"
+          )
+
+          print(
+              "======================================"
+          )
+
+
+          # =====================================================
+          # OUTPUT
+          # =====================================================
 
           output = {
 
               "updated_at":
-                  datetime.now(timezone.utc).isoformat(),
+                  datetime.now(
+                      timezone.utc
+                  ).isoformat(),
 
               "timezone":
                   "Africa/Algiers",
 
-              "days":
-                  7,
+              "days_before":
+                  DAYS_BEFORE,
+
+              "days_after":
+                  DAYS_AFTER,
 
               "count":
                   len(matches),
@@ -225,10 +468,15 @@ jobs:
           ) as file:
 
               json.dump(
+
                   output,
+
                   file,
+
                   ensure_ascii=False,
+
                   indent=2
+
               )
 
 
@@ -244,11 +492,13 @@ jobs:
 
           git config user.name "GOALINS Bot"
 
-          git config user.email "actions@users.noreply.github.com"
+          git config user.email \
+            "actions@users.noreply.github.com"
 
           git add data/matches.json
 
           git diff --cached --quiet || \
-            git commit -m "Update football matches"
+            git commit \
+            -m "Update football matches"
 
           git push
