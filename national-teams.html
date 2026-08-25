@@ -2,365 +2,778 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>المنتخبات | GOALINS</title>
 
     <meta name="description"
           content="مباريات المنتخبات الوطنية القادمة والنتائج">
 
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color"
+          content="#07111f">
+
+    <link rel="stylesheet"
+          href="style.css">
+
 
     <style>
 
+        /* =====================================================
+           GOALINS — NATIONAL TEAMS
+           ===================================================== */
+
         .national-page {
+
             min-height: calc(100vh - 80px);
+
             padding: 40px 0 70px;
+
         }
+
+
+        /* =====================================================
+           PAGE HEADER
+           ===================================================== */
 
         .page-head {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: flex-end;
+
             gap: 20px;
+
             margin-bottom: 25px;
+
         }
+
 
         .page-head small {
+
             color: var(--accent);
+
             font-weight: 800;
+
         }
+
 
         .page-head h1 {
+
             margin: 6px 0;
+
             font-size: 32px;
+
         }
+
 
         .page-head p {
+
             color: var(--muted);
+
             font-size: 14px;
+
         }
+
 
         .back-link {
+
             color: var(--accent);
+
             font-weight: 700;
+
             text-decoration: none;
+
         }
 
-        /* DATE */
+
+        /* =====================================================
+           DATE BUTTONS
+           ===================================================== */
 
         .date-buttons {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 10px;
+
             margin-bottom: 12px;
+
         }
+
 
         .date-btn {
+
             padding: 14px 10px;
+
             border-radius: 13px;
+
             border: 1px solid var(--border);
+
             background: var(--card);
+
             color: white;
+
             font-family: inherit;
+
             cursor: pointer;
+
+            transition: .2s ease;
+
         }
+
+
+        .date-btn:hover {
+
+            background: var(--card-hover);
+
+        }
+
 
         .date-btn strong {
+
             display: block;
+
         }
+
 
         .date-btn small {
+
+            display: block;
+
+            margin-top: 3px;
+
             color: var(--muted);
+
         }
+
 
         .date-btn.active {
+
             border-color: var(--accent);
+
             color: var(--accent);
-            background: rgba(37,211,102,.10);
+
+            background:
+                rgba(37,211,102,.10);
+
         }
 
-        /* DATE PICKER */
+
+        .date-btn.active small {
+
+            color: var(--accent);
+
+        }
+
+
+        /* =====================================================
+           DATE PICKER
+           ===================================================== */
 
         .date-picker {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
             margin-bottom: 15px;
+
         }
+
 
         .date-picker label {
+
             color: var(--muted);
+
             font-size: 13px;
+
         }
+
 
         .date-picker input {
+
             flex: 1;
+
             padding: 12px;
+
             border-radius: 10px;
-            border: 1px solid var(--border);
+
+            border:
+                1px solid var(--border);
+
             background: var(--card);
+
             color: white;
+
             font-family: inherit;
+
         }
 
-        /* FILTER */
+
+        .date-picker input:focus {
+
+            outline: none;
+
+            border-color: var(--accent);
+
+        }
+
+
+        /* =====================================================
+           COMPETITION FILTER
+           ===================================================== */
 
         .filter-box {
+
             margin-bottom: 25px;
+
         }
+
 
         .filter-box label {
+
             display: block;
+
             color: var(--muted);
+
             margin-bottom: 7px;
+
             font-size: 13px;
+
         }
+
 
         .filter-box select {
+
             width: 100%;
+
             padding: 13px;
+
             border-radius: 12px;
-            border: 1px solid var(--border);
+
+            border:
+                1px solid var(--border);
+
             background: var(--card);
+
             color: white;
+
             font-family: inherit;
+
+            cursor: pointer;
+
         }
 
-        /* INFO */
+
+        .filter-box select:focus {
+
+            outline: none;
+
+            border-color: var(--accent);
+
+        }
+
+
+        /* =====================================================
+           RESULTS INFO
+           ===================================================== */
 
         .results-info {
+
             display: flex;
+
             justify-content: space-between;
+
             color: var(--muted);
+
             margin-bottom: 14px;
+
             font-size: 13px;
+
         }
+
 
         .results-info strong {
+
             color: white;
+
         }
 
-        /* MATCHES */
+
+        /* =====================================================
+           MATCHES LIST
+           ===================================================== */
 
         .matches-list {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 12px;
+
         }
+
+
+        /* =====================================================
+           LEAGUE BOX
+           ===================================================== */
 
         .league-box {
+
             overflow: hidden;
-            border: 1px solid var(--border);
-            border-radius: 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
             background: var(--card);
+
         }
+
 
         .league-head {
+
             display: flex;
+
             align-items: center;
-            gap: 9px;
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 13px 15px;
+
+            border-bottom:
+                1px solid var(--border);
+
         }
+
+
+        .league-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
 
         .league-head img {
-            width: 28px;
-            height: 28px;
+
+            width: 30px;
+
+            height: 30px;
+
             object-fit: contain;
+
         }
+
 
         .league-head strong {
-            font-size: 13px;
+
+            font-size: 14px;
+
         }
+
+
+        .league-country {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           MATCH
+           ===================================================== */
 
         .match {
+
             display: grid;
-            grid-template-columns: 1fr 90px 1fr;
+
+            grid-template-columns:
+                1fr 90px 1fr;
+
             align-items: center;
-            min-height: 105px;
+
+            min-height: 108px;
+
             padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
+
+            border-bottom:
+                1px solid var(--border);
+
         }
+
 
         .match:last-child {
+
             border-bottom: 0;
+
         }
+
+
+        /* =====================================================
+           TEAM
+           ===================================================== */
 
         .team {
+
             display: flex;
+
             align-items: center;
+
             gap: 9px;
+
             font-size: 13px;
+
             font-weight: 800;
+
         }
+
 
         .team.home {
+
             justify-content: flex-end;
+
             text-align: right;
+
         }
+
 
         .team.away {
+
+            justify-content: flex-start;
+
             text-align: left;
+
         }
+
 
         .team img {
-            width: 40px;
-            height: 40px;
+
+            width: 42px;
+
+            height: 42px;
+
             object-fit: contain;
+
+            flex-shrink: 0;
+
         }
+
+
+        /* =====================================================
+           CENTER
+           ===================================================== */
 
         .center {
+
             text-align: center;
+
         }
+
 
         .time {
+
             color: var(--accent);
+
+            font-size: 15px;
+
             font-weight: 900;
+
         }
+
 
         .score {
-            font-size: 18px;
+
+            font-size: 19px;
+
             font-weight: 900;
+
         }
+
 
         .status {
-            margin-top: 3px;
+
+            margin-top: 4px;
+
             color: var(--muted);
+
             font-size: 10px;
+
         }
+
 
         .live {
+
             color: #ff5364;
+
         }
 
-        /* STATE */
+
+        /* =====================================================
+           STATE
+           ===================================================== */
 
         .state {
+
             min-height: 280px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             flex-direction: column;
+
             text-align: center;
-            border: 1px dashed rgba(255,255,255,.13);
+
+            border:
+                1px dashed
+                rgba(255,255,255,.13);
+
             border-radius: 18px;
+
             padding: 30px;
+
         }
+
 
         .state-icon {
+
             font-size: 38px;
+
             margin-bottom: 12px;
+
         }
+
 
         .state h2 {
+
             margin-bottom: 7px;
+
         }
+
 
         .state p {
+
             color: var(--muted);
+
             font-size: 13px;
+
             line-height: 1.8;
+
         }
+
+
+        /* =====================================================
+           LOADER
+           ===================================================== */
 
         .loader {
+
             width: 38px;
+
             height: 38px;
+
             border-radius: 50%;
-            border: 3px solid rgba(255,255,255,.1);
-            border-top-color: var(--accent);
-            animation: spin .8s linear infinite;
+
+            border:
+                3px solid
+                rgba(255,255,255,.1);
+
+            border-top-color:
+                var(--accent);
+
+            animation:
+                spin .8s linear infinite;
+
             margin-bottom: 15px;
+
         }
 
+
         @keyframes spin {
+
             to {
+
                 transform: rotate(360deg);
+
             }
+
         }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
 
         @media(max-width:650px) {
 
             .national-page {
+
                 padding: 30px 0 60px;
+
             }
+
 
             .page-head {
+
                 align-items: flex-start;
+
                 flex-direction: column;
+
             }
+
 
             .page-head h1 {
+
                 font-size: 28px;
+
             }
+
 
             .date-buttons {
+
                 gap: 7px;
+
             }
+
 
             .date-btn {
+
                 padding: 12px 5px;
+
                 font-size: 12px;
+
             }
+
 
             .match {
-                grid-template-columns: 1fr 60px 1fr;
-                padding: 10px 7px;
+
+                grid-template-columns:
+                    1fr 60px 1fr;
+
+                padding:
+                    10px 7px;
+
             }
+
 
             .team {
+
                 font-size: 10px;
+
                 gap: 5px;
+
             }
+
 
             .team img {
-                width: 32px;
-                height: 32px;
+
+                width: 33px;
+
+                height: 33px;
+
             }
+
 
             .time {
+
                 font-size: 12px;
+
             }
 
+
             .score {
+
                 font-size: 16px;
+
             }
+
+
+            .league-head {
+
+                padding:
+                    11px 12px;
+
+            }
+
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <header class="header">
 
     <div class="container header-inner">
 
-        <a href="index.html" class="logo">
+
+        <a
+            href="index.html"
+            class="logo">
+
             <span>GOAL</span>INS
+
         </a>
+
 
         <button
             class="menu-btn"
             id="menuBtn"
-            aria-label="القائمة">
+            aria-label="القائمة"
+            aria-expanded="false">
 
             ☰
 
         </button>
 
+
         <nav id="nav">
 
-            <a href="matches.html">المباريات</a>
+            <a href="matches.html">
+                المباريات
+            </a>
 
-            <a href="national-teams.html">المنتخبات</a>
+            <a href="national-teams.html">
+                المنتخبات
+            </a>
 
-            <a href="highlights.html">الملخصات</a>
+            <a href="highlights.html">
+                الملخصات
+            </a>
 
-            <a href="goals.html">الأهداف</a>
+            <a href="goals.html">
+                الأهداف
+            </a>
 
         </nav>
 
@@ -370,74 +783,115 @@
 
 
 
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
 <main class="national-page">
 
     <div class="container">
 
 
+        <!-- PAGE HEADER -->
+
         <div class="page-head">
 
             <div>
 
-                <small>GOALINS FOOTBALL</small>
+                <small>
+                    GOALINS FOOTBALL
+                </small>
 
-                <h1>مباريات المنتخبات</h1>
+                <h1>
+                    مباريات المنتخبات
+                </h1>
 
                 <p>
-                    تابع أهم مباريات المنتخبات الوطنية.
+                    تابع أهم مباريات المنتخبات
+                    الوطنية والشبابية.
                 </p>
 
             </div>
 
-            <a href="index.html" class="back-link">
+
+            <a
+                href="index.html"
+                class="back-link">
+
                 ← الرئيسية
+
             </a>
 
         </div>
 
 
 
-        <!-- DATE BUTTONS -->
+        <!-- =================================================
+             DATE BUTTONS
+             ================================================= -->
 
         <div class="date-buttons">
 
-            <button class="date-btn active" data-offset="0">
 
-                <strong>اليوم</strong>
+            <button
+                class="date-btn active"
+                data-offset="0">
 
-                <small>مباريات اليوم</small>
+                <strong>
+                    اليوم
+                </strong>
 
-            </button>
-
-
-            <button class="date-btn" data-offset="1">
-
-                <strong>غدًا</strong>
-
-                <small>غدًا</small>
+                <small>
+                    مباريات اليوم
+                </small>
 
             </button>
 
 
-            <button class="date-btn" data-offset="2">
+            <button
+                class="date-btn"
+                data-offset="1">
 
-                <strong>بعد غد</strong>
+                <strong>
+                    غدًا
+                </strong>
 
-                <small>المباريات القادمة</small>
+                <small>
+                    مباريات الغد
+                </small>
 
             </button>
+
+
+            <button
+                class="date-btn"
+                data-offset="2">
+
+                <strong>
+                    بعد غد
+                </strong>
+
+                <small>
+                    مباريات قادمة
+                </small>
+
+            </button>
+
 
         </div>
 
 
 
-        <!-- CUSTOM DATE -->
+        <!-- =================================================
+             CUSTOM DATE
+             ================================================= -->
 
         <div class="date-picker">
 
             <label for="date">
                 تاريخ:
             </label>
+
 
             <input
                 type="date"
@@ -447,7 +901,9 @@
 
 
 
-        <!-- COMPETITION -->
+        <!-- =================================================
+             COMPETITION
+             ================================================= -->
 
         <div class="filter-box">
 
@@ -455,43 +911,54 @@
                 البطولة
             </label>
 
+
             <select id="competition">
+
 
                 <option value="all">
                     جميع المنافسات
                 </option>
 
+
                 <option value="world">
                     كأس العالم
                 </option>
+
 
                 <option value="world-qualifiers">
                     تصفيات كأس العالم
                 </option>
 
+
                 <option value="euro">
                     كأس أمم أوروبا
                 </option>
+
 
                 <option value="afcon">
                     كأس أمم أفريقيا
                 </option>
 
+
                 <option value="nations">
                     دوري الأمم
                 </option>
+
 
                 <option value="copa">
                     كوبا أمريكا
                 </option>
 
+
                 <option value="asian">
                     كأس آسيا
                 </option>
 
+
                 <option value="friendly">
                     مباريات ودية
                 </option>
+
 
             </select>
 
@@ -499,24 +966,41 @@
 
 
 
+        <!-- =================================================
+             RESULTS INFO
+             ================================================= -->
+
         <div class="results-info">
+
 
             <span id="dateText">
                 مباريات المنتخبات اليوم
             </span>
 
+
             <span>
-                <strong id="count">0</strong>
+
+                <strong id="count">
+                    0
+                </strong>
+
                 مباراة
+
             </span>
+
 
         </div>
 
 
 
+        <!-- =================================================
+             MATCHES
+             ================================================= -->
+
         <div
             class="matches-list"
             id="matchesList">
+
 
             <div class="state">
 
@@ -532,7 +1016,9 @@
 
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -540,31 +1026,56 @@
 
 
 
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
 <script>
 
+
 /* =====================================================
-   GOALINS — NATIONAL TEAMS
+   ELEMENTS
    ===================================================== */
 
-
 const list =
-    document.getElementById("matchesList");
+    document.getElementById(
+        "matchesList"
+    );
+
 
 const count =
-    document.getElementById("count");
+    document.getElementById(
+        "count"
+    );
+
 
 const dateText =
-    document.getElementById("dateText");
+    document.getElementById(
+        "dateText"
+    );
+
 
 const dateInput =
-    document.getElementById("date");
+    document.getElementById(
+        "date"
+    );
+
 
 const competition =
-    document.getElementById("competition");
+    document.getElementById(
+        "competition"
+    );
+
 
 const dateButtons =
-    document.querySelectorAll(".date-btn");
+    document.querySelectorAll(
+        ".date-btn"
+    );
 
+
+/* =====================================================
+   STATE
+   ===================================================== */
 
 let matches = [];
 
@@ -581,65 +1092,59 @@ let selectedCompetition =
 
 function localDate(offset = 0) {
 
-    const d = new Date();
+    const date =
+        new Date();
 
-    d.setDate(
-        d.getDate() + offset
+
+    date.setDate(
+        date.getDate() + offset
     );
 
+
     const year =
-        d.getFullYear();
+        date.getFullYear();
+
 
     const month =
-        String(d.getMonth() + 1)
-        .padStart(2, "0");
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
 
     const day =
-        String(d.getDate())
-        .padStart(2, "0");
+        String(
+            date.getDate()
+        ).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
 
 }
 
 
 /* =====================================================
-   LOAD JSON
+   LOAD MATCHES
    ===================================================== */
 
 async function loadMatches() {
 
     try {
 
-        const url =
-            new URL(
-                "data/matches.json",
-                document.baseURI
-            ).href;
-
-
-        const controller =
-            new AbortController();
-
-
-        const timeout =
-            setTimeout(
-                () => controller.abort(),
-                15000
-            );
-
 
         const response =
             await fetch(
-                url + "?v=" + Date.now(),
+                "data/matches.json?v=" +
+                Date.now(),
                 {
-                    cache: "no-store",
-                    signal: controller.signal
+                    cache: "no-store"
                 }
             );
-
-
-        clearTimeout(timeout);
 
 
         if (!response.ok) {
@@ -657,26 +1162,41 @@ async function loadMatches() {
 
 
         /*
-         * ندعم أكثر من شكل للـJSON
+         * دعم أكثر من بنية
          */
 
-        if (Array.isArray(data)) {
-
-            matches = data;
-
-        } else if (
-            Array.isArray(data.matches)
+        if (
+            Array.isArray(data)
         ) {
 
-            matches = data.matches;
+            matches =
+                data;
 
-        } else if (
-            Array.isArray(data.response)
+        }
+
+        else if (
+            Array.isArray(
+                data.matches
+            )
         ) {
 
-            matches = data.response;
+            matches =
+                data.matches;
 
-        } else {
+        }
+
+        else if (
+            Array.isArray(
+                data.response
+            )
+        ) {
+
+            matches =
+                data.response;
+
+        }
+
+        else {
 
             matches = [];
 
@@ -684,18 +1204,22 @@ async function loadMatches() {
 
 
         console.log(
-            "GOALINS matches:",
-            matches.length
+            "GOALINS:",
+            matches.length,
+            "matches loaded"
         );
 
 
         render();
 
 
-    } catch (error) {
+    }
+
+    catch(error) {
+
 
         console.error(
-            "GOALINS ERROR:",
+            "GOALINS:",
             error
         );
 
@@ -715,10 +1239,8 @@ async function loadMatches() {
                 <p>
                     لم تتمكن الصفحة من قراءة
                     ملف المباريات.
-                    <br>
-                    تحقق من وجود:
-                    <br>
-                    <b>data/matches.json</b>
+                    <br><br>
+                    data/matches.json
                 </p>
 
             </div>
@@ -731,15 +1253,19 @@ async function loadMatches() {
 
 
 /* =====================================================
-   GET DATE
+   GET MATCH DATE
    ===================================================== */
 
 function matchDate(match) {
 
     return String(
+
         match.date ||
+
         match.fixture?.date ||
+
         ""
+
     ).substring(0, 10);
 
 }
@@ -752,64 +1278,144 @@ function matchDate(match) {
 function league(match) {
 
     return (
+
         match.league ||
+
         match.competition ||
+
         {}
+
     );
 
 }
 
 
 /* =====================================================
-   NATIONAL COMPETITIONS
+   IMPORTANT:
+   NATIONAL COMPETITIONS ONLY
    ===================================================== */
 
 function isNational(match) {
 
+
     const l =
         league(match);
+
 
     const name =
         String(
             l.name || ""
-        ).toLowerCase();
+        )
+        .toLowerCase()
+        .trim();
 
 
     /*
-     * مسابقات المنتخبات
+     * ================================================
+     * أولاً:
+     * استبعاد بطولات الأندية
+     * ================================================
      */
 
-    const terms = [
+
+    const clubCompetitionTerms = [
+
+        "friendlies clubs",
+
+        "club friendly",
+
+        "club friendlies",
+
+        "clubs friendlies",
+
+        "club friendly matches"
+
+    ];
+
+
+    if (
+
+        clubCompetitionTerms.some(
+            term =>
+                name.includes(term)
+        )
+
+    ) {
+
+        return false;
+
+    }
+
+
+    /*
+     * ================================================
+     * مسابقات المنتخبات
+     * ================================================
+     */
+
+
+    const nationalTerms = [
+
+        /* كأس العالم */
 
         "world cup",
+
         "world cup qualification",
+
         "world cup qualifiers",
 
+        /* أوروبا */
+
         "euro",
+
         "european championship",
 
+        "european qualifiers",
+
+        /* أفريقيا */
+
         "africa cup of nations",
+
         "afcon",
+
+        /* دوري الأمم */
 
         "nations league",
 
+        /* أمريكا */
+
         "copa america",
+
+        "copa mundial",
+
+        /* آسيا */
 
         "asian cup",
 
         "afc asian cup",
 
+        /* أمريكا الشمالية */
+
         "gold cup",
 
         "concacaf",
 
+        /* أوقيانوسيا */
+
+        "oceania",
+
+        /* مباريات المنتخبات الودية */
+
         "international friendly",
+
+        "international friendlies",
+
         "friendlies"
 
     ];
 
 
-    return terms.some(
+    return nationalTerms.some(
         term =>
             name.includes(term)
     );
@@ -822,6 +1428,7 @@ function isNational(match) {
    ===================================================== */
 
 function competitionOK(match) {
+
 
     if (
         selectedCompetition ===
@@ -836,54 +1443,121 @@ function competitionOK(match) {
     const name =
         String(
             league(match).name || ""
-        ).toLowerCase();
+        )
+        .toLowerCase();
 
 
     const map = {
 
+
         world: [
+
             "world cup"
+
         ],
+
 
         "world-qualifiers": [
+
             "world cup qualification",
+
             "world cup qualifiers"
+
         ],
+
 
         euro: [
+
             "euro",
-            "european championship"
+
+            "european championship",
+
+            "european qualifiers"
+
         ],
+
 
         afcon: [
+
             "africa cup of nations",
+
             "afcon"
+
         ],
+
 
         nations: [
+
             "nations league"
+
         ],
+
 
         copa: [
-            "copa america"
+
+            "copa america",
+
+            "copa mundial"
+
         ],
+
 
         asian: [
+
             "asian cup",
-            "afc asian"
+
+            "afc asian cup"
+
         ],
 
+
         friendly: [
-            "friendly",
+
+            "international friendly",
+
+            "international friendlies",
+
             "friendlies"
+
         ]
 
     };
 
 
-    return (
-        map[selectedCompetition] || []
-    ).some(
+    const terms =
+        map[
+            selectedCompetition
+        ] || [];
+
+
+    /*
+     * Friendlies Clubs يجب أن تبقى
+     * مستبعدة حتى عند اختيار الوديات.
+     */
+
+
+    if (
+
+        name.includes(
+            "friendlies clubs"
+        ) ||
+
+        name.includes(
+            "club friendly"
+        ) ||
+
+        name.includes(
+            "club friendlies"
+        )
+
+    ) {
+
+        return false;
+
+    }
+
+
+    return terms.some(
         term =>
             name.includes(term)
     );
@@ -892,52 +1566,76 @@ function competitionOK(match) {
 
 
 /* =====================================================
-   TEAM DATA
+   HOME TEAM
    ===================================================== */
 
 function homeTeam(match) {
 
     return (
+
         match.home ||
+
         match.teams?.home ||
+
         {}
-    );
 
-}
-
-
-function awayTeam(match) {
-
-    return (
-        match.away ||
-        match.teams?.away ||
-        {}
     );
 
 }
 
 
 /* =====================================================
-   SCORE
+   AWAY TEAM
    ===================================================== */
 
-function goalsHome(match) {
+function awayTeam(match) {
 
     return (
-        match.goals?.home ??
-        match.score?.fulltime?.home ??
-        "-"
+
+        match.away ||
+
+        match.teams?.away ||
+
+        {}
+
     );
 
 }
 
 
+/* =====================================================
+   HOME GOALS
+   ===================================================== */
+
+function goalsHome(match) {
+
+    return (
+
+        match.goals?.home ??
+
+        match.score?.fulltime?.home ??
+
+        "-"
+
+    );
+
+}
+
+
+/* =====================================================
+   AWAY GOALS
+   ===================================================== */
+
 function goalsAway(match) {
 
     return (
+
         match.goals?.away ??
+
         match.score?.fulltime?.away ??
+
         "-"
+
     );
 
 }
@@ -950,9 +1648,13 @@ function goalsAway(match) {
 function matchStatus(match) {
 
     return String(
+
         match.status ||
+
         match.fixture?.status?.short ||
+
         ""
+
     );
 
 }
@@ -964,27 +1666,42 @@ function matchStatus(match) {
 
 function matchTime(match) {
 
+
     const value =
+
         match.date ||
+
         match.fixture?.date;
 
 
     if (!value) {
+
         return "--:--";
+
     }
 
 
-    const d =
+    const date =
         new Date(value);
 
 
-    return d.toLocaleTimeString(
+    return date.toLocaleTimeString(
+
         "ar-DZ",
+
         {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit",
+
+            hour12:
+                false
+
         }
+
     );
 
 }
@@ -996,7 +1713,9 @@ function matchTime(match) {
 
 function render() {
 
+
     let filtered =
+
         matches.filter(
             match =>
                 matchDate(match) ===
@@ -1004,32 +1723,52 @@ function render() {
         );
 
 
+    /*
+     * المنتخبات فقط
+     */
+
     filtered =
+
         filtered.filter(
             match =>
                 isNational(match)
         );
 
 
+    /*
+     * البطولة
+     */
+
     filtered =
+
         filtered.filter(
             match =>
                 competitionOK(match)
         );
 
 
+    /*
+     * ترتيب الوقت
+     */
+
     filtered.sort(
+
         (a, b) =>
+
             Number(
                 a.timestamp ||
                 a.fixture?.timestamp ||
                 0
-            ) -
+            )
+
+            -
+
             Number(
                 b.timestamp ||
                 b.fixture?.timestamp ||
                 0
             )
+
     );
 
 
@@ -1039,10 +1778,18 @@ function render() {
 
     dateText.textContent =
         "مباريات المنتخبات " +
-        formatDate(selectedDate);
+        formatDate(
+            selectedDate
+        );
 
 
-    if (!filtered.length) {
+    /*
+     * لا توجد مباريات
+     */
+
+    if (
+        filtered.length === 0
+    ) {
 
         list.innerHTML = `
 
@@ -1072,91 +1819,170 @@ function render() {
 
 
     /*
-     * تجميع حسب البطولة
+     * تجميع البطولات
      */
 
     const groups = {};
 
 
-    filtered.forEach(match => {
-
-        const l =
-            league(match);
-
-        const key =
-            l.id ||
-            l.name ||
-            "other";
+    filtered.forEach(
+        match => {
 
 
-        if (!groups[key]) {
+            const l =
+                league(match);
 
-            groups[key] = {
-                league: l,
-                matches: []
-            };
+
+            const key =
+
+                l.id ||
+
+                l.name ||
+
+                "other";
+
+
+            if (
+                !groups[key]
+            ) {
+
+                groups[key] = {
+
+                    league: l,
+
+                    matches: []
+
+                };
+
+            }
+
+
+            groups[key]
+                .matches
+                .push(match);
 
         }
+    );
 
 
-        groups[key]
-            .matches
-            .push(match);
-
-    });
-
+    /*
+     * عرض البطولات
+     */
 
     list.innerHTML =
+
         Object.values(groups)
-        .map(group =>
-            createLeague(group)
-        )
-        .join("");
+
+            .map(
+                group =>
+                    createLeague(
+                        group
+                    )
+            )
+
+            .join("");
 
 }
 
 
 /* =====================================================
-   LEAGUE
+   CREATE LEAGUE
    ===================================================== */
 
 function createLeague(group) {
+
 
     const l =
         group.league || {};
 
 
     const logo =
+
         l.logo
-        ? `
-            <img
-                src="${safeURL(l.logo)}"
-                alt="">
+
+        ?
+
         `
-        : "";
+
+            <img
+
+                src="${safeURL(
+                    l.logo
+                )}"
+
+                alt=""
+
+                loading="lazy">
+
+        `
+
+        :
+
+        "";
 
 
     return `
 
-        <section class="league-box">
+        <section
+            class="league-box">
 
-            <div class="league-head">
 
-                ${logo}
+            <div
+                class="league-head">
 
-                <strong>
+
+                <div
+                    class="league-title">
+
+
+                    ${logo}
+
+
+                    <strong>
+
+                        ${escapeHTML(
+
+                            l.name ||
+
+                            "منافسة دولية"
+
+                        )}
+
+                    </strong>
+
+
+                </div>
+
+
+                <span
+                    class="league-country">
+
                     ${escapeHTML(
-                        l.name ||
-                        "منافسة دولية"
+
+                        l.country ||
+
+                        ""
+
                     )}
-                </strong>
+
+                </span>
+
 
             </div>
 
 
-            ${group.matches
-                .map(createMatch)
-                .join("")}
+            ${
+
+                group.matches
+
+                    .map(
+                        createMatch
+                    )
+
+                    .join("")
+
+            }
+
 
         </section>
 
@@ -1166,13 +1992,15 @@ function createLeague(group) {
 
 
 /* =====================================================
-   MATCH CARD
+   CREATE MATCH
    ===================================================== */
 
 function createMatch(match) {
 
+
     const home =
         homeTeam(match);
+
 
     const away =
         awayTeam(match);
@@ -1182,69 +2010,135 @@ function createMatch(match) {
         matchStatus(match);
 
 
-    const live = [
+    const liveStatuses = [
+
         "1H",
+
         "2H",
+
         "HT",
+
         "ET",
+
         "P",
+
         "LIVE"
-    ].includes(status);
+
+    ];
 
 
-    const finished = [
+    const finishedStatuses = [
+
         "FT",
+
         "AET",
+
         "PEN"
-    ].includes(status);
+
+    ];
+
+
+    const isLive =
+        liveStatuses.includes(
+            status
+        );
+
+
+    const finished =
+        finishedStatuses.includes(
+            status
+        );
 
 
     let center;
 
 
+    /*
+     * انتهت
+     */
+
     if (finished) {
+
 
         center = `
 
             <div class="score">
+
                 ${goalsHome(match)}
+
                 -
+
                 ${goalsAway(match)}
+
             </div>
 
+
             <div class="status">
+
                 انتهت
+
             </div>
 
         `;
 
-    } else if (live) {
+    }
+
+
+    /*
+     * مباشر
+     */
+
+    else if (isLive) {
+
 
         center = `
 
-            <div class="score live">
+            <div
+                class="score live">
+
                 🔴
+
                 ${goalsHome(match)}
+
                 -
+
                 ${goalsAway(match)}
+
             </div>
 
-            <div class="status live">
+
+            <div
+                class="status live">
+
                 مباشر
+
             </div>
 
         `;
 
-    } else {
+    }
+
+
+    /*
+     * لم تبدأ
+     */
+
+    else {
+
 
         center = `
 
             <div class="time">
+
                 ${matchTime(match)}
+
             </div>
 
+
             <div class="status">
+
                 لم تبدأ
+
             </div>
 
         `;
@@ -1257,30 +2151,57 @@ function createMatch(match) {
         <div class="match">
 
 
-            <div class="team home">
+            <!-- HOME -->
+
+            <div
+                class="team home">
+
 
                 <span>
+
                     ${escapeHTML(
+
                         home.name ||
+
                         "المنتخب"
+
                     )}
+
                 </span>
 
+
                 ${
+
                     home.logo
-                    ? `
+
+                    ?
+
+                    `
+
                         <img
+
                             src="${safeURL(
                                 home.logo
                             )}"
+
                             alt=""
+
                             loading="lazy">
+
                     `
-                    : ""
+
+                    :
+
+                    ""
+
                 }
+
 
             </div>
 
+
+
+            <!-- CENTER -->
 
             <div class="center">
 
@@ -1289,27 +2210,52 @@ function createMatch(match) {
             </div>
 
 
-            <div class="team away">
+
+            <!-- AWAY -->
+
+            <div
+                class="team away">
+
 
                 ${
+
                     away.logo
-                    ? `
+
+                    ?
+
+                    `
+
                         <img
+
                             src="${safeURL(
                                 away.logo
                             )}"
+
                             alt=""
+
                             loading="lazy">
+
                     `
-                    : ""
+
+                    :
+
+                    ""
+
                 }
 
+
                 <span>
+
                     ${escapeHTML(
+
                         away.name ||
+
                         "المنتخب"
+
                     )}
+
                 </span>
+
 
             </div>
 
@@ -1327,18 +2273,29 @@ function createMatch(match) {
 
 function formatDate(value) {
 
-    const d =
+
+    const date =
+
         new Date(
-            value + "T12:00:00"
+            value +
+            "T12:00:00"
         );
 
 
-    return d.toLocaleDateString(
+    return date.toLocaleDateString(
+
         "ar-DZ",
+
         {
-            day: "numeric",
-            month: "long"
+
+            day:
+                "numeric",
+
+            month:
+                "long"
+
         }
+
     );
 
 }
@@ -1350,18 +2307,29 @@ function formatDate(value) {
 
 function safeURL(url) {
 
+
     try {
 
+
         const u =
+
             new URL(
+
                 url,
+
                 document.baseURI
+
             );
 
 
         if (
-            u.protocol !== "http:" &&
-            u.protocol !== "https:"
+
+            u.protocol !==
+                "http:" &&
+
+            u.protocol !==
+                "https:"
+
         ) {
 
             return "";
@@ -1371,7 +2339,10 @@ function safeURL(url) {
 
         return u.href;
 
-    } catch {
+
+    }
+
+    catch {
 
         return "";
 
@@ -1386,17 +2357,33 @@ function safeURL(url) {
 
 function escapeHTML(value) {
 
+
     return String(value)
 
-        .replaceAll("&", "&amp;")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-        .replaceAll("<", "&lt;")
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-        .replaceAll(">", "&gt;")
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-        .replaceAll('"', "&quot;")
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
@@ -1405,42 +2392,59 @@ function escapeHTML(value) {
    DATE BUTTONS
    ===================================================== */
 
-dateButtons.forEach(button => {
+dateButtons.forEach(
 
-    button.addEventListener(
-        "click",
-        () => {
-
-            dateButtons.forEach(
-                b =>
-                    b.classList.remove(
-                        "active"
-                    )
-            );
+    button => {
 
 
-            button.classList.add(
-                "active"
-            );
+        button.addEventListener(
+
+            "click",
+
+            () => {
 
 
-            selectedDate =
-                localDate(
-                    Number(
-                        button.dataset.offset
-                    )
+                dateButtons.forEach(
+
+                    btn =>
+                        btn.classList
+                            .remove(
+                                "active"
+                            )
+
                 );
 
 
-            dateInput.value = "";
+                button.classList.add(
+                    "active"
+                );
 
 
-            render();
+                selectedDate =
 
-        }
-    );
+                    localDate(
 
-});
+                        Number(
+                            button
+                                .dataset
+                                .offset
+                        )
+
+                    );
+
+
+                dateInput.value = "";
+
+
+                render();
+
+            }
+
+        );
+
+    }
+
+);
 
 
 /* =====================================================
@@ -1448,19 +2452,29 @@ dateButtons.forEach(button => {
    ===================================================== */
 
 dateInput.addEventListener(
+
     "change",
+
     () => {
 
-        if (!dateInput.value) {
+
+        if (
+            !dateInput.value
+        ) {
+
             return;
+
         }
 
 
         dateButtons.forEach(
-            b =>
-                b.classList.remove(
-                    "active"
-                )
+
+            btn =>
+                btn.classList
+                    .remove(
+                        "active"
+                    )
+
         );
 
 
@@ -1471,6 +2485,7 @@ dateInput.addEventListener(
         render();
 
     }
+
 );
 
 
@@ -1479,16 +2494,21 @@ dateInput.addEventListener(
    ===================================================== */
 
 competition.addEventListener(
+
     "change",
+
     () => {
 
+
         selectedCompetition =
+
             competition.value;
 
 
         render();
 
     }
+
 );
 
 
@@ -1497,24 +2517,51 @@ competition.addEventListener(
    ===================================================== */
 
 const menuBtn =
-    document.getElementById("menuBtn");
+    document.getElementById(
+        "menuBtn"
+    );
+
 
 const nav =
-    document.getElementById("nav");
+    document.getElementById(
+        "nav"
+    );
 
 
-if (menuBtn && nav) {
+if (
+    menuBtn &&
+    nav
+) {
+
 
     menuBtn.addEventListener(
+
         "click",
+
         () => {
 
-            nav.classList.toggle(
-                "active"
+
+            const open =
+
+                nav.classList.toggle(
+                    "active"
+                );
+
+
+            menuBtn.setAttribute(
+
+                "aria-expanded",
+
+                open
+                    ? "true"
+                    : "false"
+
             );
 
         }
+
     );
+
 
 }
 
@@ -1525,7 +2572,10 @@ if (menuBtn && nav) {
 
 loadMatches();
 
+
 </script>
 
+
 </body>
+
 </html>
