@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #07111f;
+    --bg-secondary: #0b1728;
+    --card: #101f33;
+    --card-hover: #142942;
+    --text: #ffffff;
+    --muted: #8fa1b7;
+    --accent: #25d366;
+    --accent-light: #42e77e;
+    --border: rgba(255, 255, 255, 0.07);
+}
+
+html {
+    scroll-behavior:
