@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import requests
 from datetime import datetime, timezone, timedelta
 
@@ -23,24 +24,53 @@ YOUTUBE_SEARCH_URL = (
 
 
 # =========================================================
+# SETTINGS
+# =========================================================
+
+MAX_HIGHLIGHTS = 50
+
+# نبحث فقط عن مباريات انتهت خلال آخر 7 أيام
+# حتى لا نستهلك Quota على مباريات قديمة جدًا.
+LOOKBACK_DAYS = 7
+
+# =========================================================
 # ALLOWED LEAGUES
 # =========================================================
+# هذه القائمة هي المصدر الوحيد المسموح به.
+# لا توجد دوريات درجة ثانية أو كرة نسائية هنا.
 
 ALLOWED_LEAGUES = {
 
+    # England
     39: "premier-league",
+
+    # Spain
     140: "la-liga",
+
+    # France
     61: "ligue-1",
+
+    # Italy
     135: "serie-a",
+
+    # Netherlands
     88: "eredivisie",
-    144: "jupiler",
+
+    # Belgium
+    144: "jupiler-pro-league",
+
+    # Portugal
     94: "primeira-liga",
+
+    # Germany
     78: "bundesliga",
 
+    # UEFA
     2: "champions-league",
     3: "europa-league",
     848: "conference-league",
 
+    # Major international competitions
     1: "world-cup",
     4: "euro",
     6: "afcon",
@@ -76,6 +106,44 @@ elif isinstance(data, list):
 else:
 
     matches = []
+
+
+# =========================================================
+# LOAD EXISTING HIGHLIGHTS
+# =========================================================
+
+existing_highlights = []
+
+if os.path.exists(OUTPUT_FILE):
+
+    try:
+
+        with open(
+            OUTPUT_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            old_data = json.load(f)
+
+
+        if isinstance(old_data, dict):
+
+            existing_highlights = old_data.get(
+                "highlights",
+                []
+            )
+
+        elif isinstance(old_data, list):
+
+            existing_highlights = old_data
+
+    except Exception as e:
+
+        print(
+            "Could not load existing highlights:",
+            e
+        )
 
 
 # =========================================================
@@ -117,7 +185,10 @@ def get_date(match):
 
     value = (
         match.get("date")
-        or match.get("fixture", {}).get("date")
+        or match.get(
+            "fixture",
+            {}
+        ).get("date")
         or ""
     )
 
@@ -126,11 +197,140 @@ def get_date(match):
 
 def get_status(match):
 
+    status = match.get("status")
+
+    if isinstance(status, dict):
+
+        return str(
+            status.get(
+                "short",
+                ""
+            )
+        )
+
     return str(
-        match.get("status")
-        or match.get("fixture", {})
-        .get("status", {})
-        .get("short", "")
+        status
+        or match.get(
+            "fixture",
+            {}
+        ).get(
+            "status",
+            {}
+        ).get(
+            "short",
+            ""
+        )
+    )
+
+
+def normalize_text(text):
+
+    text = str(text).lower()
+
+    text = re.sub(
+        r"[^a-z0-9\u0600-\u06ff]+",
+        " ",
+        text
+    )
+
+    return " ".join(
+        text.split()
+    )
+
+
+def team_matches_title(
+    team_name,
+    title
+):
+
+    team = normalize_text(
+        team_name
+    )
+
+    title_normalized = normalize_text(
+        title
+    )
+
+    if not team:
+        return False
+
+    # المطابقة الكاملة أولاً
+    if team in title_normalized:
+        return True
+
+    # محاولة مطابقة الكلمات المهمة
+    words = [
+        word
+        for word in team.split()
+        if len(word) >= 3
+    ]
+
+    if not words:
+        return False
+
+    found = sum(
+        1
+        for word in words
+        if word in title_normalized
+    )
+
+    return found >= max(
+        1,
+        len(words) // 2
+    )
+
+
+def is_good_video_title(
+    title,
+    home_name,
+    away_name
+):
+
+    title_normalized = normalize_text(
+        title
+    )
+
+    # نرفض Shorts صراحةً
+    if "#shorts" in title_normalized:
+        return False
+
+    if "shorts" in title_normalized:
+        return False
+
+    # يجب أن يظهر الفريقان في العنوان
+    home_ok = team_matches_title(
+        home_name,
+        title
+    )
+
+    away_ok = team_matches_title(
+        away_name,
+        title
+    )
+
+    if not home_ok or not away_ok:
+        return False
+
+    # يجب أن يكون الفيديو مرتبطًا بالملخص
+    highlight_words = [
+        "highlight",
+        "highlights",
+        "goals",
+        "goal",
+        "resumen",
+        "resumo",
+        "recap",
+        "match",
+        "extended",
+        "full",
+        "ملخص",
+        "اهداف",
+        "أهداف"
+    ]
+
+    return any(
+        word in title_normalized
+        for word in highlight_words
     )
 
 
@@ -138,7 +338,10 @@ def get_status(match):
 # SEARCH YOUTUBE
 # =========================================================
 
-def search_youtube(query):
+def search_youtube(
+    query,
+    published_after=None
+):
 
     params = {
 
@@ -148,7 +351,7 @@ def search_youtube(query):
 
         "type": "video",
 
-        "maxResults": 5,
+        "maxResults": 10,
 
         "order": "relevance",
 
@@ -156,9 +359,20 @@ def search_youtube(query):
 
         "videoSyndicated": "true",
 
+        # غالبًا ملخصات المباريات تقع ضمن هذا النطاق
+        # ويقلل ظهور Shorts
+        "videoDuration": "medium",
+
         "key": API_KEY
 
     }
+
+
+    if published_after:
+
+        params["publishedAfter"] = (
+            published_after
+        )
 
 
     response = requests.get(
@@ -171,24 +385,80 @@ def search_youtube(query):
     response.raise_for_status()
 
 
-    return response.json().get(
+    result = response.json()
+
+
+    if "error" in result:
+
+        raise RuntimeError(
+            str(
+                result["error"]
+            )
+        )
+
+
+    return result.get(
         "items",
         []
     )
 
 
 # =========================================================
+# EXISTING VIDEO IDS
+# =========================================================
+
+existing_ids = set()
+
+for item in existing_highlights:
+
+    video_id = item.get(
+        "video_id"
+    )
+
+    if video_id:
+
+        existing_ids.add(
+            video_id
+        )
+
+
+print(
+    f"Existing highlights: {len(existing_ids)}"
+)
+
+
+# =========================================================
+# DATE LIMIT
+# =========================================================
+
+now = datetime.now(
+    timezone.utc
+)
+
+minimum_date = (
+    now - timedelta(
+        days=LOOKBACK_DAYS
+    )
+).date()
+
+
+# =========================================================
 # BUILD HIGHLIGHTS
 # =========================================================
 
-highlights = []
+new_highlights = []
 
 
 for match in matches:
 
+    league = get_league(
+        match
+    )
 
-    league = get_league(match)
 
+    # ---------------------------------------------
+    # LEAGUE ID
+    # ---------------------------------------------
 
     try:
 
@@ -196,13 +466,13 @@ for match in matches:
             league.get("id")
         )
 
-    except:
+    except Exception:
 
         continue
 
 
     # ---------------------------------------------
-    # ONLY OUR ALLOWED LEAGUES
+    # ONLY ALLOWED LEAGUES
     # ---------------------------------------------
 
     if league_id not in ALLOWED_LEAGUES:
@@ -210,12 +480,13 @@ for match in matches:
         continue
 
 
-    status = get_status(match)
-
-
     # ---------------------------------------------
     # ONLY FINISHED MATCHES
     # ---------------------------------------------
+
+    status = get_status(
+        match
+    )
 
     if status not in (
         "FT",
@@ -226,7 +497,39 @@ for match in matches:
         continue
 
 
-    home, away = get_teams(match)
+    # ---------------------------------------------
+    # DATE
+    # ---------------------------------------------
+
+    match_date = get_date(
+        match
+    )
+
+    try:
+
+        match_date_obj = datetime.strptime(
+            match_date,
+            "%Y-%m-%d"
+        ).date()
+
+    except Exception:
+
+        continue
+
+
+    # لا نبحث عن مباريات قديمة جدًا
+    if match_date_obj < minimum_date:
+
+        continue
+
+
+    # ---------------------------------------------
+    # TEAMS
+    # ---------------------------------------------
+
+    home, away = get_teams(
+        match
+    )
 
 
     home_name = (
@@ -240,10 +543,53 @@ for match in matches:
     )
 
 
-    match_date = get_date(
-        match
+    # ---------------------------------------------
+    # MATCH KEY
+    # ---------------------------------------------
+
+    fixture_id = (
+        match.get("fixture_id")
+        or match.get("fixture", {}).get("id")
     )
 
+
+    # ---------------------------------------------
+    # SKIP IF WE ALREADY HAVE A VIDEO
+    # ---------------------------------------------
+
+    already_exists = False
+
+
+    for item in existing_highlights:
+
+        if fixture_id and item.get(
+            "fixture_id"
+        ) == fixture_id:
+
+            already_exists = True
+            break
+
+
+        if (
+            item.get("home") == home_name
+            and
+            item.get("away") == away_name
+            and
+            item.get("date") == match_date
+        ):
+
+            already_exists = True
+            break
+
+
+    if already_exists:
+
+        continue
+
+
+    # ---------------------------------------------
+    # LEAGUE NAME
+    # ---------------------------------------------
 
     league_name = (
         league.get("name")
@@ -252,20 +598,43 @@ for match in matches:
 
 
     # ---------------------------------------------
-    # SEARCH PHRASE
+    # SEARCH
     # ---------------------------------------------
 
     query = (
-        f"{home_name} "
-        f"{away_name} "
-        f"highlights"
+        f'"{home_name}" '
+        f'"{away_name}" '
+        f'highlights'
+    )
+
+
+    # نبحث عن الفيديوهات المنشورة حول وقت المباراة
+    published_after = (
+        datetime.combine(
+            match_date_obj,
+            datetime.min.time()
+        )
+        .replace(
+            tzinfo=timezone.utc
+        )
+        .isoformat()
+        .replace(
+            "+00:00",
+            "Z"
+        )
+    )
+
+
+    print(
+        f"Searching: {home_name} vs {away_name}"
     )
 
 
     try:
 
         videos = search_youtube(
-            query
+            query,
+            published_after
         )
 
     except Exception as e:
@@ -280,11 +649,15 @@ for match in matches:
 
     if not videos:
 
+        print(
+            "No videos found."
+        )
+
         continue
 
 
     # ---------------------------------------------
-    # TAKE FIRST EMBEDDABLE RESULT
+    # SELECT BEST MATCH
     # ---------------------------------------------
 
     selected = None
@@ -298,11 +671,10 @@ for match in matches:
             .get("videoId")
         )
 
-        snippet = (
-            video.get(
-                "snippet",
-                {}
-            )
+
+        snippet = video.get(
+            "snippet",
+            {}
         )
 
 
@@ -311,33 +683,79 @@ for match in matches:
             continue
 
 
+        if video_id in existing_ids:
+
+            continue
+
+
+        title = snippet.get(
+            "title",
+            ""
+        )
+
+
+        if not is_good_video_title(
+            title,
+            home_name,
+            away_name
+        ):
+
+            continue
+
+
+        thumbnails = (
+            snippet.get(
+                "thumbnails",
+                {}
+            )
+        )
+
+
+        thumbnail = (
+            thumbnails
+            .get(
+                "high",
+                {}
+            )
+            .get("url")
+        )
+
+
+        if not thumbnail:
+
+            thumbnail = (
+                thumbnails
+                .get(
+                    "medium",
+                    {}
+                )
+                .get("url")
+            )
+
+
         selected = {
+
+            "fixture_id":
+                fixture_id,
 
             "video_id":
                 video_id,
 
             "title":
-                snippet.get(
-                    "title",
-                    f"{home_name} vs {away_name}"
-                ),
+                title,
 
             "thumbnail":
-                (
-                    snippet
-                    .get("thumbnails", {})
-                    .get("high", {})
-                    .get("url")
-                    or
-                    snippet
-                    .get("thumbnails", {})
-                    .get("medium", {})
-                    .get("url")
-                ),
+                thumbnail,
 
             "channel":
                 snippet.get(
                     "channelTitle",
+                    ""
+                ),
+
+            "published_at":
+                snippet.get(
+                    "publishedAt",
                     ""
                 ),
 
@@ -362,35 +780,147 @@ for match in matches:
                 away_name,
 
             "embed":
-                f"https://www.youtube.com/embed/{video_id}"
+                (
+                    "https://www.youtube.com/embed/"
+                    f"{video_id}"
+                ),
+
+            "youtube_url":
+                (
+                    "https://www.youtube.com/watch?v="
+                    f"{video_id}"
+                )
 
         }
+
 
         break
 
 
     if selected:
 
-        highlights.append(
+        new_highlights.append(
             selected
+        )
+
+        existing_ids.add(
+            selected["video_id"]
+        )
+
+        print(
+            "Selected:",
+            selected["title"]
+        )
+
+    else:
+
+        print(
+            "No reliable matching highlight found."
         )
 
 
 # =========================================================
-# REMOVE DUPLICATES
+# MERGE OLD + NEW
 # =========================================================
 
-unique = {}
+combined = []
 
-for item in highlights:
-
-    key = item["video_id"]
-
-    unique[key] = item
+seen_fixtures = set()
+seen_videos = set()
 
 
-highlights = list(
-    unique.values()
+# الجديد أولاً
+for item in new_highlights:
+
+    video_id = item.get(
+        "video_id"
+    )
+
+    fixture_id = item.get(
+        "fixture_id"
+    )
+
+
+    if video_id and video_id in seen_videos:
+
+        continue
+
+
+    if fixture_id and fixture_id in seen_fixtures:
+
+        continue
+
+
+    combined.append(
+        item
+    )
+
+
+    if video_id:
+
+        seen_videos.add(
+            video_id
+        )
+
+
+    if fixture_id:
+
+        seen_fixtures.add(
+            fixture_id
+        )
+
+
+# القديم
+for item in existing_highlights:
+
+    video_id = item.get(
+        "video_id"
+    )
+
+    fixture_id = item.get(
+        "fixture_id"
+    )
+
+
+    if video_id and video_id in seen_videos:
+
+        continue
+
+
+    if fixture_id and fixture_id in seen_fixtures:
+
+        continue
+
+
+    combined.append(
+        item
+    )
+
+
+    if video_id:
+
+        seen_videos.add(
+            video_id
+        )
+
+
+    if fixture_id:
+
+        seen_fixtures.add(
+            fixture_id
+        )
+
+
+# =========================================================
+# SORT BY DATE
+# =========================================================
+
+combined.sort(
+    key=lambda x: (
+        x.get("date", ""),
+        x.get("published_at", "")
+    ),
+    reverse=True
 )
 
 
@@ -398,7 +928,9 @@ highlights = list(
 # LIMIT
 # =========================================================
 
-highlights = highlights[:50]
+combined = combined[
+    :MAX_HIGHLIGHTS
+]
 
 
 # =========================================================
@@ -413,10 +945,10 @@ output = {
         ).isoformat(),
 
     "count":
-        len(highlights),
+        len(combined),
 
     "highlights":
-        highlights
+        combined
 
 }
 
@@ -444,5 +976,17 @@ with open(
 
 
 print(
-    f"GOALINS: {len(highlights)} highlights saved."
+    "======================================"
 )
+
+print(
+    f"GOALINS: {len(combined)} highlights saved."
+)
+
+print(
+    f"New videos: {len(new_highlights)}"
+)
+
+print(
+    "======================================"
+        )
