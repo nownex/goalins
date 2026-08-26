@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   update-highlights:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -28,20 +29,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Check Highlightly API key
+      - name: Check YouTube API key
         env:
-          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
-          if [ -z "$HIGHLIGHTLY_API_KEY" ]; then
-            echo "ERROR: HIGHLIGHTLY_API_KEY is missing"
+          if [ -z "$YOUTUBE_API_KEY" ]; then
+            echo "ERROR: YOUTUBE_API_KEY is missing."
             exit 1
           fi
 
-          echo "Highlightly API key detected"
+          echo "YouTube API key detected."
 
       - name: Update highlights
         env:
-          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           python scripts/update_highlights.py
 
@@ -52,9 +53,9 @@ jobs:
           echo "======================================"
 
           if [ -f data/highlights.json ]; then
-            python -c 'import json; d=json.load(open("data/highlights.json", encoding="utf-8")); print("Highlights saved:", d.get("count", 0)); [print("-", x.get("home"), "vs", x.get("away"), "|", x.get("type"), "|", x.get("source")) for x in d.get("highlights", [])[:10]]'
+            python -c 'import json; d=json.load(open("data/highlights.json", encoding="utf-8")); print("Videos saved:", d.get("count", 0)); [print("-", x.get("title", "")) for x in d.get("highlights", [])[:10]]'
           else
-            echo "ERROR: data/highlights.json was not created"
+            echo "ERROR: data/highlights.json was not created."
             exit 1
           fi
 
