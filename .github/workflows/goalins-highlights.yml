@@ -2,6 +2,7 @@ name: GOALINS - Update Highlights
 
 on:
   workflow_dispatch:
+
   schedule:
     - cron: "30 * * * *"
 
@@ -10,9 +11,11 @@ permissions:
 
 jobs:
   update-highlights:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -26,20 +29,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Check YouTube API key
+      - name: Check Highlightly API key
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
         run: |
-          if [ -z "$YOUTUBE_API_KEY" ]; then
-            echo "ERROR: YOUTUBE_API_KEY is missing."
+          if [ -z "$HIGHLIGHTLY_API_KEY" ]; then
+            echo "ERROR: HIGHLIGHTLY_API_KEY is missing."
             exit 1
           fi
 
-          echo "YouTube API key detected."
+          echo "Highlightly API key detected."
 
       - name: Update highlights
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
         run: |
           python scripts/update_highlights.py
 
@@ -65,10 +68,6 @@ print(
     f"Highlights saved: {data.get('count', 0)}"
 )
 
-print(
-    f"Source: {data.get('source', 'unknown')}"
-)
-
 for item in data.get("highlights", [])[:10]:
     print(
         f"- {item.get('home')} vs "
@@ -76,7 +75,6 @@ for item in data.get("highlights", [])[:10]:
         f"{item.get('type')} | "
         f"{item.get('source')}"
     )
-
 PY
 
           else
@@ -94,7 +92,7 @@ PY
           git add data/highlights.json
 
           if git diff --cached --quiet; then
-            echo "No highlights changes to commit."
+            echo "No changes to commit."
           else
             git commit -m "Update football highlights"
             git push
