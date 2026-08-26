@@ -7,26 +7,60 @@ from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
-# GOALINS — HIGHLIGHTLY VIDEO ENGINE
+# GOALINS — YOUTUBE HIGHLIGHTS ENGINE
 # =========================================================
 
-API_KEY = os.environ.get("HIGHLIGHTLY_API_KEY")
+API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
 if not API_KEY:
     raise RuntimeError(
-        "HIGHLIGHTLY_API_KEY is missing"
+        "YOUTUBE_API_KEY is missing"
     )
 
 
-API_URL = (
-    "https://soccer.highlightly.net/highlights"
-)
-
+MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-LOOKBACK_DAYS = 3
+YOUTUBE_SEARCH_URL = (
+    "https://www.googleapis.com/youtube/v3/search"
+)
 
+YOUTUBE_CHANNELS_URL = (
+    "https://www.googleapis.com/youtube/v3/channels"
+)
+
+LOOKBACK_DAYS = 7
 MAX_HIGHLIGHTS = 50
+
+# =========================================================
+# OFFICIAL beIN SPORTS CHANNEL
+# =========================================================
+
+BEIN_HANDLE = "@beinsports"
+
+BEIN_CHANNEL_ID = None
+
+
+# =========================================================
+# ALLOWED LEAGUES
+# =========================================================
+
+ALLOWED_LEAGUES = {
+
+    "Premier League",
+    "La Liga",
+    "Ligue 1",
+    "Serie A",
+    "Eredivisie",
+    "Jupiler Pro League",
+    "Primeira Liga",
+    "Bundesliga",
+    "UEFA Champions League",
+    "UEFA Europa League",
+    "UEFA Europa Conference League",
+    "UEFA Europa Conference League Qualification",
+
+}
 
 
 # =========================================================
@@ -55,7 +89,6 @@ GAMING_WORDS = [
     "simulation",
     "simulated",
     "video game",
-    "virtual match",
 
 ]
 
@@ -97,25 +130,962 @@ def is_gaming(text):
 
 
 # =========================================================
-# HEADERS
+# MATCH HELPERS
 # =========================================================
 
-headers = {
+def get_date(match):
 
-    "x-rapidapi-key":
-        API_KEY,
+    return str(
+        match.get(
+            "date",
+            ""
+        )
+    )[:10]
 
-    "x-rapidapi-host":
-        "football-highlights-api.p.rapidapi.com",
 
-    "Accept":
-        "application/json"
+def get_league(match):
 
-}
+    league = match.get(
+        "league",
+        {}
+    )
+
+    if isinstance(
+        league,
+        dict
+    ):
+
+        return str(
+            league.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+    return str(
+        league or ""
+    ).strip()
+
+
+def get_home(match):
+
+    home = match.get(
+        "home",
+        {}
+    )
+
+    if isinstance(
+        home,
+        dict
+    ):
+
+        return str(
+            home.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+    return str(
+        home or ""
+    ).strip()
+
+
+def get_away(match):
+
+    away = match.get(
+        "away",
+        {}
+    )
+
+    if isinstance(
+        away,
+        dict
+    ):
+
+        return str(
+            away.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+    return str(
+        away or ""
+    ).strip()
+
+
+def get_status(match):
+
+    status = match.get(
+        "status",
+        ""
+    )
+
+    if isinstance(
+        status,
+        dict
+    ):
+
+        return str(
+            status.get(
+                "short",
+                ""
+            )
+        ).upper()
+
+    return str(
+        status
+    ).upper()
 
 
 # =========================================================
-# LOAD OLD DATA
+# FINISHED
+# =========================================================
+
+def is_finished(match):
+
+    return get_status(match) in {
+
+        "FT",
+        "AET",
+        "PEN"
+
+    }
+
+
+# =========================================================
+# TEAM NAME MATCHING
+# =========================================================
+
+def team_tokens(name):
+
+    value = normalize(name)
+
+    ignored = {
+
+        "fc",
+        "sc",
+        "cf",
+        "afc",
+        "club",
+        "de",
+        "the",
+        "of",
+        "and",
+
+    }
+
+    return {
+
+        token
+
+        for token in value.split()
+
+        if len(token) >= 3
+        and token not in ignored
+
+    }
+
+
+def team_name_match(
+    expected,
+    title
+):
+
+    expected_tokens = team_tokens(
+        expected
+    )
+
+    title_tokens = set(
+        normalize(title).split()
+    )
+
+    if not expected_tokens:
+
+        return False
+
+
+    common = (
+        expected_tokens
+        & title_tokens
+    )
+
+
+    # Strong match
+
+    if len(common) >= 2:
+
+        return True
+
+
+    # Single distinctive token
+
+    if len(expected_tokens) == 1:
+
+        return len(common) >= 1
+
+
+    return False
+
+
+# =========================================================
+# VIDEO MATCH SCORE
+# =========================================================
+
+def video_match_score(
+    title,
+    home,
+    away
+):
+
+    title_normalized = normalize(
+        title
+    )
+
+    home_tokens = team_tokens(
+        home
+    )
+
+    away_tokens = team_tokens(
+        away
+    )
+
+    title_tokens = set(
+        title_normalized.split()
+    )
+
+
+    home_common = (
+        home_tokens
+        & title_tokens
+    )
+
+    away_common = (
+        away_tokens
+        & title_tokens
+    )
+
+
+    score = 0
+
+
+    # Both teams found
+
+    if home_common:
+
+        score += 50
+
+    if away_common:
+
+        score += 50
+
+
+    # More matching words = better
+
+    score += (
+        len(home_common) * 10
+    )
+
+    score += (
+        len(away_common) * 10
+    )
+
+
+    # Highlights strongly preferred
+
+    if "highlights" in title_normalized:
+
+        score += 30
+
+    if "extended highlights" in title_normalized:
+
+        score += 20
+
+    if "ملخص" in title_normalized:
+
+        score += 30
+
+
+    # Gaming penalty
+
+    if is_gaming(title):
+
+        score -= 200
+
+
+    return score
+
+
+# =========================================================
+# GET beIN SPORTS CHANNEL ID
+# =========================================================
+
+def get_bein_channel_id():
+
+    global BEIN_CHANNEL_ID
+
+
+    if BEIN_CHANNEL_ID:
+
+        return BEIN_CHANNEL_ID
+
+
+    print("=" * 60)
+
+    print(
+        "Finding beIN SPORTS channel..."
+    )
+
+
+    params = {
+
+        "part":
+            "id,snippet",
+
+        "forHandle":
+            BEIN_HANDLE,
+
+        "key":
+            API_KEY,
+
+    }
+
+
+    response = requests.get(
+
+        YOUTUBE_CHANNELS_URL,
+
+        params=params,
+
+        timeout=30
+
+    )
+
+
+    print(
+        "Channel HTTP:",
+        response.status_code
+    )
+
+
+    if response.status_code != 200:
+
+        print(
+            "YouTube API response:",
+            response.text[:1000]
+        )
+
+        response.raise_for_status()
+
+
+    data = response.json()
+
+
+    items = data.get(
+        "items",
+        []
+    )
+
+
+    if not items:
+
+        raise RuntimeError(
+            "Could not find beIN SPORTS YouTube channel."
+        )
+
+
+    BEIN_CHANNEL_ID = (
+        items[0]
+        .get("id")
+    )
+
+
+    if not BEIN_CHANNEL_ID:
+
+        raise RuntimeError(
+            "beIN SPORTS channel ID is missing."
+        )
+
+
+    print(
+        "beIN SPORTS Channel ID:",
+        BEIN_CHANNEL_ID
+    )
+
+
+    return BEIN_CHANNEL_ID
+
+
+# =========================================================
+# SEARCH YOUTUBE
+# =========================================================
+
+def search_youtube(
+    home,
+    away,
+    match_date
+):
+
+    channel_id = (
+        get_bein_channel_id()
+    )
+
+
+    # Search only around the match date.
+    published_after = (
+        datetime.strptime(
+            match_date,
+            "%Y-%m-%d"
+        )
+        .replace(
+            tzinfo=timezone.utc
+        )
+        - timedelta(
+            days=1
+        )
+    )
+
+
+    published_before = (
+        datetime.strptime(
+            match_date,
+            "%Y-%m-%d"
+        )
+        .replace(
+            tzinfo=timezone.utc
+        )
+        + timedelta(
+            days=3
+        )
+    )
+
+
+    # We try a few search forms.
+    queries = [
+
+        f"{home} {away} highlights",
+
+        f"{home} vs {away}",
+
+    ]
+
+
+    candidates = []
+
+
+    for query in queries:
+
+        print(
+            "YouTube search:",
+            query
+        )
+
+
+        params = {
+
+            "part":
+                "snippet",
+
+            "channelId":
+                channel_id,
+
+            "q":
+                query,
+
+            "type":
+                "video",
+
+            "order":
+                "date",
+
+            "maxResults":
+                10,
+
+            "publishedAfter":
+                published_after.isoformat(),
+
+            "publishedBefore":
+                published_before.isoformat(),
+
+            "videoEmbeddable":
+                "true",
+
+            "videoSyndicated":
+                "true",
+
+            "key":
+                API_KEY,
+
+        }
+
+
+        response = requests.get(
+
+            YOUTUBE_SEARCH_URL,
+
+            params=params,
+
+            timeout=30
+
+        )
+
+
+        print(
+            "YouTube HTTP:",
+            response.status_code
+        )
+
+
+        if response.status_code != 200:
+
+            print(
+                "YouTube API ERROR:",
+                response.text[:1000]
+            )
+
+            continue
+
+
+        data = response.json()
+
+
+        items = data.get(
+            "items",
+            []
+        )
+
+
+        print(
+            "Videos returned:",
+            len(items)
+        )
+
+
+        for item in items:
+
+            if not isinstance(
+                item,
+                dict
+            ):
+
+                continue
+
+
+            item_id = item.get(
+                "id",
+                {}
+            )
+
+
+            if not isinstance(
+                item_id,
+                dict
+            ):
+
+                continue
+
+
+            video_id = item_id.get(
+                "videoId"
+            )
+
+
+            if not video_id:
+
+                continue
+
+
+            snippet = item.get(
+                "snippet",
+                {}
+            )
+
+
+            title = str(
+                snippet.get(
+                    "title",
+                    ""
+                )
+            )
+
+
+            description = str(
+                snippet.get(
+                    "description",
+                    ""
+                )
+            )
+
+
+            # Must belong to beIN channel
+
+            result_channel = str(
+                snippet.get(
+                    "channelId",
+                    ""
+                )
+            )
+
+
+            if result_channel != channel_id:
+
+                continue
+
+
+            searchable = " ".join([
+
+                title,
+                description,
+
+            ])
+
+
+            # Reject gaming
+
+            if is_gaming(
+                searchable
+            ):
+
+                print(
+                    "REJECTED GAMING:",
+                    title
+                )
+
+                continue
+
+
+            score = video_match_score(
+
+                title,
+                home,
+                away
+
+            )
+
+
+            print(
+                f"Candidate [{score}]: {title}"
+            )
+
+
+            # We require both teams
+            # to appear meaningfully.
+
+            home_found = team_name_match(
+                home,
+                title
+            )
+
+            away_found = team_name_match(
+                away,
+                title
+            )
+
+
+            if not (
+                home_found
+                and away_found
+            ):
+
+                print(
+                    "REJECTED: teams not both found"
+                )
+
+                continue
+
+
+            candidates.append({
+
+                "video_id":
+                    video_id,
+
+                "title":
+                    title,
+
+                "description":
+                    description,
+
+                "published_at":
+                    snippet.get(
+                        "publishedAt",
+                        ""
+                    ),
+
+                "thumbnail":
+                    (
+                        snippet
+                        .get("thumbnails", {})
+                        .get("high", {})
+                        .get("url")
+                    ),
+
+                "channel_id":
+                    result_channel,
+
+                "channel_title":
+                    snippet.get(
+                        "channelTitle",
+                        "beIN SPORTS"
+                    ),
+
+                "score":
+                    score,
+
+            })
+
+
+    # =====================================================
+    # REMOVE DUPLICATES
+    # =====================================================
+
+    unique = {}
+
+    for item in candidates:
+
+        video_id = item[
+            "video_id"
+        ]
+
+        if video_id not in unique:
+
+            unique[video_id] = item
+
+        else:
+
+            if (
+                item["score"]
+                >
+                unique[video_id]["score"]
+            ):
+
+                unique[video_id] = item
+
+
+    candidates = list(
+        unique.values()
+    )
+
+
+    candidates.sort(
+
+        key=lambda item: (
+
+            item["score"],
+
+            item.get(
+                "published_at",
+                ""
+            )
+
+        ),
+
+        reverse=True
+
+    )
+
+
+    return candidates
+
+
+# =========================================================
+# LOAD MATCHES
+# =========================================================
+
+with open(
+    MATCHES_FILE,
+    "r",
+    encoding="utf-8"
+) as file:
+
+    matches_data = json.load(
+        file
+    )
+
+
+matches = matches_data.get(
+    "matches",
+    []
+)
+
+
+print("=" * 60)
+
+print(
+    "GOALINS — YOUTUBE HIGHLIGHTS ENGINE"
+)
+
+print("=" * 60)
+
+print(
+    f"Total matches in matches.json: "
+    f"{len(matches)}"
+)
+
+
+# =========================================================
+# ALGERIA DATE
+# =========================================================
+
+algeria_now = (
+
+    datetime.now(
+        timezone.utc
+    )
+
+    + timedelta(
+        hours=1
+    )
+
+)
+
+
+today = algeria_now.date()
+
+
+start_date = (
+
+    today
+
+    - timedelta(
+        days=LOOKBACK_DAYS
+    )
+
+)
+
+
+print(
+    f"Algeria date: {today}"
+)
+
+print(
+    f"Searching from: {start_date}"
+)
+
+print(
+    f"Searching to: {today}"
+)
+
+
+# =========================================================
+# TARGET MATCHES
+# =========================================================
+
+target_matches = []
+
+
+for match in matches:
+
+    league = get_league(
+        match
+    )
+
+    match_date = get_date(
+        match
+    )
+
+    home = get_home(
+        match
+    )
+
+    away = get_away(
+        match
+    )
+
+
+    if league not in ALLOWED_LEAGUES:
+
+        continue
+
+
+    if not is_finished(
+        match
+    ):
+
+        continue
+
+
+    try:
+
+        date_obj = datetime.strptime(
+            match_date,
+            "%Y-%m-%d"
+        ).date()
+
+    except Exception:
+
+        continue
+
+
+    if date_obj < start_date:
+
+        continue
+
+
+    if date_obj > today:
+
+        continue
+
+
+    if not home or not away:
+
+        continue
+
+
+    target_matches.append({
+
+        "fixture_id":
+            match.get(
+                "fixture_id"
+            ),
+
+        "date":
+            match_date,
+
+        "league":
+            league,
+
+        "home":
+            home,
+
+        "away":
+            away,
+
+    })
+
+
+# =========================================================
+# DIAGNOSTIC
+# =========================================================
+
+print("-" * 60)
+
+print(
+    f"Finished allowed matches: "
+    f"{len(target_matches)}"
+)
+
+print("-" * 60)
+
+print(
+    "TARGET MATCHES:"
+)
+
+
+for match in target_matches:
+
+    print(
+
+        f"  {match['date']} | "
+        f"{match['league']} | "
+        f"{match['home']} vs "
+        f"{match['away']}"
+
+    )
+
+
+# =========================================================
+# LOAD OLD HIGHLIGHTS
 # =========================================================
 
 old_highlights = []
@@ -150,6 +1120,7 @@ if os.path.exists(
                 )
             )
 
+
         elif isinstance(
             old_data,
             list
@@ -181,557 +1152,208 @@ old_ids = {
 
 
 # =========================================================
-# ALGERIA DATE
-# =========================================================
-
-algeria_now = (
-
-    datetime.now(
-        timezone.utc
-    )
-
-    + timedelta(
-        hours=1
-    )
-
-)
-
-
-today = algeria_now.date()
-
-
-start_date = (
-
-    today
-
-    - timedelta(
-        days=LOOKBACK_DAYS
-    )
-
-)
-
-
-print("=" * 60)
-
-print(
-    "GOALINS — HIGHLIGHTLY VIDEO ENGINE"
-)
-
-print("=" * 60)
-
-print(
-    f"Algeria date: {today}"
-)
-
-print(
-    f"Searching from: {start_date}"
-)
-
-print(
-    f"Searching to: {today}"
-)
-
-print("=" * 60)
-
-
-# =========================================================
-# FETCH ALL HIGHLIGHTS FOR DATE
-# =========================================================
-
-def fetch_highlights(date):
-
-    params = {
-
-        "date":
-            date,
-
-        "limit":
-            100,
-
-        "offset":
-            0
-
-    }
-
-
-    print(
-        f"Request date: {date}"
-    )
-
-
-    response = requests.get(
-
-        API_URL,
-
-        headers=headers,
-
-        params=params,
-
-        timeout=30
-
-    )
-
-
-    print(
-        "HTTP:",
-        response.status_code
-    )
-
-
-    if response.status_code != 200:
-
-        print(
-            "API response:",
-            response.text[:500]
-        )
-
-        return []
-
-
-    try:
-
-        data = response.json()
-
-    except Exception:
-
-        return []
-
-
-    if isinstance(
-        data,
-        dict
-    ):
-
-        return data.get(
-            "data",
-            []
-        )
-
-
-    if isinstance(
-        data,
-        list
-    ):
-
-        return data
-
-
-    return []
-
-
-# =========================================================
-# COLLECT
+# SEARCH
 # =========================================================
 
 new_highlights = []
 
-seen_ids = set(
-    old_ids
-)
+fixtures_searched = 0
 
 
-dates = []
-
-
-current = start_date
-
-
-while current <= today:
-
-    dates.append(
-        current.strftime(
-            "%Y-%m-%d"
-        )
-    )
-
-    current += timedelta(
-        days=1
-    )
-
-
-print(
-    f"Dates to search: {len(dates)}"
-)
-
-
-# =========================================================
-# SEARCH ALL VIDEOS
-# =========================================================
-
-for date in dates:
-
-    print("=" * 60)
-
-    print(
-        f"Searching Highlightly: {date}"
-    )
-
-    print("=" * 60)
-
-
-    videos = fetch_highlights(
-        date
-    )
-
-
-    print(
-        f"Videos returned: {len(videos)}"
-    )
-
-
-    for video in videos:
-
-        if not isinstance(
-            video,
-            dict
-        ):
-
-            continue
-
-
-        video_id = video.get(
-            "id"
-        )
-
-
-        if not video_id:
-
-            continue
-
-
-        video_id = str(
-            video_id
-        )
-
-
-        if video_id in seen_ids:
-
-            continue
-
-
-        # -------------------------------------------------
-        # DATA
-        # -------------------------------------------------
-
-        title = str(
-            video.get(
-                "title",
-                ""
-            )
-        )
-
-
-        description = str(
-            video.get(
-                "description",
-                ""
-            )
-        )
-
-
-        source = str(
-            video.get(
-                "source",
-                ""
-            )
-        )
-
-
-        channel = str(
-            video.get(
-                "channel",
-                ""
-            )
-        )
-
-
-        video_type = str(
-            video.get(
-                "type",
-                ""
-            )
-        ).upper()
-
-
-        category = str(
-            video.get(
-                "category",
-                ""
-            )
-        ).lower()
-
-
-        thumbnail = video.get(
-            "imgUrl"
-        )
-
-
-        embed_url = video.get(
-            "embedUrl"
-        )
-
-
-        original_url = video.get(
-            "url"
-        )
-
-
-        # -------------------------------------------------
-        # MUST HAVE EMBED
-        # -------------------------------------------------
-
-        if not embed_url:
-
-            print(
-                "REJECTED — no embedUrl:",
-                title
-            )
-
-            continue
-
-
-        # -------------------------------------------------
-        # GAMING
-        # -------------------------------------------------
-
-        searchable = " ".join([
-
-            title,
-            description,
-            source,
-            channel,
-            category,
-
-        ])
-
-
-        if is_gaming(
-            searchable
-        ):
-
-            print(
-                "REJECTED — GAMING:",
-                title
-            )
-
-            continue
-
-
-        # -------------------------------------------------
-        # ACCEPT
-        #
-        # We no longer require:
-        # - exact fixture match
-        # - allowed league
-        # - VERIFIED only
-        #
-        # We only require:
-        # - football highlight API result
-        # - embedUrl
-        # - not gaming
-        # -------------------------------------------------
-
-        print(
-            "ACCEPTED VIDEO:"
-        )
-
-        print(
-            "Title:",
-            title
-        )
-
-        print(
-            "Type:",
-            video_type
-        )
-
-        print(
-            "Category:",
-            category
-        )
-
-        print(
-            "Source:",
-            source
-        )
-
-        print(
-            "Embed:",
-            embed_url
-        )
-
-        print("-" * 60)
-
-
-        # -------------------------------------------------
-        # MATCH INFORMATION IF AVAILABLE
-        # -------------------------------------------------
-
-        match = video.get(
-            "match",
-            {}
-        )
-
-
-        if not isinstance(
-            match,
-            dict
-        ):
-
-            match = {}
-
-
-        home_team = match.get(
-            "homeTeam",
-            {}
-        )
-
-
-        away_team = match.get(
-            "awayTeam",
-            {}
-        )
-
-
-        if not isinstance(
-            home_team,
-            dict
-        ):
-
-            home_team = {}
-
-
-        if not isinstance(
-            away_team,
-            dict
-        ):
-
-            away_team = {}
-
-
-        home = (
-
-            home_team.get(
-                "name"
-            )
-
-            or ""
-
-        )
-
-
-        away = (
-
-            away_team.get(
-                "name"
-            )
-
-            or ""
-
-        )
-
-
-        league = match.get(
-            "league",
-            {}
-        )
-
-
-        if isinstance(
-            league,
-            dict
-        ):
-
-            league_name = (
-                league.get(
-                    "name"
-                )
-                or ""
-            )
-
-        else:
-
-            league_name = str(
-                league or ""
-            )
-
-
-        # -------------------------------------------------
-        # SAVE
-        # -------------------------------------------------
-
-        item = {
-
-            "highlight_id":
-                video_id,
-
-            "title":
-                title,
-
-            "description":
-                description,
-
-            "thumbnail":
-                thumbnail,
-
-            "embed":
-                embed_url,
-
-            "embed_url":
-                embed_url,
-
-            "url":
-                original_url,
-
-            "source":
-                source,
-
-            "channel":
-                channel,
-
-            "type":
-                video_type,
-
-            "category":
-                category,
-
-            "date":
-                date,
-
-            "league":
-                league_name,
-
-            "home":
-                home,
-
-            "away":
-                away,
-
-        }
-
-
-        new_highlights.append(
-            item
-        )
-
-
-        seen_ids.add(
-            video_id
-        )
-
-
-        if len(
-            new_highlights
-        ) >= MAX_HIGHLIGHTS:
-
-            break
-
+for fixture in target_matches:
 
     if len(
         new_highlights
     ) >= MAX_HIGHLIGHTS:
 
         break
+
+
+    print("=" * 60)
+
+    print(
+        "Searching YouTube:"
+    )
+
+    print(
+        f"{fixture['date']} | "
+        f"{fixture['league']} | "
+        f"{fixture['home']} vs "
+        f"{fixture['away']}"
+    )
+
+    print("=" * 60)
+
+
+    fixtures_searched += 1
+
+
+    try:
+
+        candidates = search_youtube(
+
+            fixture["home"],
+
+            fixture["away"],
+
+            fixture["date"]
+
+        )
+
+    except Exception as error:
+
+        print(
+            "YouTube ERROR:",
+            error
+        )
+
+        continue
+
+
+    if not candidates:
+
+        print(
+            "No matching beIN SPORTS video found."
+        )
+
+        continue
+
+
+    # Best candidate
+
+    selected = candidates[0]
+
+
+    video_id = selected[
+        "video_id"
+    ]
+
+
+    if video_id in old_ids:
+
+        print(
+            "Already saved:",
+            video_id
+        )
+
+        continue
+
+
+    print(
+        "SELECTED:"
+    )
+
+    print(
+        selected["title"]
+    )
+
+    print(
+        "Score:",
+        selected["score"]
+    )
+
+
+    # =====================================================
+    # SAVE
+    # =====================================================
+
+    item = {
+
+        "highlight_id":
+            video_id,
+
+        "fixture_id":
+            fixture[
+                "fixture_id"
+            ],
+
+        "title":
+            selected[
+                "title"
+            ],
+
+        "description":
+            selected[
+                "description"
+            ],
+
+        "thumbnail":
+            selected[
+                "thumbnail"
+            ],
+
+        # IMPORTANT:
+        # This is the URL that frontend
+        # must use inside an iframe.
+
+        "embed":
+            (
+                "https://www.youtube.com/embed/"
+                + video_id
+            ),
+
+        "embed_url":
+            (
+                "https://www.youtube.com/embed/"
+                + video_id
+            ),
+
+        "url":
+            (
+                "https://www.youtube.com/watch?v="
+                + video_id
+            ),
+
+        "youtube_id":
+            video_id,
+
+        "source":
+            "YouTube",
+
+        "channel":
+            selected[
+                "channel_title"
+            ],
+
+        "channel_id":
+            selected[
+                "channel_id"
+            ],
+
+        "type":
+            "OFFICIAL",
+
+        "date":
+            fixture[
+                "date"
+            ],
+
+        "league":
+            fixture[
+                "league"
+            ],
+
+        "home":
+            fixture[
+                "home"
+            ],
+
+        "away":
+            fixture[
+                "away"
+            ],
+
+    }
+
+
+    new_highlights.append(
+        item
+    )
+
+
+    old_ids.add(
+        video_id
+    )
 
 
 # =========================================================
@@ -792,7 +1414,7 @@ combined.sort(
         ),
 
         item.get(
-            "highlight_id",
+            "title",
             ""
         )
 
@@ -809,7 +1431,7 @@ combined = combined[
 
 
 # =========================================================
-# OUTPUT
+# SAVE
 # =========================================================
 
 output = {
@@ -820,7 +1442,13 @@ output = {
         ).isoformat(),
 
     "source":
-        "Highlightly",
+        "YouTube / beIN SPORTS",
+
+    "type":
+        "OFFICIAL",
+
+    "channel":
+        BEIN_HANDLE,
 
     "count":
         len(combined),
@@ -857,7 +1485,7 @@ with open(
 
 
 # =========================================================
-# FINAL
+# FINAL DIAGNOSTIC
 # =========================================================
 
 print("=" * 60)
@@ -879,16 +1507,29 @@ print(
 )
 
 print(
-    f"Dates searched: "
-    f"{len(dates)}"
+    f"Fixtures searched: "
+    f"{fixtures_searched}"
 )
 
 print(
-    "Gaming videos rejected."
+    f"Target matches: "
+    f"{len(target_matches)}"
 )
 
 print(
-    "Videos require embedUrl."
+    "Source: YouTube / beIN SPORTS"
+)
+
+print(
+    "Official channel only."
+)
+
+print(
+    "Embeddable videos only."
+)
+
+print(
+    "Gaming videos rejected automatically."
 )
 
 print("=" * 60)
