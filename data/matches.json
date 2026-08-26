@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-08-26T03:35:37.013709+00:00",
+  "updated_at": "2026-08-26T08:10:07.791330+00:00",
   "timezone": "Africa/Algiers",
   "days_before": 7,
   "days_after": 7,
-  "count": 685,
-  "finished_count": 207,
+  "count": 692,
+  "finished_count": 210,
   "matches": [
     {
       "fixture_id": 1492340,
@@ -6954,9 +6954,9 @@
       "fixture_id": 1548368,
       "date": "2026-08-26T03:30:00+01:00",
       "timestamp": 1787711400,
-      "status": "2H",
-      "status_long": "Second Half",
-      "elapsed": 47,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 1028,
         "name": "CONCACAF Central American Cup",
@@ -6969,16 +6969,16 @@
         "id": 820,
         "name": "CS Cartagines",
         "logo": "https://media.api-sports.io/football/teams/820.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 4302,
         "name": "FAS",
         "logo": "https://media.api-sports.io/football/teams/4302.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": 0,
+        "home": 2,
         "away": 0
       }
     },
@@ -6986,9 +6986,9 @@
       "fixture_id": 1548369,
       "date": "2026-08-26T03:30:00+01:00",
       "timestamp": 1787711400,
-      "status": "2H",
-      "status_long": "Second Half",
-      "elapsed": 46,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 1028,
         "name": "CONCACAF Central American Cup",
@@ -7001,16 +7001,16 @@
         "id": 3665,
         "name": "Municipal",
         "logo": "https://media.api-sports.io/football/teams/3665.png",
-        "winner": false
+        "winner": null
       },
       "away": {
         "id": 1055,
         "name": "CD Motagua",
         "logo": "https://media.api-sports.io/football/teams/1055.png",
-        "winner": true
+        "winner": null
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 1
       }
     },
@@ -7018,9 +7018,9 @@
       "fixture_id": 1627559,
       "date": "2026-08-26T03:30:00+01:00",
       "timestamp": 1787711400,
-      "status": "HT",
-      "status_long": "Halftime",
-      "elapsed": 45,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 772,
         "name": "Leagues Cup",
@@ -7042,7 +7042,7 @@
         "winner": false
       },
       "goals": {
-        "home": 1,
+        "home": 3,
         "away": 0
       }
     },
@@ -7050,9 +7050,9 @@
       "fixture_id": 1630054,
       "date": "2026-08-26T08:30:00+01:00",
       "timestamp": 1787729400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 37,
       "league": {
         "id": 1241,
         "name": "U19 league",
@@ -7065,26 +7065,26 @@
         "id": 23030,
         "name": "Crvena Zvezda U18",
         "logo": "https://media.api-sports.io/football/teams/23030.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 28274,
         "name": "OFK Beograd U19",
         "logo": "https://media.api-sports.io/football/teams/28274.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       }
     },
     {
       "fixture_id": 1565057,
       "date": "2026-08-26T09:00:00+01:00",
       "timestamp": 1787731200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 8,
       "league": {
         "id": 668,
         "name": "1. Liga U19",
@@ -7106,17 +7106,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1630056,
       "date": "2026-08-26T09:00:00+01:00",
       "timestamp": 1787731200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 8,
       "league": {
         "id": 1241,
         "name": "U19 league",
@@ -7129,26 +7129,26 @@
         "id": 22398,
         "name": "Partizan U19",
         "logo": "https://media.api-sports.io/football/teams/22398.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 24982,
         "name": "IMT Novi Beograd U19",
         "logo": "https://media.api-sports.io/football/teams/24982.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       }
     },
     {
       "fixture_id": 1630057,
       "date": "2026-08-26T09:00:00+01:00",
       "timestamp": 1787731200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 6,
       "league": {
         "id": 1241,
         "name": "U19 league",
@@ -7170,8 +7170,8 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
@@ -7711,6 +7711,134 @@
         "id": 18378,
         "name": "Criacao Shinjuku",
         "logo": "https://media.api-sports.io/football/teams/18378.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635055,
+      "date": "2026-08-26T10:30:00+01:00",
+      "timestamp": 1787736600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 28010,
+        "name": "Bidhannagar",
+        "logo": "https://media.api-sports.io/football/teams/28010.png",
+        "winner": null
+      },
+      "away": {
+        "id": 15749,
+        "name": "Bhawanipore",
+        "logo": "https://media.api-sports.io/football/teams/15749.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635056,
+      "date": "2026-08-26T10:30:00+01:00",
+      "timestamp": 1787736600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 21599,
+        "name": "Calcutta Customs",
+        "logo": "https://media.api-sports.io/football/teams/21599.png",
+        "winner": null
+      },
+      "away": {
+        "id": 26118,
+        "name": "United Kolkata",
+        "logo": "https://media.api-sports.io/football/teams/26118.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635057,
+      "date": "2026-08-26T10:30:00+01:00",
+      "timestamp": 1787736600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 21604,
+        "name": "George Telegraph",
+        "logo": "https://media.api-sports.io/football/teams/21604.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3467,
+        "name": "Mohun Bagan",
+        "logo": "https://media.api-sports.io/football/teams/3467.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635058,
+      "date": "2026-08-26T10:30:00+01:00",
+      "timestamp": 1787736600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 21607,
+        "name": "Patha Chakra",
+        "logo": "https://media.api-sports.io/football/teams/21607.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21597,
+        "name": "BSS Sporting",
+        "logo": "https://media.api-sports.io/football/teams/21597.png",
         "winner": null
       },
       "goals": {
@@ -8895,70 +9023,6 @@
         "id": 23078,
         "name": "Metalist 1925 U19",
         "logo": "https://media.api-sports.io/football/teams/23078.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1618962,
-      "date": "2026-08-26T13:00:00+01:00",
-      "timestamp": 1787745600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 667,
-        "name": "Friendlies Clubs",
-        "country": "World",
-        "logo": "https://media.api-sports.io/football/leagues/667.png",
-        "flag": null,
-        "round": "Club Friendlies"
-      },
-      "home": {
-        "id": 9710,
-        "name": "Leganés II",
-        "logo": "https://media.api-sports.io/football/teams/9710.png",
-        "winner": null
-      },
-      "away": {
-        "id": 9387,
-        "name": "Gimnástica Segoviana",
-        "logo": "https://media.api-sports.io/football/teams/9387.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1618963,
-      "date": "2026-08-26T13:00:00+01:00",
-      "timestamp": 1787745600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 667,
-        "name": "Friendlies Clubs",
-        "country": "World",
-        "logo": "https://media.api-sports.io/football/leagues/667.png",
-        "flag": null,
-        "round": "Club Friendlies"
-      },
-      "home": {
-        "id": 15328,
-        "name": "Sabiñánigo",
-        "logo": "https://media.api-sports.io/football/teams/15328.png",
-        "winner": null
-      },
-      "away": {
-        "id": 15327,
-        "name": "Huesca II",
-        "logo": "https://media.api-sports.io/football/teams/15327.png",
         "winner": null
       },
       "goals": {
@@ -13991,6 +14055,70 @@
       }
     },
     {
+      "fixture_id": 1618962,
+      "date": "2026-08-26T18:00:00+01:00",
+      "timestamp": 1787763600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 667,
+        "name": "Friendlies Clubs",
+        "country": "World",
+        "logo": "https://media.api-sports.io/football/leagues/667.png",
+        "flag": null,
+        "round": "Club Friendlies"
+      },
+      "home": {
+        "id": 9710,
+        "name": "Leganés II",
+        "logo": "https://media.api-sports.io/football/teams/9710.png",
+        "winner": null
+      },
+      "away": {
+        "id": 9387,
+        "name": "Gimnástica Segoviana",
+        "logo": "https://media.api-sports.io/football/teams/9387.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1618963,
+      "date": "2026-08-26T18:00:00+01:00",
+      "timestamp": 1787763600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 667,
+        "name": "Friendlies Clubs",
+        "country": "World",
+        "logo": "https://media.api-sports.io/football/leagues/667.png",
+        "flag": null,
+        "round": "Club Friendlies"
+      },
+      "home": {
+        "id": 15328,
+        "name": "Sabiñánigo",
+        "logo": "https://media.api-sports.io/football/teams/15328.png",
+        "winner": null
+      },
+      "away": {
+        "id": 15327,
+        "name": "Huesca II",
+        "logo": "https://media.api-sports.io/football/teams/15327.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1619034,
       "date": "2026-08-26T18:00:00+01:00",
       "timestamp": 1787763600,
@@ -18207,6 +18335,102 @@
         "id": 1613,
         "name": "Columbus Crew",
         "logo": "https://media.api-sports.io/football/teams/1613.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635059,
+      "date": "2026-08-27T10:30:00+01:00",
+      "timestamp": 1787823000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 21606,
+        "name": "Kidderpore",
+        "logo": "https://media.api-sports.io/football/teams/21606.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3463,
+        "name": "East Bengal",
+        "logo": "https://media.api-sports.io/football/teams/3463.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635060,
+      "date": "2026-08-27T10:30:00+01:00",
+      "timestamp": 1787823000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 21215,
+        "name": "Rainbow",
+        "logo": "https://media.api-sports.io/football/teams/21215.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21608,
+        "name": "Peerless",
+        "logo": "https://media.api-sports.io/football/teams/21608.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1635061,
+      "date": "2026-08-27T10:30:00+01:00",
+      "timestamp": 1787823000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1020,
+        "name": "Calcutta Premier Division",
+        "country": "India",
+        "logo": "https://media.api-sports.io/football/leagues/1020.png",
+        "flag": "https://media.api-sports.io/flags/in.svg",
+        "round": "Regular season"
+      },
+      "home": {
+        "id": 24103,
+        "name": "NA Suruchi Sangha",
+        "logo": "https://media.api-sports.io/football/teams/24103.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21612,
+        "name": "Wari",
+        "logo": "https://media.api-sports.io/football/teams/21612.png",
         "winner": null
       },
       "goals": {
