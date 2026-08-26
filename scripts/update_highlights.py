@@ -21,11 +21,14 @@ if not API_KEY:
 MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-API_URL = (
-    "https://soccer.highlightly.net/highlights"
-)
+# Highlightly direct API
+API_URL = "https://soccer.highlightly.net/highlights"
 
 LOOKBACK_DAYS = 7
+
+# Highlightly maximum for /highlights is 40
+API_LIMIT = 40
+
 MAX_HIGHLIGHTS = 50
 
 
@@ -140,7 +143,9 @@ def is_gaming(text):
 
     for word in GAMING_WORDS:
 
-        if normalize(word) in value:
+        normalized_word = normalize(word)
+
+        if normalized_word in value:
 
             return True
 
@@ -296,7 +301,7 @@ def team_name_match(
         return False
 
 
-    # Exact
+    # Exact match
 
     if expected == actual:
 
@@ -374,14 +379,12 @@ def highlight_matches_fixture(
         return False
 
 
+    # -----------------------------------------------------
+    # Highlightly home team
+    # -----------------------------------------------------
+
     home_team = video_match.get(
         "homeTeam",
-        {}
-    )
-
-
-    away_team = video_match.get(
-        "awayTeam",
         {}
     )
 
@@ -392,14 +395,6 @@ def highlight_matches_fixture(
     ):
 
         home_team = {}
-
-
-    if not isinstance(
-        away_team,
-        dict
-    ):
-
-        away_team = {}
 
 
     video_home = (
@@ -415,6 +410,24 @@ def highlight_matches_fixture(
         or ""
 
     )
+
+
+    # -----------------------------------------------------
+    # Highlightly away team
+    # -----------------------------------------------------
+
+    away_team = video_match.get(
+        "awayTeam",
+        {}
+    )
+
+
+    if not isinstance(
+        away_team,
+        dict
+    ):
+
+        away_team = {}
 
 
     video_away = (
@@ -435,7 +448,6 @@ def highlight_matches_fixture(
     fixture_home = fixture[
         "home"
     ]
-
 
     fixture_away = fixture[
         "away"
@@ -515,6 +527,7 @@ print(
 # ALGERIA DATE
 # =========================================================
 
+# Algeria is UTC+1
 algeria_now = (
 
     datetime.now(
@@ -751,7 +764,12 @@ if os.path.exists(
             old_highlights = old_data
 
 
-    except Exception:
+    except Exception as error:
+
+        print(
+            "WARNING: Could not read old highlights:",
+            error
+        )
 
         old_highlights = []
 
@@ -766,7 +784,12 @@ old_ids = {
 
     for item in old_highlights
 
-    if item.get(
+    if isinstance(
+        item,
+        dict
+    )
+
+    and item.get(
         "highlight_id"
     )
 
@@ -776,14 +799,22 @@ old_ids = {
 # =========================================================
 # HEADERS
 # =========================================================
+#
+# IMPORTANT:
+# We are using Highlightly DIRECT API:
+#
+# https://soccer.highlightly.net
+#
+# Therefore x-rapidapi-host is NOT required.
+#
+# x-rapidapi-host is only required when using RapidAPI.
+#
+# =========================================================
 
 headers = {
 
     "x-rapidapi-key":
         API_KEY,
-
-    "x-rapidapi-host":
-        "football-highlights-api.p.rapidapi.com",
 
     "Accept":
         "application/json"
@@ -792,12 +823,29 @@ headers = {
 
 
 # =========================================================
-# API
+# FETCH HIGHLIGHTS
 # =========================================================
 
 def fetch_highlights(
     date
 ):
+
+    params = {
+
+        "date":
+            date,
+
+        "timezone":
+            "Europe/Algiers",
+
+        "limit":
+            API_LIMIT,
+
+        "offset":
+            0
+
+    }
+
 
     response = requests.get(
 
@@ -805,18 +853,7 @@ def fetch_highlights(
 
         headers=headers,
 
-        params={
-
-            "date":
-                date,
-
-            "limit":
-                100,
-
-            "offset":
-                0
-
-        },
+        params=params,
 
         timeout=30
 
@@ -824,9 +861,32 @@ def fetch_highlights(
 
 
     print(
+        "Request URL:",
+        response.url
+    )
+
+    print(
         "HTTP:",
         response.status_code
     )
+
+
+    # -----------------------------------------------------
+    # ERROR DETAILS
+    # -----------------------------------------------------
+
+    if response.status_code != 200:
+
+        try:
+
+            print(
+                "API response:",
+                response.text[:1000]
+            )
+
+        except Exception:
+
+            pass
 
 
     response.raise_for_status()
@@ -1233,6 +1293,14 @@ for item in (
     + old_highlights
 
 ):
+
+    if not isinstance(
+        item,
+        dict
+    ):
+
+        continue
+
 
     item_id = str(
         item.get(
