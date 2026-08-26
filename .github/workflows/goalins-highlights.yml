@@ -1,6 +1,10 @@
 name: GOALINS - Update Highlights
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
   schedule:
@@ -34,11 +38,11 @@ jobs:
           HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
         run: |
           if [ -z "$HIGHLIGHTLY_API_KEY" ]; then
-            echo "ERROR: HIGHLIGHTLY_API_KEY is missing."
+            echo "ERROR: HIGHLIGHTLY_API_KEY is missing"
             exit 1
           fi
 
-          echo "Highlightly API key detected."
+          echo "Highlightly API key detected"
 
       - name: Update highlights
         env:
@@ -46,39 +50,35 @@ jobs:
         run: |
           python scripts/update_highlights.py
 
-      - name: Show highlights result
+      - name: Show result
         run: |
           echo "======================================"
           echo "GOALINS HIGHLIGHTS RESULT"
           echo "======================================"
 
           if [ -f data/highlights.json ]; then
-
             python - <<'PY'
 import json
 
-with open(
-    "data/highlights.json",
-    "r",
-    encoding="utf-8"
-) as f:
+with open("data/highlights.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-print(
-    f"Highlights saved: {data.get('count', 0)}"
-)
+print("Highlights saved:", data.get("count", 0))
 
 for item in data.get("highlights", [])[:10]:
     print(
-        f"- {item.get('home')} vs "
-        f"{item.get('away')} | "
-        f"{item.get('type')} | "
-        f"{item.get('source')}"
+        "-",
+        item.get("home"),
+        "vs",
+        item.get("away"),
+        "|",
+        item.get("type"),
+        "|",
+        item.get("source")
     )
 PY
-
           else
-            echo "data/highlights.json was not created."
+            echo "ERROR: data/highlights.json was not created"
             exit 1
           fi
 
