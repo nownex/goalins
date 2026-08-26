@@ -3,23 +3,16 @@ import os
 import re
 import requests
 
-from datetime import (
-    datetime,
-    timezone,
-    timedelta
-)
+from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
 # GOALINS — HIGHLIGHTLY HIGHLIGHTS ENGINE
 # =========================================================
 
-API_KEY = os.environ.get(
-    "HIGHLIGHTLY_API_KEY"
-)
+API_KEY = os.environ.get("HIGHLIGHTLY_API_KEY")
 
 if not API_KEY:
-
     raise RuntimeError(
         "HIGHLIGHTLY_API_KEY is missing"
     )
@@ -32,9 +25,7 @@ API_URL = (
     "https://soccer.highlightly.net/highlights"
 )
 
-
 LOOKBACK_DAYS = 7
-
 MAX_HIGHLIGHTS = 50
 
 TIMEZONE = "Africa/Algiers"
@@ -47,35 +38,22 @@ TIMEZONE = "Africa/Algiers"
 ALLOWED_LEAGUES = {
 
     39: "premier-league",
-
     140: "la-liga",
-
     61: "ligue-1",
-
     135: "serie-a",
-
     88: "eredivisie",
-
     144: "jupiler-pro-league",
-
     94: "primeira-liga",
-
     78: "bundesliga",
 
     2: "champions-league",
-
     3: "europa-league",
-
     848: "conference-league",
 
     1: "world-cup",
-
     4: "euro",
-
     6: "afcon",
-
     9: "copa-america"
-
 }
 
 
@@ -86,49 +64,27 @@ ALLOWED_LEAGUES = {
 FORBIDDEN_WORDS = {
 
     "fifa",
-
     "ea fc",
-
     "fc 26",
-
     "fc26",
-
     "fc 25",
-
     "fc25",
-
     "efootball",
-
     "pes",
-
     "pes 2026",
-
     "pes2026",
-
     "playstation",
-
     "ps4",
-
     "ps5",
-
     "xbox",
-
     "gameplay",
-
     "gaming",
-
     "career mode",
-
     "ultimate team",
-
     "simulation",
-
     "simulated",
-
     "video game",
-
     "game"
-
 }
 
 
@@ -211,30 +167,33 @@ def team_matches(
     )
 
     if not team:
-
         return False
 
     if team in title:
-
         return True
 
     words = [
+
         word
+
         for word in team.split()
+
         if len(word) >= 3
+
     ]
 
     if not words:
-
         return False
 
-    found = 0
+    found = sum(
 
-    for word in words:
+        1
 
-        if word in title:
+        for word in words
 
-            found += 1
+        if word in title
+
+    )
 
     return found >= max(
         1,
@@ -242,9 +201,7 @@ def team_matches(
     )
 
 
-def is_gaming_video(
-    text
-):
+def is_gaming_video(text):
 
     normalized = normalize_text(
         text
@@ -252,16 +209,17 @@ def is_gaming_video(
 
     for word in FORBIDDEN_WORDS:
 
-        if normalize_text(word) in normalized:
+        forbidden = normalize_text(
+            word
+        )
 
+        if forbidden in normalized:
             return True
 
     return False
 
 
-def get_league(
-    match
-):
+def get_league(match):
 
     return (
         match.get("league")
@@ -270,9 +228,7 @@ def get_league(
     )
 
 
-def get_teams(
-    match
-):
+def get_teams(match):
 
     teams = match.get(
         "teams",
@@ -280,39 +236,43 @@ def get_teams(
     )
 
     home = (
+
         match.get("home")
         or teams.get("home")
         or {}
+
     )
 
     away = (
+
         match.get("away")
         or teams.get("away")
         or {}
+
     )
 
     return home, away
 
 
-def get_match_date(
-    match
-):
+def get_match_date(match):
 
     value = (
+
         match.get("date")
+
         or match.get(
             "fixture",
             {}
         ).get("date")
+
         or ""
+
     )
 
     return str(value)[:10]
 
 
-def get_status(
-    match
-):
+def get_status(match):
 
     status = match.get(
         "status"
@@ -323,20 +283,26 @@ def get_status(
         dict
     ):
 
+        short = status.get(
+            "short"
+        )
+
+        if short:
+            return str(short)
+
         return str(
             status.get(
-                "short"
-                or status.get(
-                    "description",
-                    ""
-                )
+                "description",
+                ""
             )
         )
 
     fixture_status = (
+
         match
         .get("fixture", {})
         .get("status", {})
+
     )
 
     if isinstance(
@@ -349,7 +315,6 @@ def get_status(
         )
 
         if short:
-
             return str(short)
 
         return str(
@@ -364,9 +329,7 @@ def get_status(
     )
 
 
-def is_finished(
-    match
-):
+def is_finished(match):
 
     status = get_status(
         match
@@ -388,20 +351,55 @@ def is_finished(
 
 
 # =========================================================
-# BUILD TARGET MATCHES
+# ALGERIA DATE
 # =========================================================
 
-today = datetime.now(
-    timezone.utc
-).date()
+# UTC+1 is used for Algeria.
+# This avoids the previous UTC date problem.
+
+algeria_now = (
+
+    datetime.now(
+        timezone.utc
+    )
+
+    + timedelta(
+        hours=1
+    )
+
+)
+
+today = algeria_now.date()
 
 minimum_date = (
+
     today
+
     - timedelta(
         days=LOOKBACK_DAYS
     )
+
 )
 
+
+print(
+    f"Algeria date: {today.isoformat()}"
+)
+
+print(
+    f"Searching from: "
+    f"{minimum_date.isoformat()}"
+)
+
+print(
+    f"Searching to: "
+    f"{today.isoformat()}"
+)
+
+
+# =========================================================
+# BUILD TARGET MATCHES
+# =========================================================
 
 target_matches = []
 
@@ -423,22 +421,31 @@ for match in matches:
         continue
 
 
-    if league_id not in ALLOWED_LEAGUES:
+    # -----------------------------------------------------
+    # ALLOWED LEAGUE
+    # -----------------------------------------------------
 
+    if league_id not in ALLOWED_LEAGUES:
         continue
 
+
+    # -----------------------------------------------------
+    # FINISHED
+    # -----------------------------------------------------
 
     if not is_finished(
         match
     ):
-
         continue
 
+
+    # -----------------------------------------------------
+    # DATE
+    # -----------------------------------------------------
 
     match_date = get_match_date(
         match
     )
-
 
     try:
 
@@ -453,14 +460,20 @@ for match in matches:
 
 
     if match_date_obj < minimum_date:
-
         continue
 
+
+    if match_date_obj > today:
+        continue
+
+
+    # -----------------------------------------------------
+    # TEAMS
+    # -----------------------------------------------------
 
     home, away = get_teams(
         match
     )
-
 
     home_name = (
         home.get("name")
@@ -474,18 +487,27 @@ for match in matches:
 
 
     if not home_name or not away_name:
-
         continue
+
+
+    fixture_id = (
+
+        match.get(
+            "fixture_id"
+        )
+
+        or match.get(
+            "fixture",
+            {}
+        ).get("id")
+
+    )
 
 
     target_matches.append({
 
         "fixture_id":
-            match.get("fixture_id")
-            or match.get(
-                "fixture",
-                {}
-            ).get("id"),
+            fixture_id,
 
         "date":
             match_date,
@@ -513,10 +535,93 @@ for match in matches:
     })
 
 
+# =========================================================
+# REMOVE DUPLICATE FIXTURES
+# =========================================================
+
+unique_targets = {}
+
+for match in target_matches:
+
+    key = (
+
+        match.get(
+            "fixture_id"
+        )
+
+        or (
+
+            match["date"],
+            match["home"],
+            match["away"]
+
+        )
+
+    )
+
+    unique_targets[key] = match
+
+
+target_matches = list(
+    unique_targets.values()
+)
+
+
+# =========================================================
+# SORT TARGET MATCHES
+# =========================================================
+
+target_matches.sort(
+
+    key=lambda item: (
+
+        item["date"],
+        item["league"],
+        item["home"]
+
+    ),
+
+    reverse=True
+
+)
+
+
+# =========================================================
+# IMPORTANT DIAGNOSTIC
+# =========================================================
+
 print(
-    f"Finished allowed matches in last "
-    f"{LOOKBACK_DAYS} days: "
+    "--------------------------------------------------"
+)
+
+print(
+    f"Finished allowed matches: "
     f"{len(target_matches)}"
+)
+
+print(
+    "--------------------------------------------------"
+)
+
+print(
+    "TARGET MATCHES:"
+)
+
+
+for match in target_matches:
+
+    print(
+
+        f"  {match['date']} | "
+        f"{match['league']} | "
+        f"{match['home']} vs "
+        f"{match['away']}"
+
+    )
+
+
+print(
+    "--------------------------------------------------"
 )
 
 
@@ -525,6 +630,7 @@ print(
 # =========================================================
 
 existing = []
+
 
 if os.path.exists(
     OUTPUT_FILE
@@ -560,7 +666,13 @@ if os.path.exists(
 
             existing = old
 
-    except Exception:
+
+    except Exception as error:
+
+        print(
+            "Could not load old highlights:",
+            error
+        )
 
         existing = []
 
@@ -568,7 +680,9 @@ if os.path.exists(
 existing_ids = {
 
     str(
-        item.get("highlight_id")
+        item.get(
+            "highlight_id"
+        )
     )
 
     for item in existing
@@ -581,7 +695,7 @@ existing_ids = {
 
 
 # =========================================================
-# HIGHLIGHTLY REQUEST
+# HIGHLIGHTLY API
 # =========================================================
 
 HEADERS = {
@@ -655,7 +769,26 @@ def get_highlights(
 
 
 # =========================================================
-# SEARCH
+# SEARCH DATES
+# =========================================================
+
+dates_to_search = sorted({
+
+    match["date"]
+
+    for match in target_matches
+
+})
+
+
+print(
+    f"Dates to search: "
+    f"{len(dates_to_search)}"
+)
+
+
+# =========================================================
+# SEARCH HIGHLIGHTS
 # =========================================================
 
 new_highlights = []
@@ -663,17 +796,7 @@ new_highlights = []
 searched_dates = set()
 
 
-for match in target_matches:
-
-    date_string = match[
-        "date"
-    ]
-
-
-    if date_string in searched_dates:
-
-        continue
-
+for date_string in dates_to_search:
 
     searched_dates.add(
         date_string
@@ -681,11 +804,16 @@ for match in target_matches:
 
 
     print(
-        "----------------------------------------------"
+        "=================================================="
     )
 
     print(
-        f"Highlightly date: {date_string}"
+        f"Searching Highlightly: "
+        f"{date_string}"
+    )
+
+    print(
+        "=================================================="
     )
 
 
@@ -694,6 +822,7 @@ for match in target_matches:
         day_highlights = get_highlights(
             date_string
         )
+
 
     except Exception as error:
 
@@ -711,13 +840,31 @@ for match in target_matches:
     )
 
 
+    # -----------------------------------------------------
+    # TARGETS FOR THIS DATE
+    # -----------------------------------------------------
+
+    date_targets = [
+
+        match
+
+        for match in target_matches
+
+        if match["date"] == date_string
+
+    ]
+
+
+    # -----------------------------------------------------
+    # PROCESS VIDEOS
+    # -----------------------------------------------------
+
     for item in day_highlights:
 
         if not isinstance(
             item,
             dict
         ):
-
             continue
 
 
@@ -727,7 +874,6 @@ for match in target_matches:
 
 
         if not highlight_id:
-
             continue
 
 
@@ -737,7 +883,6 @@ for match in target_matches:
 
 
         if highlight_id in existing_ids:
-
             continue
 
 
@@ -746,10 +891,12 @@ for match in target_matches:
         # -------------------------------------------------
 
         video_type = str(
+
             item.get(
                 "type",
                 ""
             )
+
         ).upper()
 
 
@@ -759,7 +906,7 @@ for match in target_matches:
 
 
         # -------------------------------------------------
-        # EMBED URL REQUIRED
+        # EMBED URL
         # -------------------------------------------------
 
         embed_url = item.get(
@@ -772,53 +919,62 @@ for match in target_matches:
             continue
 
 
+        # -------------------------------------------------
+        # VIDEO DATA
+        # -------------------------------------------------
+
         title = str(
+
             item.get(
                 "title",
                 ""
             )
+
         )
 
 
         description = str(
+
             item.get(
                 "description",
                 ""
             )
+
         )
 
 
         source = str(
+
             item.get(
                 "source",
                 ""
             )
+
         )
 
 
         channel = str(
+
             item.get(
                 "channel",
                 ""
             )
+
         )
 
 
         searchable_text = " ".join([
 
             title,
-
             description,
-
             source,
-
             channel
 
         ])
 
 
         # -------------------------------------------------
-        # REJECT GAMING / SIMULATION
+        # GAMING FILTER
         # -------------------------------------------------
 
         if is_gaming_video(
@@ -826,7 +982,7 @@ for match in target_matches:
         ):
 
             print(
-                "Gaming video rejected:",
+                "REJECTED GAMING:",
                 title
             )
 
@@ -834,38 +990,37 @@ for match in target_matches:
 
 
         # -------------------------------------------------
-        # MATCH AGAINST OUR REAL MATCHES
+        # MATCH VIDEO TO REAL MATCH
         # -------------------------------------------------
 
         selected_match = None
 
 
-        for target in target_matches:
+        for target in date_targets:
 
-            if target["date"] != date_string:
+            home_ok = team_matches(
 
-                continue
-
-
-            if not team_matches(
                 target["home"],
-                title
-            ):
 
-                continue
+                searchable_text
+
+            )
 
 
-            if not team_matches(
+            away_ok = team_matches(
+
                 target["away"],
-                title
-            ):
 
-                continue
+                searchable_text
+
+            )
 
 
-            selected_match = target
+            if home_ok and away_ok:
 
-            break
+                selected_match = target
+
+                break
 
 
         if not selected_match:
@@ -932,9 +1087,11 @@ for match in target_matches:
                 item.get(
                     "publishedAt"
                 )
+
                 or item.get(
                     "createdAt"
                 )
+
                 or "",
 
             "date":
@@ -1011,20 +1168,23 @@ for match in target_matches:
 combined = []
 
 seen_ids = set()
-
 seen_fixtures = set()
 
 
 for item in (
+
     new_highlights
     + existing
+
 ):
 
     highlight_id = str(
+
         item.get(
             "highlight_id",
             ""
         )
+
     )
 
 
@@ -1034,16 +1194,22 @@ for item in (
 
 
     if (
+
         highlight_id
+
         and highlight_id in seen_ids
+
     ):
 
         continue
 
 
     if (
+
         fixture_id
+
         and fixture_id in seen_fixtures
+
     ):
 
         continue
@@ -1105,6 +1271,7 @@ combined = combined[
 output = {
 
     "updated_at":
+
         datetime.now(
             timezone.utc
         ).isoformat(),
@@ -1128,9 +1295,13 @@ os.makedirs(
 
 
 with open(
+
     OUTPUT_FILE,
+
     "w",
+
     encoding="utf-8"
+
 ) as f:
 
     json.dump(
@@ -1155,16 +1326,24 @@ print(
 )
 
 print(
-    f"GOALINS: {len(combined)} "
+    f"GOALINS: "
+    f"{len(combined)} "
     f"real football highlights saved."
 )
 
 print(
-    f"New videos: {len(new_highlights)}"
+    f"New videos: "
+    f"{len(new_highlights)}"
 )
 
 print(
-    f"Dates searched: {len(searched_dates)}"
+    f"Dates searched: "
+    f"{len(searched_dates)}"
+)
+
+print(
+    f"Target matches: "
+    f"{len(target_matches)}"
 )
 
 print(
