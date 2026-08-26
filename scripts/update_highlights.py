@@ -21,12 +21,13 @@ if not API_KEY:
 MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-# Highlightly direct API
-API_URL = "https://soccer.highlightly.net/highlights"
+API_URL = (
+    "https://soccer.highlightly.net/highlights"
+)
 
 LOOKBACK_DAYS = 7
 
-# Highlightly maximum for /highlights is 40
+# Highlightly /highlights maximum
 API_LIMIT = 40
 
 MAX_HIGHLIGHTS = 50
@@ -72,43 +73,24 @@ ALLOWED_LEAGUES = {
 GAMING_WORDS = [
 
     "fifa",
-
     "ea fc",
-
     "fc 26",
-
     "fc26",
-
     "fc 25",
-
     "fc25",
-
     "efootball",
-
     "pes",
-
     "pes 2026",
-
     "playstation",
-
     "ps4",
-
     "ps5",
-
     "xbox",
-
     "gameplay",
-
     "gaming",
-
     "career mode",
-
     "ultimate team",
-
     "simulation",
-
     "simulated",
-
     "video game",
 
 ]
@@ -143,9 +125,7 @@ def is_gaming(text):
 
     for word in GAMING_WORDS:
 
-        normalized_word = normalize(word)
-
-        if normalized_word in value:
+        if normalize(word) in value:
 
             return True
 
@@ -271,9 +251,7 @@ def is_finished(match):
     return get_status(match) in {
 
         "FT",
-
         "AET",
-
         "PEN"
 
     }
@@ -379,12 +357,14 @@ def highlight_matches_fixture(
         return False
 
 
-    # -----------------------------------------------------
-    # Highlightly home team
-    # -----------------------------------------------------
-
     home_team = video_match.get(
         "homeTeam",
+        {}
+    )
+
+
+    away_team = video_match.get(
+        "awayTeam",
         {}
     )
 
@@ -395,6 +375,14 @@ def highlight_matches_fixture(
     ):
 
         home_team = {}
+
+
+    if not isinstance(
+        away_team,
+        dict
+    ):
+
+        away_team = {}
 
 
     video_home = (
@@ -410,24 +398,6 @@ def highlight_matches_fixture(
         or ""
 
     )
-
-
-    # -----------------------------------------------------
-    # Highlightly away team
-    # -----------------------------------------------------
-
-    away_team = video_match.get(
-        "awayTeam",
-        {}
-    )
-
-
-    if not isinstance(
-        away_team,
-        dict
-    ):
-
-        away_team = {}
 
 
     video_away = (
@@ -527,7 +497,7 @@ print(
 # ALGERIA DATE
 # =========================================================
 
-# Algeria is UTC+1
+# Algeria = UTC+1
 algeria_now = (
 
     datetime.now(
@@ -799,22 +769,14 @@ old_ids = {
 # =========================================================
 # HEADERS
 # =========================================================
-#
-# IMPORTANT:
-# We are using Highlightly DIRECT API:
-#
-# https://soccer.highlightly.net
-#
-# Therefore x-rapidapi-host is NOT required.
-#
-# x-rapidapi-host is only required when using RapidAPI.
-#
-# =========================================================
 
 headers = {
 
     "x-rapidapi-key":
         API_KEY,
+
+    "x-rapidapi-host":
+        "football-highlights-api.p.rapidapi.com",
 
     "Accept":
         "application/json"
@@ -830,13 +792,18 @@ def fetch_highlights(
     date
 ):
 
+    # IMPORTANT:
+    # timezone has deliberately been removed.
+    #
+    # Highlightly rejected:
+    # Europe/Algiers
+    #
+    # The API default is Etc/UTC.
+
     params = {
 
         "date":
             date,
-
-        "timezone":
-            "Europe/Algiers",
 
         "limit":
             API_LIMIT,
@@ -1125,7 +1092,7 @@ for date in dates:
 
 
         # =================================================
-        # MATCH THE VIDEO TO REAL FIXTURE
+        # MATCH VIDEO TO REAL FIXTURE
         # =================================================
 
         selected_match = None
