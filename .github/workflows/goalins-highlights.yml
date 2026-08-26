@@ -1,10 +1,6 @@
 name: GOALINS - Update Highlights
 
 on:
-  push:
-    branches:
-      - main
-
   workflow_dispatch:
 
   schedule:
@@ -15,7 +11,6 @@ permissions:
 
 jobs:
   update-highlights:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -50,33 +45,14 @@ jobs:
         run: |
           python scripts/update_highlights.py
 
-      - name: Show result
+      - name: Show highlights result
         run: |
           echo "======================================"
           echo "GOALINS HIGHLIGHTS RESULT"
           echo "======================================"
 
           if [ -f data/highlights.json ]; then
-            python - <<'PY'
-import json
-
-with open("data/highlights.json", "r", encoding="utf-8") as f:
-    data = json.load(f)
-
-print("Highlights saved:", data.get("count", 0))
-
-for item in data.get("highlights", [])[:10]:
-    print(
-        "-",
-        item.get("home"),
-        "vs",
-        item.get("away"),
-        "|",
-        item.get("type"),
-        "|",
-        item.get("source")
-    )
-PY
+            python -c 'import json; d=json.load(open("data/highlights.json", encoding="utf-8")); print("Highlights saved:", d.get("count", 0)); [print("-", x.get("home"), "vs", x.get("away"), "|", x.get("type"), "|", x.get("source")) for x in d.get("highlights", [])[:10]]'
           else
             echo "ERROR: data/highlights.json was not created"
             exit 1
