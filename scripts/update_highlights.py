@@ -3,11 +3,11 @@ import os
 import re
 import requests
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
 
 # =========================================================
-# GOALINS — beIN SPORTS CHANNEL VIDEO ENGINE
+# GOALINS — beIN SPORTS DIRECT HIGHLIGHTS ENGINE
 # =========================================================
 
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
@@ -16,7 +16,6 @@ if not API_KEY:
     raise RuntimeError("YOUTUBE_API_KEY is missing")
 
 
-MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
 CHANNELS_URL = (
@@ -33,38 +32,18 @@ VIDEOS_URL = (
 
 BEIN_HANDLE = "@beinsports"
 
-LOOKBACK_DAYS = 7
-MAX_HIGHLIGHTS = 50
+MAX_HIGHLIGHTS = 30
 
-# How many latest channel videos to inspect
 CHANNEL_VIDEO_LIMIT = 50
 
 
 # =========================================================
-# ALLOWED LEAGUES
+# GAMING / NON-FOOTBALL FILTER
 # =========================================================
 
-ALLOWED_LEAGUES = {
-    "Premier League",
-    "La Liga",
-    "Ligue 1",
-    "Serie A",
-    "Eredivisie",
-    "Jupiler Pro League",
-    "Primeira Liga",
-    "Bundesliga",
-    "UEFA Champions League",
-    "UEFA Europa League",
-    "UEFA Europa Conference League",
-    "UEFA Europa Conference League Qualification",
-}
+REJECT_WORDS = [
 
-
-# =========================================================
-# GAMING FILTER
-# =========================================================
-
-GAMING_WORDS = [
+    # Gaming
     "fifa",
     "ea fc",
     "fc 26",
@@ -73,7 +52,6 @@ GAMING_WORDS = [
     "fc25",
     "efootball",
     "pes",
-    "pes 2026",
     "playstation",
     "ps4",
     "ps5",
@@ -87,149 +65,61 @@ GAMING_WORDS = [
     "video game",
     "لعبة",
     "فيفا",
-    "إي فوتبول",
     "اي فوتبول",
+    "إي فوتبول",
+
+    # General non-match content
+    "ترتيب",
+    "جدول الترتيب",
+    "قرعة",
+    "موعد",
+    "مواعيد",
+    "توقعات",
+    "تحليل",
+    "تحليلات",
+    "تصريحات",
+    "تصريح",
+    "مؤتمر صحفي",
+    "مؤتمر صحافي",
+    "خبر",
+    "أخبار",
+    "اخر الاخبار",
+    "آخر الأخبار",
+    "أخبار اليوم",
+    "تقديم",
+    "تغطية",
+    "كواليس",
+    "لقاء خاص",
+    "حوار",
+    "interview",
+    "preview",
+    "news",
+    "analysis",
 ]
 
 
 # =========================================================
-# TEAM ALIASES
+# STRONG HIGHLIGHT WORDS
 # =========================================================
 
-TEAM_ALIASES = {
+HIGHLIGHT_WORDS = [
 
-    "FK Tobol Kostanay": [
-        "توبول",
-        "توبول كوستاناي",
-    ],
+    "ملخص مباراة",
+    "ملخص المباراه",
+    "ملخص",
 
-    "Kaisar": [
-        "كايسار",
-        "قايصار",
-        "كايزار",
-        "قيسار",
-    ],
+    "اهداف مباراة",
+    "أهداف مباراة",
+    "اهداف المباراه",
+    "أهداف المباراة",
 
-    "Abdish-Ata": [
-        "أبدش آتا",
-        "أبدش أتا",
-        "أبدش عطا",
-        "أبدش",
-    ],
+    "اهداف",
+    "أهداف",
 
-    "Talant": [
-        "تالانت",
-        "تالنت",
-    ],
+    "highlights",
+    "match highlights",
 
-    "Al Kuwait": [
-        "الكويت",
-        "نادي الكويت",
-        "الكويت الكويتي",
-    ],
-
-    "Al Arabi": [
-        "العربي",
-        "العربي الكويتي",
-        "نادي العربي",
-    ],
-
-    "Sabah FA": [
-        "ساباه",
-        "صباح",
-        "ساباه باكو",
-        "سباه",
-    ],
-
-    "Hapoel Beer Sheva": [
-        "هبوعيل بئر السبع",
-        "هبوعيل بئر سبع",
-        "هبوعيل بئرشبع",
-        "بئر السبع",
-    ],
-
-    "Al Fahaheel": [
-        "الفحيحيل",
-        "فحيحيل",
-    ],
-
-    "Al Qadsia": [
-        "القادسية",
-        "القادسية الكويتي",
-    ],
-
-    "Al Shabab": [
-        "الشباب",
-        "الشباب الكويتي",
-    ],
-
-    "Valencia": [
-        "فالنسيا",
-    ],
-
-    "Real Betis": [
-        "ريال بيتيس",
-        "بيتيس",
-    ],
-
-    "Celtic": [
-        "سيلتيك",
-        "سلتيك",
-    ],
-
-    "Bodo/Glimt": [
-        "بودو غليمت",
-        "بودو جليمت",
-        "بودو",
-    ],
-
-    "Rapid Vienna": [
-        "رابيد فيينا",
-        "رابيد",
-    ],
-
-    "Heart of Midlothian": [
-        "هارتس",
-        "هارت أوف ميدلوثيان",
-        "هارت اوف ميدلوثيان",
-    ],
-
-    "Botafogo": [
-        "بوتافوغو",
-        "بوتافوجو",
-    ],
-
-    "Atletico Paranaense": [
-        "أتلتيكو باراناينسي",
-        "اتلتيكو باراناينسي",
-        "باراناينسي",
-    ],
-
-    "Zamalek SC": [
-        "الزمالك",
-        "نادي الزمالك",
-    ],
-
-    "Smouha SC": [
-        "سموحة",
-        "سموحه",
-    ],
-
-    "National Bank of Egypt": [
-        "البنك الأهلي",
-        "البنك الاهلي",
-        "البنك الأهلي المصري",
-    ],
-
-    "Petrojet": [
-        "بتروجيت",
-        "بتروجت",
-    ],
-
-    "El Geish": [
-        "طلائع الجيش",
-    ],
-}
+]
 
 
 # =========================================================
@@ -240,6 +130,7 @@ def normalize(text):
 
     text = str(text or "").lower()
 
+    # Arabic normalization
     text = text.replace("أ", "ا")
     text = text.replace("إ", "ا")
     text = text.replace("آ", "ا")
@@ -248,12 +139,14 @@ def normalize(text):
     text = text.replace("ؤ", "و")
     text = text.replace("ئ", "ي")
 
+    # Remove Arabic tashkeel
     text = re.sub(
         r"[\u064B-\u065F\u0670]",
         "",
         text
     )
 
+    # Remove punctuation
     text = re.sub(
         r"[^a-z0-9\u0600-\u06ff]+",
         " ",
@@ -273,7 +166,81 @@ def is_gaming(text):
 
     value = normalize(text)
 
-    for word in GAMING_WORDS:
+    for word in REJECT_WORDS:
+
+        if normalize(word) in value:
+
+            if normalize(word) in {
+                normalize(x)
+                for x in [
+                    "fifa",
+                    "ea fc",
+                    "fc 26",
+                    "fc26",
+                    "fc 25",
+                    "fc25",
+                    "efootball",
+                    "pes",
+                    "playstation",
+                    "ps4",
+                    "ps5",
+                    "xbox",
+                    "gameplay",
+                    "gaming",
+                    "career mode",
+                    "ultimate team",
+                    "simulation",
+                    "simulated",
+                    "video game",
+                    "لعبة",
+                    "فيفا",
+                    "اي فوتبول",
+                    "إي فوتبول",
+                ]
+            }:
+                return True
+
+    return False
+
+
+# =========================================================
+# REJECT GENERAL CONTENT
+# =========================================================
+
+def is_general_content(title):
+
+    value = normalize(title)
+
+    general_words = [
+
+        "ترتيب",
+        "جدول الترتيب",
+        "قرعة",
+        "موعد",
+        "مواعيد",
+        "توقعات",
+        "تحليل",
+        "تحليلات",
+        "تصريحات",
+        "تصريح",
+        "مؤتمر صحفي",
+        "مؤتمر صحافي",
+        "خبر",
+        "اخبار",
+        "اخر الاخبار",
+        "اخر اخبار",
+        "تقديم",
+        "تغطيه",
+        "كواليس",
+        "لقاء خاص",
+        "حوار",
+        "interview",
+        "preview",
+        "news",
+        "analysis",
+    ]
+
+    for word in general_words:
 
         if normalize(word) in value:
 
@@ -283,152 +250,30 @@ def is_gaming(text):
 
 
 # =========================================================
-# MATCH HELPERS
+# IS FOOTBALL HIGHLIGHT
 # =========================================================
 
-def get_date(match):
+def is_match_highlight(
+    title,
+    description=""
+):
 
-    return str(
-        match.get(
-            "date",
-            ""
-        )
-    )[:10]
-
-
-def get_league(match):
-
-    league = match.get(
-        "league",
-        {}
+    text = normalize(
+        f"{title} {description}"
     )
 
-    if isinstance(
-        league,
-        dict
-    ):
+    # Never accept gaming
+    if is_gaming(text):
+        return False
 
-        return str(
-            league.get(
-                "name",
-                ""
-            )
-        ).strip()
+    # Never accept obvious general/news videos
+    if is_general_content(title):
+        return False
 
-    return str(
-        league or ""
-    ).strip()
+    # Strong highlight signal
+    for word in HIGHLIGHT_WORDS:
 
-
-def get_team(match, side):
-
-    team = match.get(
-        side,
-        {}
-    )
-
-    if isinstance(
-        team,
-        dict
-    ):
-
-        return str(
-            team.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-    return str(
-        team or ""
-    ).strip()
-
-
-def get_status(match):
-
-    status = match.get(
-        "status",
-        ""
-    )
-
-    if isinstance(
-        status,
-        dict
-    ):
-
-        return str(
-            status.get(
-                "short",
-                ""
-            )
-        ).upper()
-
-    return str(
-        status
-    ).upper()
-
-
-def is_finished(match):
-
-    return get_status(match) in {
-        "FT",
-        "AET",
-        "PEN",
-    }
-
-
-# =========================================================
-# TEAM ALIASES
-# =========================================================
-
-def aliases_for_team(team):
-
-    result = [
-        normalize(team)
-    ]
-
-    for key, aliases in TEAM_ALIASES.items():
-
-        if normalize(key) == normalize(team):
-
-            result.extend(
-                normalize(x)
-                for x in aliases
-            )
-
-    clean = []
-
-    seen = set()
-
-    for item in result:
-
-        if not item:
-            continue
-
-        if item in seen:
-            continue
-
-        seen.add(item)
-        clean.append(item)
-
-    return clean
-
-
-# =========================================================
-# TEAM FOUND
-# =========================================================
-
-def team_found(team, text):
-
-    value = normalize(text)
-
-    aliases = aliases_for_team(
-        team
-    )
-
-    for alias in aliases:
-
-        if alias in value:
+        if normalize(word) in text:
 
             return True
 
@@ -436,92 +281,40 @@ def team_found(team, text):
 
 
 # =========================================================
-# SCORE VIDEO AGAINST MATCH
-# =========================================================
-
-def score_video(
-    title,
-    description,
-    home,
-    away
-):
-
-    text = normalize(
-        f"{title} {description}"
-    )
-
-    score = 0
-
-    home_found = team_found(
-        home,
-        text
-    )
-
-    away_found = team_found(
-        away,
-        text
-    )
-
-    if home_found:
-        score += 100
-
-    if away_found:
-        score += 100
-
-    if home_found and away_found:
-        score += 200
-
-    if "ملخص" in text:
-        score += 60
-
-    if "اهداف" in text:
-        score += 50
-
-    if "مباراة" in text:
-        score += 25
-
-    if "highlights" in text:
-        score += 40
-
-    if "goals" in text:
-        score += 35
-
-    if is_gaming(text):
-        score -= 500
-
-    return (
-        score,
-        home_found,
-        away_found
-    )
-
-
-# =========================================================
-# GET CHANNEL INFORMATION
-#
-# channels.list costs very little compared with search.list
+# GET CHANNEL
 # =========================================================
 
 def get_channel():
 
     print("=" * 60)
-    print("Finding beIN SPORTS channel")
+    print("GETTING beIN SPORTS CHANNEL")
     print("=" * 60)
 
     params = {
-        "part": "id,contentDetails,snippet",
-        "forHandle": BEIN_HANDLE,
-        "key": API_KEY,
+
+        "part":
+            "id,contentDetails,snippet",
+
+        "forHandle":
+            BEIN_HANDLE,
+
+        "key":
+            API_KEY,
+
     }
 
     response = requests.get(
+
         CHANNELS_URL,
+
         params=params,
+
         timeout=30
+
     )
 
     print(
-        "Channel HTTP:",
+        "Channels HTTP:",
         response.status_code
     )
 
@@ -537,7 +330,7 @@ def get_channel():
     if not items:
 
         raise RuntimeError(
-            "beIN SPORTS channel not found"
+            "beIN SPORTS channel was not found."
         )
 
     channel = items[0]
@@ -547,30 +340,35 @@ def get_channel():
     )
 
     uploads_playlist = (
+
         channel
+
         .get(
             "contentDetails",
             {}
         )
+
         .get(
             "relatedPlaylists",
             {}
         )
+
         .get(
             "uploads"
         )
+
     )
 
     if not channel_id:
 
         raise RuntimeError(
-            "beIN channel ID missing"
+            "beIN channel ID is missing."
         )
 
     if not uploads_playlist:
 
         raise RuntimeError(
-            "beIN uploads playlist missing"
+            "beIN uploads playlist is missing."
         )
 
     print(
@@ -590,31 +388,45 @@ def get_channel():
 
 
 # =========================================================
-# GET LATEST CHANNEL VIDEOS
+# GET CHANNEL VIDEOS
 #
 # IMPORTANT:
-# No search.list is used here.
+# playlistItems.list
+# NOT search.list
 # =========================================================
 
-def get_latest_channel_videos(
+def get_channel_videos(
     uploads_playlist
 ):
 
     print("=" * 60)
-    print("Reading latest beIN SPORTS videos")
+    print("GETTING LATEST beIN SPORTS VIDEOS")
     print("=" * 60)
 
     params = {
-        "part": "snippet,contentDetails",
-        "playlistId": uploads_playlist,
-        "maxResults": CHANNEL_VIDEO_LIMIT,
-        "key": API_KEY,
+
+        "part":
+            "snippet,contentDetails",
+
+        "playlistId":
+            uploads_playlist,
+
+        "maxResults":
+            CHANNEL_VIDEO_LIMIT,
+
+        "key":
+            API_KEY,
+
     }
 
     response = requests.get(
+
         PLAYLIST_ITEMS_URL,
+
         params=params,
+
         timeout=30
+
     )
 
     print(
@@ -641,25 +453,37 @@ def get_latest_channel_videos(
 
 # =========================================================
 # GET VIDEO DETAILS
-#
-# This confirms duration and embeddability.
 # =========================================================
 
-def get_video_details(video_ids):
+def get_video_details(
+    video_ids
+):
 
     if not video_ids:
+
         return {}
 
     params = {
-        "part": "snippet,contentDetails,status",
-        "id": ",".join(video_ids),
-        "key": API_KEY,
+
+        "part":
+            "snippet,contentDetails,status",
+
+        "id":
+            ",".join(video_ids),
+
+        "key":
+            API_KEY,
+
     }
 
     response = requests.get(
+
         VIDEOS_URL,
+
         params=params,
+
         timeout=30
+
     )
 
     print(
@@ -692,155 +516,87 @@ def get_video_details(video_ids):
 
 
 # =========================================================
-# LOAD MATCHES
+# EXTRACT DATE FROM TITLE
 # =========================================================
 
-with open(
-    MATCHES_FILE,
-    "r",
-    encoding="utf-8"
-) as file:
+def extract_match_info(
+    title
+):
 
-    matches_data = json.load(
-        file
+    """
+    We intentionally do not require the match
+    to exist in matches.json.
+
+    The title itself is enough to display
+    the video.
+    """
+
+    clean_title = str(
+        title or ""
+    ).strip()
+
+    home = ""
+    away = ""
+    league = ""
+
+    # -----------------------------------------------------
+    # Common Arabic format:
+    #
+    # ملخص مباراة X و Y | الدوري ...
+    # -----------------------------------------------------
+
+    patterns = [
+
+        r"ملخص مباراة\s+(.+?)\s+(?:و|ضد|امام|أمام)\s+(.+?)(?:\||$)",
+
+        r"ملخص\s+(.+?)\s+(?:و|ضد|امام|أمام)\s+(.+?)(?:\||$)",
+
+        r"اهداف مباراة\s+(.+?)\s+(?:و|ضد|امام|أمام)\s+(.+?)(?:\||$)",
+
+        r"أهداف مباراة\s+(.+?)\s+(?:و|ضد|امام|أمام)\s+(.+?)(?:\||$)",
+
+    ]
+
+    for pattern in patterns:
+
+        match = re.search(
+            pattern,
+            clean_title,
+            flags=re.IGNORECASE
+        )
+
+        if match:
+
+            home = match.group(
+                1
+            ).strip()
+
+            away = match.group(
+                2
+            ).strip()
+
+            break
+
+
+    # -----------------------------------------------------
+    # Extract league after |
+    # -----------------------------------------------------
+
+    if "|" in clean_title:
+
+        parts = clean_title.split(
+            "|"
+        )
+
+        if len(parts) >= 2:
+
+            league = parts[-1].strip()
+
+    return (
+        home,
+        away,
+        league
     )
-
-matches = matches_data.get(
-    "matches",
-    []
-)
-
-print("=" * 60)
-
-print(
-    "GOALINS — beIN SPORTS DIRECT "
-    "CHANNEL ENGINE"
-)
-
-print("=" * 60)
-
-print(
-    "No YouTube search.list is used."
-)
-
-print(
-    f"Total matches: {len(matches)}"
-)
-
-
-# =========================================================
-# DATE RANGE
-# =========================================================
-
-algeria_now = (
-    datetime.now(
-        timezone.utc
-    )
-    + timedelta(
-        hours=1
-    )
-)
-
-today = algeria_now.date()
-
-start_date = (
-    today
-    - timedelta(
-        days=LOOKBACK_DAYS
-    )
-)
-
-print(
-    f"Algeria date: {today}"
-)
-
-print(
-    f"Looking back: {LOOKBACK_DAYS} days"
-)
-
-
-# =========================================================
-# TARGET MATCHES
-# =========================================================
-
-target_matches = []
-
-for match in matches:
-
-    league = get_league(
-        match
-    )
-
-    if league not in ALLOWED_LEAGUES:
-        continue
-
-    if not is_finished(match):
-        continue
-
-    match_date = get_date(
-        match
-    )
-
-    try:
-
-        date_obj = datetime.strptime(
-            match_date,
-            "%Y-%m-%d"
-        ).date()
-
-    except Exception:
-
-        continue
-
-    if date_obj < start_date:
-        continue
-
-    if date_obj > today:
-        continue
-
-    home = get_team(
-        match,
-        "home"
-    )
-
-    away = get_team(
-        match,
-        "away"
-    )
-
-    if not home or not away:
-        continue
-
-    target_matches.append({
-
-        "fixture_id":
-            match.get(
-                "fixture_id"
-            ),
-
-        "date":
-            match_date,
-
-        "league":
-            league,
-
-        "home":
-            home,
-
-        "away":
-            away,
-
-    })
-
-
-print("-" * 60)
-
-print(
-    "Target finished matches:",
-    len(target_matches)
-)
-
-print("-" * 60)
 
 
 # =========================================================
@@ -884,7 +640,12 @@ if os.path.exists(
 
             old_highlights = old_data
 
-    except Exception:
+    except Exception as error:
+
+        print(
+            "Could not read old highlights:",
+            error
+        )
 
         old_highlights = []
 
@@ -907,7 +668,29 @@ old_ids = {
 
 
 # =========================================================
-# GET CHANNEL
+# MAIN
+# =========================================================
+
+print("=" * 60)
+
+print(
+    "GOALINS — DIRECT beIN SPORTS "
+    "HIGHLIGHTS ENGINE"
+)
+
+print("=" * 60)
+
+print(
+    "No search.list is used."
+)
+
+print(
+    "No matches.json matching is required."
+)
+
+
+# =========================================================
+# CHANNEL
 # =========================================================
 
 channel_id, uploads_playlist = (
@@ -916,18 +699,18 @@ channel_id, uploads_playlist = (
 
 
 # =========================================================
-# GET LATEST VIDEOS
+# LATEST VIDEOS
 # =========================================================
 
 playlist_items = (
-    get_latest_channel_videos(
+    get_channel_videos(
         uploads_playlist
     )
 )
 
 
 # =========================================================
-# COLLECT VIDEO IDS
+# VIDEO IDS
 # =========================================================
 
 video_ids = []
@@ -944,6 +727,7 @@ for item in playlist_items:
     )
 
     if video_id:
+
         video_ids.append(
             video_id
         )
@@ -963,31 +747,32 @@ print(
 
 
 # =========================================================
-# VIDEO DETAILS
+# DETAILS
 # =========================================================
 
-video_details = (
-    get_video_details(
-        video_ids
-    )
+details = get_video_details(
+    video_ids
 )
 
 
 # =========================================================
-# PREPARE CANDIDATES
+# COLLECT REAL MATCH HIGHLIGHTS
 # =========================================================
 
-channel_videos = []
+new_highlights = []
+
+seen_ids = set()
+
 
 for item in playlist_items:
 
-    snippet = item.get(
-        "snippet",
+    content = item.get(
+        "contentDetails",
         {}
     )
 
-    content = item.get(
-        "contentDetails",
+    snippet = item.get(
+        "snippet",
         {}
     )
 
@@ -996,21 +781,30 @@ for item in playlist_items:
     )
 
     if not video_id:
+
         continue
+
+    if video_id in seen_ids:
+
+        continue
+
+    seen_ids.add(
+        video_id
+    )
 
     title = str(
         snippet.get(
             "title",
             ""
         )
-    )
+    ).strip()
 
     description = str(
         snippet.get(
             "description",
             ""
         )
-    )
+    ).strip()
 
     published_at = str(
         snippet.get(
@@ -1019,7 +813,47 @@ for item in playlist_items:
         )
     )
 
-    detail = video_details.get(
+    print("-" * 60)
+
+    print(
+        "Checking:",
+        title
+    )
+
+
+    # -----------------------------------------------------
+    # OLD VIDEO
+    # -----------------------------------------------------
+
+    if video_id in old_ids:
+
+        print(
+            "Already saved."
+        )
+
+        continue
+
+
+    # -----------------------------------------------------
+    # GAMING
+    # -----------------------------------------------------
+
+    if is_gaming(
+        f"{title} {description}"
+    ):
+
+        print(
+            "REJECTED: gaming."
+        )
+
+        continue
+
+
+    # -----------------------------------------------------
+    # EMBEDDING
+    # -----------------------------------------------------
+
+    detail = details.get(
         video_id,
         {}
     )
@@ -1029,10 +863,6 @@ for item in playlist_items:
         {}
     )
 
-    # -----------------------------------------------------
-    # Embedding
-    # -----------------------------------------------------
-
     embeddable = status.get(
         "embeddable",
         True
@@ -1041,63 +871,103 @@ for item in playlist_items:
     if embeddable is False:
 
         print(
-            "Rejected non-embeddable:",
-            title
+            "REJECTED: not embeddable."
         )
 
         continue
 
+
     # -----------------------------------------------------
-    # Gaming
+    # HIGHLIGHT TEST
     # -----------------------------------------------------
 
-    if is_gaming(
-        f"{title} {description}"
+    if not is_match_highlight(
+        title,
+        description
     ):
 
         print(
-            "Rejected gaming:",
-            title
+            "REJECTED: not a match highlight."
         )
 
         continue
 
+
+    # -----------------------------------------------------
+    # EXTRACT INFO
+    # -----------------------------------------------------
+
+    home, away, league = (
+        extract_match_info(
+            title
+        )
+    )
+
+
     thumbnail = (
+
         snippet
+
         .get(
             "thumbnails",
             {}
         )
+
         .get(
             "high",
             {}
         )
+
         .get(
             "url"
         )
+
     )
+
 
     if not thumbnail:
 
         thumbnail = (
+
             snippet
+
             .get(
                 "thumbnails",
                 {}
             )
+
             .get(
                 "medium",
                 {}
             )
+
             .get(
                 "url"
             )
+
         )
 
-    channel_videos.append({
 
-        "video_id":
+    # -----------------------------------------------------
+    # SAVE
+    # -----------------------------------------------------
+
+    print(
+        "SELECTED REAL FOOTBALL HIGHLIGHT:"
+    )
+
+    print(
+        title
+    )
+
+
+    item_output = {
+
+        "highlight_id":
             video_id,
+
+        "fixture_id":
+            None,
 
         "title":
             title,
@@ -1105,229 +975,8 @@ for item in playlist_items:
         "description":
             description,
 
-        "published_at":
-            published_at,
-
         "thumbnail":
             thumbnail,
-
-        "channel_id":
-            channel_id,
-
-        "channel_title":
-            snippet.get(
-                "channelTitle",
-                "beIN SPORTS"
-            ),
-
-    })
-
-
-print(
-    "Usable beIN videos:",
-    len(channel_videos)
-)
-
-
-# =========================================================
-# MATCH VIDEOS TO FIXTURES
-# =========================================================
-
-new_highlights = []
-
-used_video_ids = set()
-
-used_fixture_ids = set()
-
-
-for fixture in target_matches:
-
-    if len(
-        new_highlights
-    ) >= MAX_HIGHLIGHTS:
-
-        break
-
-    fixture_id = fixture.get(
-        "fixture_id"
-    )
-
-    best = None
-
-    best_score = 0
-
-    print("=" * 60)
-
-    print(
-        "MATCHING:"
-    )
-
-    print(
-        f"{fixture['date']} | "
-        f"{fixture['home']} vs "
-        f"{fixture['away']}"
-    )
-
-    print("=" * 60)
-
-
-    for video in channel_videos:
-
-        video_id = video[
-            "video_id"
-        ]
-
-        if video_id in used_video_ids:
-            continue
-
-        if video_id in old_ids:
-            continue
-
-        score, home_found, away_found = (
-            score_video(
-                video["title"],
-                video["description"],
-                fixture["home"],
-                fixture["away"]
-            )
-        )
-
-        if score <= 0:
-            continue
-
-        print(
-            f"Candidate [{score}] "
-            f"H={home_found} "
-            f"A={away_found}: "
-            f"{video['title']}"
-        )
-
-        # -------------------------------------------------
-        # REQUIRE BOTH TEAMS
-        # -------------------------------------------------
-
-        if not (
-            home_found
-            and away_found
-        ):
-
-            continue
-
-        # -------------------------------------------------
-        # Prefer videos published close to match date
-        # -------------------------------------------------
-
-        date_bonus = 0
-
-        published = video.get(
-            "published_at",
-            ""
-        )
-
-        try:
-
-            published_date = (
-                datetime.fromisoformat(
-                    published.replace(
-                        "Z",
-                        "+00:00"
-                    )
-                ).date()
-            )
-
-            match_date = datetime.strptime(
-                fixture["date"],
-                "%Y-%m-%d"
-            ).date()
-
-            difference = abs(
-                (
-                    published_date
-                    - match_date
-                ).days
-            )
-
-            if difference == 0:
-                date_bonus = 50
-
-            elif difference == 1:
-                date_bonus = 40
-
-            elif difference == 2:
-                date_bonus = 20
-
-            elif difference <= 3:
-                date_bonus = 10
-
-        except Exception:
-
-            pass
-
-        final_score = (
-            score
-            + date_bonus
-        )
-
-        if (
-            best is None
-            or final_score > best_score
-        ):
-
-            best = video
-            best_score = final_score
-
-
-    # =====================================================
-    # NO MATCH
-    # =====================================================
-
-    if best is None:
-
-        print(
-            "No reliable beIN video found."
-        )
-
-        continue
-
-
-    # =====================================================
-    # SAVE MATCH
-    # =====================================================
-
-    video_id = best[
-        "video_id"
-    ]
-
-    print(
-        "SELECTED:"
-    )
-
-    print(
-        best["title"]
-    )
-
-    print(
-        "Score:",
-        best_score
-    )
-
-
-    item = {
-
-        "highlight_id":
-            video_id,
-
-        "fixture_id":
-            fixture_id,
-
-        "title":
-            best["title"],
-
-        "description":
-            best["description"],
-
-        "thumbnail":
-            best["thumbnail"],
 
         "embed":
             (
@@ -1354,41 +1003,50 @@ for fixture in target_matches:
             "YouTube",
 
         "channel":
-            best["channel_title"],
+            snippet.get(
+                "channelTitle",
+                "beIN SPORTS"
+            ),
 
         "channel_id":
-            best["channel_id"],
+            channel_id,
 
         "type":
             "OFFICIAL",
 
         "date":
-            fixture["date"],
+            published_at[:10],
 
         "league":
-            fixture["league"],
+            league,
 
         "home":
-            fixture["home"],
+            home,
 
         "away":
-            fixture["away"],
+            away,
+
+        "published_at":
+            published_at,
 
     }
 
 
     new_highlights.append(
-        item
+        item_output
     )
 
-    used_video_ids.add(
+
+    old_ids.add(
         video_id
     )
 
-    if fixture_id:
-        used_fixture_ids.add(
-            fixture_id
-        )
+
+    if len(
+        new_highlights
+    ) >= MAX_HIGHLIGHTS:
+
+        break
 
 
 # =========================================================
@@ -1397,7 +1055,8 @@ for fixture in target_matches:
 
 combined = []
 
-seen_ids = set()
+seen = set()
+
 
 for item in (
     new_highlights
@@ -1412,12 +1071,14 @@ for item in (
     )
 
     if not video_id:
+
         continue
 
-    if video_id in seen_ids:
+    if video_id in seen:
+
         continue
 
-    seen_ids.add(
+    seen.add(
         video_id
     )
 
@@ -1431,18 +1092,25 @@ for item in (
 # =========================================================
 
 combined.sort(
+
     key=lambda item: (
+
         item.get(
             "date",
             ""
         ),
+
         item.get(
             "published_at",
             ""
         )
+
     ),
+
     reverse=True
+
 )
+
 
 combined = combined[
     :MAX_HIGHLIGHTS
@@ -1519,16 +1187,11 @@ print(
 
 print(
     f"Channel videos inspected: "
-    f"{len(channel_videos)}"
+    f"{len(playlist_items)}"
 )
 
 print(
-    f"Target matches: "
-    f"{len(target_matches)}"
-)
-
-print(
-    f"New videos matched: "
+    f"New match highlights: "
     f"{len(new_highlights)}"
 )
 
@@ -1542,16 +1205,19 @@ print(
 )
 
 print(
-    "Arabic titles supported."
-
+    "Match database matching: DISABLED"
 )
 
 print(
-    "Gaming videos rejected."
+    "Arabic titles: ENABLED"
 )
 
 print(
-    "Embeddable videos only."
+    "Gaming filter: ENABLED"
+)
+
+print(
+    "Embeddable videos: REQUIRED"
 )
 
 print("=" * 60)
