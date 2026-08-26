@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
-# GOALINS — YOUTUBE / beIN SPORTS ARABIC HIGHLIGHTS ENGINE
+# GOALINS — beIN SPORTS CHANNEL VIDEO ENGINE
 # =========================================================
 
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
@@ -19,14 +19,25 @@ if not API_KEY:
 MATCHES_FILE = "data/matches.json"
 OUTPUT_FILE = "data/highlights.json"
 
-YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
-YOUTUBE_CHANNELS_URL = "https://www.googleapis.com/youtube/v3/channels"
+CHANNELS_URL = (
+    "https://www.googleapis.com/youtube/v3/channels"
+)
+
+PLAYLIST_ITEMS_URL = (
+    "https://www.googleapis.com/youtube/v3/playlistItems"
+)
+
+VIDEOS_URL = (
+    "https://www.googleapis.com/youtube/v3/videos"
+)
+
+BEIN_HANDLE = "@beinsports"
 
 LOOKBACK_DAYS = 7
 MAX_HIGHLIGHTS = 50
 
-BEIN_HANDLE = "@beinsports"
-BEIN_CHANNEL_ID = None
+# How many latest channel videos to inspect
+CHANNEL_VIDEO_LIMIT = 50
 
 
 # =========================================================
@@ -46,303 +57,6 @@ ALLOWED_LEAGUES = {
     "UEFA Europa League",
     "UEFA Europa Conference League",
     "UEFA Europa Conference League Qualification",
-}
-
-
-# =========================================================
-# ARABIC LEAGUE NAMES
-# =========================================================
-
-LEAGUE_ARABIC = {
-    "Premier League": [
-        "الدوري الإنجليزي",
-        "الدوري الانجليزي",
-        "البريميرليغ",
-        "بريميرليغ",
-    ],
-
-    "La Liga": [
-        "الدوري الإسباني",
-        "الدوري الاسباني",
-        "الليغا",
-        "لاليغا",
-    ],
-
-    "Ligue 1": [
-        "الدوري الفرنسي",
-        "ليغ 1",
-        "الدوري الفرنسي 1",
-    ],
-
-    "Serie A": [
-        "الدوري الإيطالي",
-        "الدوري الايطالي",
-        "السيري آ",
-        "سيري آ",
-    ],
-
-    "Bundesliga": [
-        "الدوري الألماني",
-        "الدوري الالماني",
-        "البوندسليغا",
-        "بوندسليغا",
-    ],
-
-    "Eredivisie": [
-        "الدوري الهولندي",
-        "الإيرديفيزي",
-        "الدوري الهولندي الممتاز",
-    ],
-
-    "Jupiler Pro League": [
-        "الدوري البلجيكي",
-        "الدوري البلجيكي الممتاز",
-    ],
-
-    "Primeira Liga": [
-        "الدوري البرتغالي",
-        "الدوري البرتغالي الممتاز",
-    ],
-
-    "UEFA Champions League": [
-        "دوري أبطال أوروبا",
-        "دوري الابطال",
-        "أبطال أوروبا",
-    ],
-
-    "UEFA Europa League": [
-        "الدوري الأوروبي",
-        "يوروبا ليغ",
-        "اليوروبا ليغ",
-    ],
-
-    "UEFA Europa Conference League": [
-        "دوري المؤتمر الأوروبي",
-        "دوري المؤتمر",
-        "المؤتمر الأوروبي",
-    ],
-
-    "UEFA Europa Conference League Qualification": [
-        "دوري المؤتمر الأوروبي",
-        "تصفيات دوري المؤتمر",
-    ],
-}
-
-
-# =========================================================
-# ARABIC TEAM ALIASES
-#
-# This is intentionally flexible.
-# More aliases can be added later without changing
-# the search engine.
-# =========================================================
-
-TEAM_ALIASES = {
-
-    # -----------------------------------------------------
-    # ENGLISH / EUROPE
-    # -----------------------------------------------------
-
-    "Valencia": [
-        "فالنسيا",
-        "فالنسيا الإسباني",
-        "فالنسيا الاسباني",
-    ],
-
-    "Real Betis": [
-        "ريال بيتيس",
-        "بيتيس",
-        "ريال بيتس",
-    ],
-
-    "Celtic": [
-        "سيلتيك",
-        "سلتيك",
-        "سلتك",
-    ],
-
-    "Lask Linz": [
-        "لاس لينز",
-        "لاسك لينز",
-        "لاسك لينز",
-    ],
-
-    "Bodo/Glimt": [
-        "بودو غليمت",
-        "بودو جليمت",
-        "بودو غليم",
-        "بودو",
-    ],
-
-    "NEC Nijmegen": [
-        "نييميخن",
-        "نايميخن",
-        "إن إي سي نيميخن",
-        "إن إي سي",
-    ],
-
-    "Rapid Vienna": [
-        "رابيد فيينا",
-        "رابيد",
-        "رابيد وين",
-    ],
-
-    "Heart of Midlothian": [
-        "هارتس",
-        "هارت أوف ميدلوثيان",
-        "هارت أوف ميدلوتيان",
-        "هارت اوف ميدلوثيان",
-    ],
-
-    # -----------------------------------------------------
-    # BRAZIL
-    # -----------------------------------------------------
-
-    "Botafogo": [
-        "بوتافوغو",
-        "بوتافوجو",
-        "بوتافغو",
-    ],
-
-    "Atletico Paranaense": [
-        "أتلتيكو باراناينسي",
-        "اتلتيكو باراناينسي",
-        "أتلتيكو بارانينسي",
-        "باراناينسي",
-    ],
-
-    # -----------------------------------------------------
-    # KAZAKHSTAN
-    # -----------------------------------------------------
-
-    "FK Tobol Kostanay": [
-        "توبول",
-        "توبول كوستاناي",
-        "توبول كوستاناي الكازاخي",
-    ],
-
-    "Kaisar": [
-        "كايسار",
-        "قايصار",
-        "كايزار",
-        "قيسار",
-    ],
-
-    # -----------------------------------------------------
-    # UZBEKISTAN
-    # -----------------------------------------------------
-
-    "Abdish-Ata": [
-        "أبدش آتا",
-        "أبدش أتا",
-        "أبدش عطا",
-        "أبدش",
-    ],
-
-    "Talant": [
-        "تالانت",
-        "تالنت",
-    ],
-
-    # -----------------------------------------------------
-    # KUWAIT
-    # -----------------------------------------------------
-
-    "Al Kuwait": [
-        "الكويت",
-        "نادي الكويت",
-        "الكويت الكويتي",
-    ],
-
-    "Al Arabi": [
-        "العربي",
-        "العربي الكويتي",
-        "نادي العربي",
-    ],
-
-    "Al Fahaheel": [
-        "الفحيحيل",
-        "فحيحيل",
-        "نادي الفحيحيل",
-    ],
-
-    "Al Qadsia": [
-        "القادسية",
-        "القادسية الكويتي",
-        "نادي القادسية",
-    ],
-
-    "Al Shabab": [
-        "الشباب",
-        "الشباب الكويتي",
-        "نادي الشباب",
-    ],
-
-    "Al Jahra": [
-        "الجهراء",
-        "الجهراء الكويتي",
-        "نادي الجهراء",
-    ],
-
-    # -----------------------------------------------------
-    # AZERBAIJAN / ISRAEL
-    # -----------------------------------------------------
-
-    "Sabah FA": [
-        "ساباه",
-        "صباح",
-        "ساباه باكو",
-        "سباه",
-    ],
-
-    "Hapoel Beer Sheva": [
-        "هبوعيل بئر السبع",
-        "هبوعيل بئر سبع",
-        "هبوعيل بئرشبع",
-        "بئر السبع",
-    ],
-
-    # -----------------------------------------------------
-    # EGYPT
-    # -----------------------------------------------------
-
-    "Smouha SC": [
-        "سموحة",
-        "سموحه",
-        "نادي سموحة",
-    ],
-
-    "Asyut Petrol": [
-        "بترول أسيوط",
-        "بترول اسيوط",
-        "أسيوط للبترول",
-        "اسيوط للبترول",
-    ],
-
-    "National Bank of Egypt": [
-        "البنك الأهلي",
-        "البنك الأهلي المصري",
-        "البنك الاهلي",
-        "البنك الأهلي المصري",
-    ],
-
-    "Zamalek SC": [
-        "الزمالك",
-        "نادي الزمالك",
-        "الزمالك المصري",
-    ],
-
-    "Petrojet": [
-        "بتروجيت",
-        "بتروجت",
-        "نادي بتروجيت",
-    ],
-
-    "El Geish": [
-        "طلائع الجيش",
-        "الجيش",
-        "نادي طلائع الجيش",
-    ],
 }
 
 
@@ -374,8 +88,148 @@ GAMING_WORDS = [
     "لعبة",
     "فيفا",
     "إي فوتبول",
-    "e فوتبول",
+    "اي فوتبول",
 ]
+
+
+# =========================================================
+# TEAM ALIASES
+# =========================================================
+
+TEAM_ALIASES = {
+
+    "FK Tobol Kostanay": [
+        "توبول",
+        "توبول كوستاناي",
+    ],
+
+    "Kaisar": [
+        "كايسار",
+        "قايصار",
+        "كايزار",
+        "قيسار",
+    ],
+
+    "Abdish-Ata": [
+        "أبدش آتا",
+        "أبدش أتا",
+        "أبدش عطا",
+        "أبدش",
+    ],
+
+    "Talant": [
+        "تالانت",
+        "تالنت",
+    ],
+
+    "Al Kuwait": [
+        "الكويت",
+        "نادي الكويت",
+        "الكويت الكويتي",
+    ],
+
+    "Al Arabi": [
+        "العربي",
+        "العربي الكويتي",
+        "نادي العربي",
+    ],
+
+    "Sabah FA": [
+        "ساباه",
+        "صباح",
+        "ساباه باكو",
+        "سباه",
+    ],
+
+    "Hapoel Beer Sheva": [
+        "هبوعيل بئر السبع",
+        "هبوعيل بئر سبع",
+        "هبوعيل بئرشبع",
+        "بئر السبع",
+    ],
+
+    "Al Fahaheel": [
+        "الفحيحيل",
+        "فحيحيل",
+    ],
+
+    "Al Qadsia": [
+        "القادسية",
+        "القادسية الكويتي",
+    ],
+
+    "Al Shabab": [
+        "الشباب",
+        "الشباب الكويتي",
+    ],
+
+    "Valencia": [
+        "فالنسيا",
+    ],
+
+    "Real Betis": [
+        "ريال بيتيس",
+        "بيتيس",
+    ],
+
+    "Celtic": [
+        "سيلتيك",
+        "سلتيك",
+    ],
+
+    "Bodo/Glimt": [
+        "بودو غليمت",
+        "بودو جليمت",
+        "بودو",
+    ],
+
+    "Rapid Vienna": [
+        "رابيد فيينا",
+        "رابيد",
+    ],
+
+    "Heart of Midlothian": [
+        "هارتس",
+        "هارت أوف ميدلوثيان",
+        "هارت اوف ميدلوثيان",
+    ],
+
+    "Botafogo": [
+        "بوتافوغو",
+        "بوتافوجو",
+    ],
+
+    "Atletico Paranaense": [
+        "أتلتيكو باراناينسي",
+        "اتلتيكو باراناينسي",
+        "باراناينسي",
+    ],
+
+    "Zamalek SC": [
+        "الزمالك",
+        "نادي الزمالك",
+    ],
+
+    "Smouha SC": [
+        "سموحة",
+        "سموحه",
+    ],
+
+    "National Bank of Egypt": [
+        "البنك الأهلي",
+        "البنك الاهلي",
+        "البنك الأهلي المصري",
+    ],
+
+    "Petrojet": [
+        "بتروجيت",
+        "بتروجت",
+    ],
+
+    "El Geish": [
+        "طلائع الجيش",
+    ],
+}
 
 
 # =========================================================
@@ -386,7 +240,6 @@ def normalize(text):
 
     text = str(text or "").lower()
 
-    # Arabic normalization
     text = text.replace("أ", "ا")
     text = text.replace("إ", "ا")
     text = text.replace("آ", "ا")
@@ -395,7 +248,6 @@ def normalize(text):
     text = text.replace("ؤ", "و")
     text = text.replace("ئ", "ي")
 
-    # Remove Arabic diacritics
     text = re.sub(
         r"[\u064B-\u065F\u0670]",
         "",
@@ -414,7 +266,7 @@ def normalize(text):
 
 
 # =========================================================
-# GAMING DETECTION
+# GAMING
 # =========================================================
 
 def is_gaming(text):
@@ -468,51 +320,27 @@ def get_league(match):
     ).strip()
 
 
-def get_home(match):
+def get_team(match, side):
 
-    home = match.get(
-        "home",
+    team = match.get(
+        side,
         {}
     )
 
     if isinstance(
-        home,
+        team,
         dict
     ):
 
         return str(
-            home.get(
+            team.get(
                 "name",
                 ""
             )
         ).strip()
 
     return str(
-        home or ""
-    ).strip()
-
-
-def get_away(match):
-
-    away = match.get(
-        "away",
-        {}
-    )
-
-    if isinstance(
-        away,
-        dict
-    ):
-
-        return str(
-            away.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-    return str(
-        away or ""
+        team or ""
     ).strip()
 
 
@@ -540,10 +368,6 @@ def get_status(match):
     ).upper()
 
 
-# =========================================================
-# FINISHED
-# =========================================================
-
 def is_finished(match):
 
     return get_status(match) in {
@@ -554,75 +378,57 @@ def is_finished(match):
 
 
 # =========================================================
-# TEAM ALIAS LIST
+# TEAM ALIASES
 # =========================================================
 
-def get_team_aliases(team):
+def aliases_for_team(team):
 
-    aliases = []
+    result = [
+        normalize(team)
+    ]
 
-    aliases.append(team)
+    for key, aliases in TEAM_ALIASES.items():
 
-    known = TEAM_ALIASES.get(
-        team,
-        []
-    )
+        if normalize(key) == normalize(team):
 
-    aliases.extend(
-        known
-    )
+            result.extend(
+                normalize(x)
+                for x in aliases
+            )
 
-    # Also support case-insensitive key lookup
-    normalized_team = normalize(team)
-
-    for key, values in TEAM_ALIASES.items():
-
-        if normalize(key) == normalized_team:
-
-            aliases.extend(values)
-
-    # Remove duplicates
-    result = []
+    clean = []
 
     seen = set()
 
-    for alias in aliases:
+    for item in result:
 
-        value = normalize(alias)
-
-        if not value:
+        if not item:
             continue
 
-        if value in seen:
+        if item in seen:
             continue
 
-        seen.add(value)
-        result.append(value)
+        seen.add(item)
+        clean.append(item)
 
-    return result
+    return clean
 
 
 # =========================================================
-# TEAM FOUND IN ARABIC TITLE
+# TEAM FOUND
 # =========================================================
 
-def team_found_in_title(
-    team,
-    title,
-    description=""
-):
+def team_found(team, text):
 
-    searchable = normalize(
-        f"{title} {description}"
-    )
+    value = normalize(text)
 
-    aliases = get_team_aliases(
+    aliases = aliases_for_team(
         team
     )
 
     for alias in aliases:
 
-        if alias in searchable:
+        if alias in value:
 
             return True
 
@@ -630,33 +436,30 @@ def team_found_in_title(
 
 
 # =========================================================
-# MATCH SCORE
+# SCORE VIDEO AGAINST MATCH
 # =========================================================
 
-def video_match_score(
+def score_video(
     title,
     description,
     home,
-    away,
-    league
+    away
 ):
 
-    searchable = normalize(
+    text = normalize(
         f"{title} {description}"
     )
 
     score = 0
 
-    home_found = team_found_in_title(
+    home_found = team_found(
         home,
-        title,
-        description
+        text
     )
 
-    away_found = team_found_in_title(
+    away_found = team_found(
         away,
-        title,
-        description
+        text
     )
 
     if home_found:
@@ -665,69 +468,54 @@ def video_match_score(
     if away_found:
         score += 100
 
-    # Both teams is the strongest signal
     if home_found and away_found:
-        score += 150
+        score += 200
 
-    # Arabic football keywords
-    if "ملخص" in searchable:
+    if "ملخص" in text:
+        score += 60
+
+    if "اهداف" in text:
         score += 50
 
-    if "اهداف" in searchable:
+    if "مباراة" in text:
+        score += 25
+
+    if "highlights" in text:
         score += 40
 
-    if "مباراة" in searchable:
-        score += 20
+    if "goals" in text:
+        score += 35
 
-    if "هدف" in searchable:
-        score += 15
-
-    if "highlights" in searchable:
-        score += 40
-
-    # League keyword
-    for league_alias in LEAGUE_ARABIC.get(
-        league,
-        []
-    ):
-
-        if normalize(league_alias) in searchable:
-
-            score += 20
-
-            break
-
-    # Gaming
-    if is_gaming(searchable):
-
+    if is_gaming(text):
         score -= 500
 
-    return score, home_found, away_found
+    return (
+        score,
+        home_found,
+        away_found
+    )
 
 
 # =========================================================
-# GET beIN CHANNEL ID
+# GET CHANNEL INFORMATION
+#
+# channels.list costs very little compared with search.list
 # =========================================================
 
-def get_bein_channel_id():
-
-    global BEIN_CHANNEL_ID
-
-    if BEIN_CHANNEL_ID:
-        return BEIN_CHANNEL_ID
+def get_channel():
 
     print("=" * 60)
-    print("Finding beIN SPORTS channel...")
+    print("Finding beIN SPORTS channel")
     print("=" * 60)
 
     params = {
-        "part": "id,snippet",
+        "part": "id,contentDetails,snippet",
         "forHandle": BEIN_HANDLE,
         "key": API_KEY,
     }
 
     response = requests.get(
-        YOUTUBE_CHANNELS_URL,
+        CHANNELS_URL,
         params=params,
         timeout=30
     )
@@ -737,14 +525,7 @@ def get_bein_channel_id():
         response.status_code
     )
 
-    if response.status_code != 200:
-
-        print(
-            "YouTube API response:",
-            response.text[:1000]
-        )
-
-        response.raise_for_status()
+    response.raise_for_status()
 
     data = response.json()
 
@@ -756,98 +537,92 @@ def get_bein_channel_id():
     if not items:
 
         raise RuntimeError(
-            "Could not find beIN SPORTS YouTube channel."
+            "beIN SPORTS channel not found"
         )
 
-    BEIN_CHANNEL_ID = (
-        items[0].get("id")
+    channel = items[0]
+
+    channel_id = channel.get(
+        "id"
     )
 
-    if not BEIN_CHANNEL_ID:
+    uploads_playlist = (
+        channel
+        .get(
+            "contentDetails",
+            {}
+        )
+        .get(
+            "relatedPlaylists",
+            {}
+        )
+        .get(
+            "uploads"
+        )
+    )
+
+    if not channel_id:
 
         raise RuntimeError(
-            "beIN SPORTS channel ID is missing."
+            "beIN channel ID missing"
+        )
+
+    if not uploads_playlist:
+
+        raise RuntimeError(
+            "beIN uploads playlist missing"
         )
 
     print(
-        "beIN SPORTS Channel ID:",
-        BEIN_CHANNEL_ID
+        "Channel ID:",
+        channel_id
     )
 
-    return BEIN_CHANNEL_ID
+    print(
+        "Uploads playlist:",
+        uploads_playlist
+    )
+
+    return (
+        channel_id,
+        uploads_playlist
+    )
 
 
 # =========================================================
-# SEARCH ONE QUERY
+# GET LATEST CHANNEL VIDEOS
+#
+# IMPORTANT:
+# No search.list is used here.
 # =========================================================
 
-def youtube_search_request(
-    channel_id,
-    query,
-    published_after,
-    published_before
+def get_latest_channel_videos(
+    uploads_playlist
 ):
 
+    print("=" * 60)
+    print("Reading latest beIN SPORTS videos")
+    print("=" * 60)
+
     params = {
-
-        "part": "snippet",
-
-        "channelId":
-            channel_id,
-
-        "q":
-            query,
-
-        "type":
-            "video",
-
-        "order":
-            "date",
-
-        "maxResults":
-            50,
-
-        "publishedAfter":
-            published_after,
-
-        "publishedBefore":
-            published_before,
-
-        "relevanceLanguage":
-            "ar",
-
-        "regionCode":
-            "DZ",
-
-        "videoEmbeddable":
-            "true",
-
-        "videoSyndicated":
-            "true",
-
-        "key":
-            API_KEY,
+        "part": "snippet,contentDetails",
+        "playlistId": uploads_playlist,
+        "maxResults": CHANNEL_VIDEO_LIMIT,
+        "key": API_KEY,
     }
 
     response = requests.get(
-        YOUTUBE_SEARCH_URL,
+        PLAYLIST_ITEMS_URL,
         params=params,
         timeout=30
     )
 
     print(
-        "YouTube HTTP:",
+        "Playlist HTTP:",
         response.status_code
     )
 
-    if response.status_code != 200:
-
-        print(
-            "YouTube API ERROR:",
-            response.text[:1000]
-        )
-
-        return []
+    response.raise_for_status()
 
     data = response.json()
 
@@ -857,7 +632,7 @@ def youtube_search_request(
     )
 
     print(
-        "Videos returned:",
+        "Channel videos returned:",
         len(items)
     )
 
@@ -865,340 +640,53 @@ def youtube_search_request(
 
 
 # =========================================================
-# SEARCH YOUTUBE FOR A FIXTURE
+# GET VIDEO DETAILS
+#
+# This confirms duration and embeddability.
 # =========================================================
 
-def search_youtube(
-    home,
-    away,
-    match_date,
-    league
-):
+def get_video_details(video_ids):
 
-    channel_id = (
-        get_bein_channel_id()
+    if not video_ids:
+        return {}
+
+    params = {
+        "part": "snippet,contentDetails,status",
+        "id": ",".join(video_ids),
+        "key": API_KEY,
+    }
+
+    response = requests.get(
+        VIDEOS_URL,
+        params=params,
+        timeout=30
     )
 
-    date_obj = datetime.strptime(
-        match_date,
-        "%Y-%m-%d"
+    print(
+        "Videos HTTP:",
+        response.status_code
     )
 
-    published_after = (
-        date_obj
-        .replace(
-            hour=0,
-            minute=0,
-            second=0,
-            tzinfo=timezone.utc
-        )
-        - timedelta(days=1)
-    )
+    response.raise_for_status()
 
-    published_before = (
-        date_obj
-        .replace(
-            hour=23,
-            minute=59,
-            second=59,
-            tzinfo=timezone.utc
-        )
-        + timedelta(days=3)
-    )
+    data = response.json()
 
-    after_text = published_after.isoformat()
-    before_text = published_before.isoformat()
+    result = {}
 
-    # -----------------------------------------------------
-    # IMPORTANT
-    #
-    # We DO NOT depend on English team names.
-    #
-    # The official beIN channel publishes Arabic titles.
-    # -----------------------------------------------------
-
-    queries = [
-
-        "ملخص مباراة",
-
-        "ملخص",
-
-        "اهداف",
-
-        "أهداف",
-
-        "ملخص الدوري",
-
-    ]
-
-    # Add Arabic league searches
-    league_aliases = LEAGUE_ARABIC.get(
-        league,
+    for item in data.get(
+        "items",
         []
-    )
+    ):
 
-    for league_name in league_aliases[:2]:
-
-        queries.append(
-            f"ملخص {league_name}"
+        video_id = item.get(
+            "id"
         )
 
-    # Add known Arabic team searches
-    home_aliases = get_team_aliases(home)
-    away_aliases = get_team_aliases(away)
+        if video_id:
 
-    if home_aliases and away_aliases:
-
-        # Use the first Arabic aliases when available
-        home_ar = next(
-            (
-                x
-                for x in home_aliases
-                if re.search(
-                    r"[\u0600-\u06ff]",
-                    x
-                )
-            ),
-            ""
-        )
-
-        away_ar = next(
-            (
-                x
-                for x in away_aliases
-                if re.search(
-                    r"[\u0600-\u06ff]",
-                    x
-                )
-            ),
-            ""
-        )
-
-        if home_ar and away_ar:
-
-            queries.insert(
-                0,
-                f"ملخص {home_ar} {away_ar}"
-            )
-
-            queries.insert(
-                1,
-                f"{home_ar} {away_ar}"
-            )
-
-    # Remove duplicates
-    unique_queries = []
-
-    seen_queries = set()
-
-    for query in queries:
-
-        query_normalized = normalize(
-            query
-        )
-
-        if query_normalized in seen_queries:
-            continue
-
-        seen_queries.add(
-            query_normalized
-        )
-
-        unique_queries.append(
-            query
-        )
-
-    candidates = {}
-
-    for query in unique_queries:
-
-        print("-" * 60)
-
-        print(
-            "YouTube Arabic search:",
-            query
-        )
-
-        items = youtube_search_request(
-
-            channel_id,
-
-            query,
-
-            after_text,
-
-            before_text
-
-        )
-
-        for item in items:
-
-            if not isinstance(
-                item,
-                dict
-            ):
-                continue
-
-            item_id = item.get(
-                "id",
-                {}
-            )
-
-            if not isinstance(
-                item_id,
-                dict
-            ):
-                continue
-
-            video_id = item_id.get(
-                "videoId"
-            )
-
-            if not video_id:
-                continue
-
-            snippet = item.get(
-                "snippet",
-                {}
-            )
-
-            title = str(
-                snippet.get(
-                    "title",
-                    ""
-                )
-            )
-
-            description = str(
-                snippet.get(
-                    "description",
-                    ""
-                )
-            )
-
-            result_channel = str(
-                snippet.get(
-                    "channelId",
-                    ""
-                )
-            )
-
-            # Must be official beIN channel
-            if result_channel != channel_id:
-                continue
-
-            searchable = (
-                f"{title} {description}"
-            )
-
-            if is_gaming(
-                searchable
-            ):
-
-                print(
-                    "REJECTED GAMING:",
-                    title
-                )
-
-                continue
-
-            score, home_found, away_found = (
-                video_match_score(
-                    title,
-                    description,
-                    home,
-                    away,
-                    league
-                )
-            )
-
-            print(
-                f"Candidate [{score}] "
-                f"H={home_found} "
-                f"A={away_found}: "
-                f"{title}"
-            )
-
-            candidate = {
-
-                "video_id":
-                    video_id,
-
-                "title":
-                    title,
-
-                "description":
-                    description,
-
-                "published_at":
-                    snippet.get(
-                        "publishedAt",
-                        ""
-                    ),
-
-                "thumbnail":
-                    (
-                        snippet
-                        .get(
-                            "thumbnails",
-                            {}
-                        )
-                        .get(
-                            "high",
-                            {}
-                        )
-                        .get(
-                            "url"
-                        )
-                    ),
-
-                "channel_id":
-                    result_channel,
-
-                "channel_title":
-                    snippet.get(
-                        "channelTitle",
-                        "beIN SPORTS"
-                    ),
-
-                "score":
-                    score,
-
-                "home_found":
-                    home_found,
-
-                "away_found":
-                    away_found,
-
-            }
-
-            old = candidates.get(
+            result[
                 video_id
-            )
-
-            if (
-                old is None
-                or score > old["score"]
-            ):
-
-                candidates[
-                    video_id
-                ] = candidate
-
-    result = list(
-        candidates.values()
-    )
-
-    result.sort(
-        key=lambda item: (
-            item["score"],
-            item.get(
-                "published_at",
-                ""
-            )
-        ),
-        reverse=True
-    )
+            ] = item
 
     return result
 
@@ -1225,27 +713,32 @@ matches = matches_data.get(
 print("=" * 60)
 
 print(
-    "GOALINS — YOUTUBE / beIN SPORTS "
-    "ARABIC HIGHLIGHTS ENGINE"
+    "GOALINS — beIN SPORTS DIRECT "
+    "CHANNEL ENGINE"
 )
 
 print("=" * 60)
 
 print(
-    f"Total matches in matches.json: "
-    f"{len(matches)}"
+    "No YouTube search.list is used."
+)
+
+print(
+    f"Total matches: {len(matches)}"
 )
 
 
 # =========================================================
-# ALGERIA DATE
+# DATE RANGE
 # =========================================================
 
 algeria_now = (
     datetime.now(
         timezone.utc
     )
-    + timedelta(hours=1)
+    + timedelta(
+        hours=1
+    )
 )
 
 today = algeria_now.date()
@@ -1262,11 +755,7 @@ print(
 )
 
 print(
-    f"Searching from: {start_date}"
-)
-
-print(
-    f"Searching to: {today}"
+    f"Looking back: {LOOKBACK_DAYS} days"
 )
 
 
@@ -1282,23 +771,15 @@ for match in matches:
         match
     )
 
-    match_date = get_date(
-        match
-    )
-
-    home = get_home(
-        match
-    )
-
-    away = get_away(
-        match
-    )
-
     if league not in ALLOWED_LEAGUES:
         continue
 
     if not is_finished(match):
         continue
+
+    match_date = get_date(
+        match
+    )
 
     try:
 
@@ -1316,6 +797,16 @@ for match in matches:
 
     if date_obj > today:
         continue
+
+    home = get_team(
+        match,
+        "home"
+    )
+
+    away = get_team(
+        match,
+        "away"
+    )
 
     if not home or not away:
         continue
@@ -1342,31 +833,14 @@ for match in matches:
     })
 
 
-# =========================================================
-# TARGET DIAGNOSTIC
-# =========================================================
-
 print("-" * 60)
 
 print(
-    f"Finished allowed matches: "
-    f"{len(target_matches)}"
+    "Target finished matches:",
+    len(target_matches)
 )
 
 print("-" * 60)
-
-print(
-    "TARGET MATCHES:"
-)
-
-for fixture in target_matches:
-
-    print(
-        f"{fixture['date']} | "
-        f"{fixture['league']} | "
-        f"{fixture['home']} vs "
-        f"{fixture['away']}"
-    )
 
 
 # =========================================================
@@ -1433,12 +907,237 @@ old_ids = {
 
 
 # =========================================================
-# SEARCH
+# GET CHANNEL
+# =========================================================
+
+channel_id, uploads_playlist = (
+    get_channel()
+)
+
+
+# =========================================================
+# GET LATEST VIDEOS
+# =========================================================
+
+playlist_items = (
+    get_latest_channel_videos(
+        uploads_playlist
+    )
+)
+
+
+# =========================================================
+# COLLECT VIDEO IDS
+# =========================================================
+
+video_ids = []
+
+for item in playlist_items:
+
+    content = item.get(
+        "contentDetails",
+        {}
+    )
+
+    video_id = content.get(
+        "videoId"
+    )
+
+    if video_id:
+        video_ids.append(
+            video_id
+        )
+
+
+video_ids = list(
+    dict.fromkeys(
+        video_ids
+    )
+)
+
+
+print(
+    "Unique video IDs:",
+    len(video_ids)
+)
+
+
+# =========================================================
+# VIDEO DETAILS
+# =========================================================
+
+video_details = (
+    get_video_details(
+        video_ids
+    )
+)
+
+
+# =========================================================
+# PREPARE CANDIDATES
+# =========================================================
+
+channel_videos = []
+
+for item in playlist_items:
+
+    snippet = item.get(
+        "snippet",
+        {}
+    )
+
+    content = item.get(
+        "contentDetails",
+        {}
+    )
+
+    video_id = content.get(
+        "videoId"
+    )
+
+    if not video_id:
+        continue
+
+    title = str(
+        snippet.get(
+            "title",
+            ""
+        )
+    )
+
+    description = str(
+        snippet.get(
+            "description",
+            ""
+        )
+    )
+
+    published_at = str(
+        snippet.get(
+            "publishedAt",
+            ""
+        )
+    )
+
+    detail = video_details.get(
+        video_id,
+        {}
+    )
+
+    status = detail.get(
+        "status",
+        {}
+    )
+
+    # -----------------------------------------------------
+    # Embedding
+    # -----------------------------------------------------
+
+    embeddable = status.get(
+        "embeddable",
+        True
+    )
+
+    if embeddable is False:
+
+        print(
+            "Rejected non-embeddable:",
+            title
+        )
+
+        continue
+
+    # -----------------------------------------------------
+    # Gaming
+    # -----------------------------------------------------
+
+    if is_gaming(
+        f"{title} {description}"
+    ):
+
+        print(
+            "Rejected gaming:",
+            title
+        )
+
+        continue
+
+    thumbnail = (
+        snippet
+        .get(
+            "thumbnails",
+            {}
+        )
+        .get(
+            "high",
+            {}
+        )
+        .get(
+            "url"
+        )
+    )
+
+    if not thumbnail:
+
+        thumbnail = (
+            snippet
+            .get(
+                "thumbnails",
+                {}
+            )
+            .get(
+                "medium",
+                {}
+            )
+            .get(
+                "url"
+            )
+        )
+
+    channel_videos.append({
+
+        "video_id":
+            video_id,
+
+        "title":
+            title,
+
+        "description":
+            description,
+
+        "published_at":
+            published_at,
+
+        "thumbnail":
+            thumbnail,
+
+        "channel_id":
+            channel_id,
+
+        "channel_title":
+            snippet.get(
+                "channelTitle",
+                "beIN SPORTS"
+            ),
+
+    })
+
+
+print(
+    "Usable beIN videos:",
+    len(channel_videos)
+)
+
+
+# =========================================================
+# MATCH VIDEOS TO FIXTURES
 # =========================================================
 
 new_highlights = []
 
-fixtures_searched = 0
+used_video_ids = set()
+
+used_fixture_ids = set()
 
 
 for fixture in target_matches:
@@ -1449,129 +1148,169 @@ for fixture in target_matches:
 
         break
 
+    fixture_id = fixture.get(
+        "fixture_id"
+    )
+
+    best = None
+
+    best_score = 0
+
     print("=" * 60)
 
     print(
-        "Searching beIN SPORTS:"
+        "MATCHING:"
     )
 
     print(
         f"{fixture['date']} | "
-        f"{fixture['league']} | "
         f"{fixture['home']} vs "
         f"{fixture['away']}"
     )
 
     print("=" * 60)
 
-    fixtures_searched += 1
 
-    try:
+    for video in channel_videos:
 
-        candidates = search_youtube(
+        video_id = video[
+            "video_id"
+        ]
 
-            fixture["home"],
+        if video_id in used_video_ids:
+            continue
 
-            fixture["away"],
+        if video_id in old_ids:
+            continue
 
-            fixture["date"],
-
-            fixture["league"]
-
+        score, home_found, away_found = (
+            score_video(
+                video["title"],
+                video["description"],
+                fixture["home"],
+                fixture["away"]
+            )
         )
 
-    except Exception as error:
+        if score <= 0:
+            continue
 
         print(
-            "YouTube ERROR:",
-            error
+            f"Candidate [{score}] "
+            f"H={home_found} "
+            f"A={away_found}: "
+            f"{video['title']}"
         )
 
-        continue
+        # -------------------------------------------------
+        # REQUIRE BOTH TEAMS
+        # -------------------------------------------------
 
-    if not candidates:
-
-        print(
-            "No videos returned from beIN SPORTS."
-        )
-
-        continue
-
-    # -----------------------------------------------------
-    # Find strongest candidate
-    # -----------------------------------------------------
-
-    selected = None
-
-    for candidate in candidates:
-
-        # Strongest case:
-        # both teams found in Arabic title/description.
-
-        if (
-            candidate["home_found"]
-            and candidate["away_found"]
+        if not (
+            home_found
+            and away_found
         ):
 
-            selected = candidate
-            break
+            continue
 
-    # -----------------------------------------------------
-    # If no exact Arabic team match,
-    # do NOT randomly attach another match.
-    # -----------------------------------------------------
+        # -------------------------------------------------
+        # Prefer videos published close to match date
+        # -------------------------------------------------
 
-    if selected is None:
+        date_bonus = 0
 
-        print(
-            "beIN videos found, "
-            "but no reliable team match."
+        published = video.get(
+            "published_at",
+            ""
         )
 
-        for candidate in candidates[:5]:
+        try:
 
-            print(
-                "Possible:",
-                candidate["title"]
+            published_date = (
+                datetime.fromisoformat(
+                    published.replace(
+                        "Z",
+                        "+00:00"
+                    )
+                ).date()
             )
+
+            match_date = datetime.strptime(
+                fixture["date"],
+                "%Y-%m-%d"
+            ).date()
+
+            difference = abs(
+                (
+                    published_date
+                    - match_date
+                ).days
+            )
+
+            if difference == 0:
+                date_bonus = 50
+
+            elif difference == 1:
+                date_bonus = 40
+
+            elif difference == 2:
+                date_bonus = 20
+
+            elif difference <= 3:
+                date_bonus = 10
+
+        except Exception:
+
+            pass
+
+        final_score = (
+            score
+            + date_bonus
+        )
+
+        if (
+            best is None
+            or final_score > best_score
+        ):
+
+            best = video
+            best_score = final_score
+
+
+    # =====================================================
+    # NO MATCH
+    # =====================================================
+
+    if best is None:
+
+        print(
+            "No reliable beIN video found."
+        )
 
         continue
 
-    video_id = selected[
+
+    # =====================================================
+    # SAVE MATCH
+    # =====================================================
+
+    video_id = best[
         "video_id"
     ]
 
-    if video_id in old_ids:
-
-        print(
-            "Already saved:",
-            video_id
-        )
-
-        continue
-
-    print("=" * 60)
-
     print(
-        "SELECTED OFFICIAL beIN SPORTS VIDEO"
+        "SELECTED:"
     )
 
     print(
-        "Title:",
-        selected["title"]
+        best["title"]
     )
 
     print(
         "Score:",
-        selected["score"]
+        best_score
     )
 
-    print(
-        "Video ID:",
-        video_id
-    )
-
-    print("=" * 60)
 
     item = {
 
@@ -1579,24 +1318,16 @@ for fixture in target_matches:
             video_id,
 
         "fixture_id":
-            fixture[
-                "fixture_id"
-            ],
+            fixture_id,
 
         "title":
-            selected[
-                "title"
-            ],
+            best["title"],
 
         "description":
-            selected[
-                "description"
-            ],
+            best["description"],
 
         "thumbnail":
-            selected[
-                "thumbnail"
-            ],
+            best["thumbnail"],
 
         "embed":
             (
@@ -1623,47 +1354,41 @@ for fixture in target_matches:
             "YouTube",
 
         "channel":
-            selected[
-                "channel_title"
-            ],
+            best["channel_title"],
 
         "channel_id":
-            selected[
-                "channel_id"
-            ],
+            best["channel_id"],
 
         "type":
             "OFFICIAL",
 
         "date":
-            fixture[
-                "date"
-            ],
+            fixture["date"],
 
         "league":
-            fixture[
-                "league"
-            ],
+            fixture["league"],
 
         "home":
-            fixture[
-                "home"
-            ],
+            fixture["home"],
 
         "away":
-            fixture[
-                "away"
-            ],
+            fixture["away"],
 
     }
+
 
     new_highlights.append(
         item
     )
 
-    old_ids.add(
+    used_video_ids.add(
         video_id
     )
+
+    if fixture_id:
+        used_fixture_ids.add(
+            fixture_id
+        )
 
 
 # =========================================================
@@ -1672,28 +1397,28 @@ for fixture in target_matches:
 
 combined = []
 
-seen = set()
+seen_ids = set()
 
 for item in (
     new_highlights
     + old_highlights
 ):
 
-    item_id = str(
+    video_id = str(
         item.get(
             "highlight_id",
             ""
         )
     )
 
-    if not item_id:
+    if not video_id:
         continue
 
-    if item_id in seen:
+    if video_id in seen_ids:
         continue
 
-    seen.add(
-        item_id
+    seen_ids.add(
+        video_id
     )
 
     combined.append(
@@ -1712,7 +1437,7 @@ combined.sort(
             ""
         ),
         item.get(
-            "title",
+            "published_at",
             ""
         )
     ),
@@ -1738,11 +1463,14 @@ output = {
     "source":
         "YouTube / beIN SPORTS",
 
-    "type":
-        "OFFICIAL",
-
     "channel":
         BEIN_HANDLE,
+
+    "channel_id":
+        channel_id,
+
+    "type":
+        "OFFICIAL",
 
     "count":
         len(combined),
@@ -1757,6 +1485,7 @@ os.makedirs(
     "data",
     exist_ok=True
 )
+
 
 with open(
     OUTPUT_FILE,
@@ -1785,7 +1514,21 @@ print(
 print("=" * 60)
 
 print(
-    f"Videos found: "
+    "YouTube search.list calls: 0"
+)
+
+print(
+    f"Channel videos inspected: "
+    f"{len(channel_videos)}"
+)
+
+print(
+    f"Target matches: "
+    f"{len(target_matches)}"
+)
+
+print(
+    f"New videos matched: "
     f"{len(new_highlights)}"
 )
 
@@ -1795,34 +1538,20 @@ print(
 )
 
 print(
-    f"Fixtures searched: "
-    f"{fixtures_searched}"
+    "Source: Official beIN SPORTS channel"
 )
 
 print(
-    f"Target matches: "
-    f"{len(target_matches)}"
+    "Arabic titles supported."
+
 )
 
 print(
-    "Source: YouTube / beIN SPORTS"
-)
-
-print(
-    "Language: Arabic first"
-)
-
-print(
-    "Official channel only."
-
+    "Gaming videos rejected."
 )
 
 print(
     "Embeddable videos only."
-)
-
-print(
-    "Gaming videos rejected automatically."
 )
 
 print("=" * 60)
