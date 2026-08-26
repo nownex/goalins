@@ -46,6 +46,8 @@ jobs:
       - name: Show highlights result
         run: |
           echo "======================================"
+          echo "GOALINS HIGHLIGHTS RESULT"
+          echo "======================================"
 
           if [ -f data/highlights.json ]; then
 
@@ -63,6 +65,10 @@ print(
     f"Highlights saved: {data.get('count', 0)}"
 )
 
+print(
+    f"Source: {data.get('source', 'unknown')}"
+)
+
 for item in data.get("highlights", [])[:10]:
     print(
         f"- {item.get('home')} vs "
@@ -70,6 +76,7 @@ for item in data.get("highlights", [])[:10]:
         f"{item.get('type')} | "
         f"{item.get('source')}"
     )
+
 PY
 
           else
@@ -86,6 +93,9 @@ PY
 
           git add data/highlights.json
 
-          git diff --cached --quiet ||             git commit             -m "Update football highlights"
-
-          git push
+          if git diff --cached --quiet; then
+            echo "No highlights changes to commit."
+          else
+            git commit -m "Update football highlights"
+            git push
+          fi
