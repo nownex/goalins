@@ -18,12 +18,7 @@
 
 <link rel="stylesheet" href="style.css">
 
-
 <style>
-
-/* =====================================================
-   GOALINS — HIGHLIGHTS
-   ===================================================== */
 
 .highlights-page {
 
@@ -36,16 +31,13 @@
 }
 
 
-/* =====================================================
-   TITLE
-   ===================================================== */
-
 .page-title {
 
     margin-bottom:
         25px;
 
 }
+
 
 .page-title small {
 
@@ -57,6 +49,7 @@
 
 }
 
+
 .page-title h1 {
 
     margin:
@@ -66,6 +59,7 @@
         32px;
 
 }
+
 
 .page-title p {
 
@@ -80,10 +74,6 @@
 
 }
 
-
-/* =====================================================
-   FILTERS
-   ===================================================== */
 
 .filters {
 
@@ -125,15 +115,8 @@
     font-family:
         inherit;
 
-    cursor:
-        pointer;
-
 }
 
-
-/* =====================================================
-   SECTION HEADER
-   ===================================================== */
 
 .section-header {
 
@@ -151,6 +134,7 @@
 
 }
 
+
 .section-header h2 {
 
     margin:
@@ -160,6 +144,7 @@
         20px;
 
 }
+
 
 .section-header span {
 
@@ -171,10 +156,6 @@
 
 }
 
-
-/* =====================================================
-   VIDEO GRID
-   ===================================================== */
 
 .video-grid {
 
@@ -190,10 +171,6 @@
 }
 
 
-/* =====================================================
-   VIDEO CARD
-   ===================================================== */
-
 .video-card {
 
     overflow:
@@ -208,14 +185,15 @@
     border-radius:
         17px;
 
+    cursor:
+        pointer;
+
     transition:
         transform .2s ease,
         border-color .2s ease;
 
-    cursor:
-        pointer;
-
 }
+
 
 .video-card:hover {
 
@@ -227,10 +205,6 @@
 
 }
 
-
-/* =====================================================
-   THUMBNAIL
-   ===================================================== */
 
 .thumbnail {
 
@@ -260,9 +234,6 @@
     object-fit:
         cover;
 
-    display:
-        block;
-
 }
 
 
@@ -281,10 +252,10 @@
         translate(-50%, -50%);
 
     width:
-        54px;
+        58px;
 
     height:
-        54px;
+        58px;
 
     display:
         flex;
@@ -305,17 +276,13 @@
         #06121f;
 
     font-size:
-        22px;
+        23px;
 
     box-shadow:
         0 5px 25px rgba(0,0,0,.4);
 
 }
 
-
-/* =====================================================
-   CONTENT
-   ===================================================== */
 
 .video-content {
 
@@ -373,10 +340,10 @@
 }
 
 
-.video-channel {
+.video-source {
 
     margin-top:
-        8px;
+        9px;
 
     color:
         var(--muted);
@@ -384,21 +351,8 @@
     font-size:
         11px;
 
-    white-space:
-        nowrap;
-
-    overflow:
-        hidden;
-
-    text-overflow:
-        ellipsis;
-
 }
 
-
-/* =====================================================
-   STATE
-   ===================================================== */
 
 .state {
 
@@ -421,8 +375,7 @@
         center;
 
     border:
-        1px dashed
-        rgba(255,255,255,.13);
+        1px dashed rgba(255,255,255,.13);
 
     border-radius:
         18px;
@@ -468,10 +421,6 @@
 
 }
 
-
-/* =====================================================
-   LOADER
-   ===================================================== */
 
 .loader {
 
@@ -542,9 +491,6 @@
     background:
         rgba(0,0,0,.88);
 
-    backdrop-filter:
-        blur(8px);
-
 }
 
 
@@ -566,7 +512,7 @@
 
     border:
         1px solid
-        rgba(37,211,102,.35);
+        rgba(255,255,255,.12);
 
     border-radius:
         18px;
@@ -575,7 +521,7 @@
         hidden;
 
     box-shadow:
-        0 20px 80px rgba(0,0,0,.7);
+        0 20px 80px rgba(0,0,0,.6);
 
 }
 
@@ -595,11 +541,7 @@
         15px;
 
     padding:
-        12px 16px;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
+        14px 18px;
 
 }
 
@@ -609,14 +551,14 @@
     margin:
         0;
 
+    color:
+        white;
+
     font-size:
-        14px;
+        15px;
 
     line-height:
         1.5;
-
-    font-weight:
-        800;
 
 }
 
@@ -624,10 +566,10 @@
 .close-video {
 
     width:
-        38px;
+        40px;
 
     height:
-        38px;
+        40px;
 
     border:
         0;
@@ -636,7 +578,7 @@
         50%;
 
     background:
-        rgba(255,255,255,.08);
+        rgba(255,255,255,.1);
 
     color:
         white;
@@ -650,18 +592,7 @@
 }
 
 
-.close-video:hover {
-
-    background:
-        rgba(255,255,255,.15);
-
-}
-
-
 .video-frame {
-
-    position:
-        relative;
 
     width:
         100%;
@@ -669,35 +600,17 @@
     aspect-ratio:
         16 / 9;
 
-    background:
-        black;
-
-}
-
-
-.video-frame iframe {
-
-    position:
-        absolute;
-
-    inset:
-        0;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
     border:
         0;
 
+    display:
+        block;
+
+    background:
+        #000;
+
 }
 
-
-/* =====================================================
-   MOBILE
-   ===================================================== */
 
 @media(max-width:650px) {
 
@@ -708,12 +621,14 @@
 
     }
 
+
     .page-title h1 {
 
         font-size:
             28px;
 
     }
+
 
     .filters {
 
@@ -722,6 +637,7 @@
 
     }
 
+
     .video-grid {
 
         grid-template-columns:
@@ -729,12 +645,14 @@
 
     }
 
+
     .video-modal {
 
         padding:
             8px;
 
     }
+
 
     .video-modal-box {
 
@@ -752,10 +670,6 @@
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-     ===================================================== -->
 
 <header class="header">
 
@@ -808,10 +722,6 @@
 </header>
 
 
-<!-- =====================================================
-     MAIN
-     ===================================================== -->
-
 <main class="highlights-page">
 
 <div class="container">
@@ -828,15 +738,11 @@
     </h1>
 
     <p>
-        شاهد ملخصات أهم مباريات كرة القدم
+        ملخصات موثوقة لأهم مباريات كرة القدم
     </p>
 
 </div>
 
-
-<!-- =====================================================
-     FILTERS
-     ===================================================== -->
 
 <div class="filters">
 
@@ -917,10 +823,6 @@
 </div>
 
 
-<!-- =====================================================
-     SECTION
-     ===================================================== -->
-
 <div class="section-header">
 
     <h2>
@@ -928,7 +830,7 @@
     </h2>
 
     <span id="videoCount">
-        جاري التحميل...
+        0 فيديو
     </span>
 
 </div>
@@ -947,7 +849,7 @@
         </h2>
 
         <p>
-            يتم جلب أحدث الفيديوهات...
+            يتم تحميل الملخصات الموثوقة...
         </p>
 
     </div>
@@ -966,26 +868,17 @@
 
 <div
     class="video-modal"
-    id="videoModal"
-    aria-hidden="true">
+    id="videoModal">
 
+    <div class="video-modal-box">
 
-    <div
-        class="video-modal-box">
-
-
-        <div
-            class="video-modal-header">
-
+        <div class="video-modal-header">
 
             <h3
                 class="video-modal-title"
                 id="modalTitle">
 
-                ملخص المباراة
-
             </h3>
-
 
             <button
                 class="close-video"
@@ -996,34 +889,17 @@
 
             </button>
 
-
         </div>
 
 
-        <div
-            class="video-frame">
-
-
-            <iframe
-                id="videoFrame"
-                src=""
-                title="GOALINS Video"
-                allow="
-                    accelerometer;
-                    autoplay;
-                    clipboard-write;
-                    encrypted-media;
-                    gyroscope;
-                    picture-in-picture;
-                    web-share;
-                    fullscreen
-                "
-                allowfullscreen>
-            </iframe>
-
-
-        </div>
-
+        <iframe
+            class="video-frame"
+            id="videoFrame"
+            src=""
+            title="GOALINS Football Highlight"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen>
+        </iframe>
 
     </div>
 
@@ -1031,10 +907,6 @@
 
 
 <script>
-
-/* =====================================================
-   GOALINS — LIVE HIGHLIGHTS
-   ===================================================== */
 
 
 /* =====================================================
@@ -1093,142 +965,24 @@ let videos = [];
 
 
 /* =====================================================
-   ESCAPE HTML
+   LOAD DATA
    ===================================================== */
 
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-/* =====================================================
-   ALGERIA DATE
-   ===================================================== */
-
-function getAlgeriaDate(
-    offsetDays = 0
-) {
-
-    const now =
-        new Date();
-
-
-    const algeriaTime =
-        new Date(
-            now.toLocaleString(
-                "en-US",
-                {
-                    timeZone:
-                        "Africa/Algiers"
-                }
-            )
-        );
-
-
-    algeriaTime.setDate(
-        algeriaTime.getDate()
-        + offsetDays
-    );
-
-
-    const year =
-        algeriaTime.getFullYear();
-
-
-    const month =
-        String(
-            algeriaTime.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            algeriaTime.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return (
-        `${year}-${month}-${day}`
-    );
-
-}
-
-
-/* =====================================================
-   LOAD HIGHLIGHTS
-   ===================================================== */
-
-async function loadHighlights() {
-
-    videoGrid.innerHTML = `
-
-        <div class="state">
-
-            <div class="loader"></div>
-
-            <h2>
-                جاري تحميل الملخصات
-            </h2>
-
-            <p>
-                يتم جلب أحدث الفيديوهات...
-            </p>
-
-        </div>
-
-    `;
-
+async function loadVideos() {
 
     try {
 
         const response =
             await fetch(
                 "data/highlights.json?v="
-                + Date.now(),
-                {
-                    cache:
-                        "no-store"
-                }
+                + Date.now()
             );
 
 
         if (!response.ok) {
 
             throw new Error(
-                "HTTP "
-                + response.status
+                "Could not load highlights.json"
             );
 
         }
@@ -1238,23 +992,14 @@ async function loadHighlights() {
             await response.json();
 
 
-        if (
-            data &&
+        videos =
             Array.isArray(
                 data.highlights
             )
-        ) {
-
-            videos =
-                data.highlights;
-
-        }
-
-        else {
-
-            videos = [];
-
-        }
+            ?
+            data.highlights
+            :
+            [];
 
 
         renderVideos();
@@ -1264,7 +1009,6 @@ async function loadHighlights() {
     catch (error) {
 
         console.error(
-            "GOALINS highlights error:",
             error
         );
 
@@ -1286,8 +1030,7 @@ async function loadHighlights() {
                 </h2>
 
                 <p>
-                    تأكد من وجود ملف
-                    highlights.json
+                    حاول تحديث الصفحة بعد قليل.
                 </p>
 
             </div>
@@ -1300,74 +1043,89 @@ async function loadHighlights() {
 
 
 /* =====================================================
+   DATE HELPERS
+   ===================================================== */
+
+function getToday() {
+
+    return new Date()
+        .toISOString()
+        .slice(0, 10);
+
+}
+
+
+function getYesterday() {
+
+    const date =
+        new Date();
+
+    date.setDate(
+        date.getDate() - 1
+    );
+
+    return date
+        .toISOString()
+        .slice(0, 10);
+
+}
+
+
+/* =====================================================
    FILTER
    ===================================================== */
 
 function getFilteredVideos() {
 
-    let result =
-        [...videos];
-
-
-    const selectedLeague =
-        leagueFilter.value;
-
-
-    if (
-        selectedLeague !== "all"
-    ) {
-
-        result =
-            result.filter(
-                video =>
-                    video.league_key
-                    === selectedLeague
-            );
-
-    }
-
-
-    const selectedDate =
+    const dateValue =
         dateFilter.value;
 
 
-    if (
-        selectedDate === "today"
-    ) {
-
-        const today =
-            getAlgeriaDate(0);
+    const leagueValue =
+        leagueFilter.value;
 
 
-        result =
-            result.filter(
-                video =>
-                    video.date
-                    === today
-            );
-
-    }
+    return videos.filter(
+        video => {
 
 
-    if (
-        selectedDate === "yesterday"
-    ) {
+            if (
+                dateValue === "today"
+                &&
+                video.date !== getToday()
+            ) {
 
-        const yesterday =
-            getAlgeriaDate(-1);
+                return false;
 
-
-        result =
-            result.filter(
-                video =>
-                    video.date
-                    === yesterday
-            );
-
-    }
+            }
 
 
-    return result;
+            if (
+                dateValue === "yesterday"
+                &&
+                video.date !== getYesterday()
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                leagueValue !== "all"
+                &&
+                video.league_key !== leagueValue
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+    );
 
 }
 
@@ -1404,7 +1162,8 @@ function renderVideos() {
                 </h2>
 
                 <p>
-                    لا توجد فيديوهات مطابقة للفلاتر الحالية.
+                    لا توجد فيديوهات موثوقة
+                    مطابقة للفلاتر الحالية.
                 </p>
 
             </div>
@@ -1418,23 +1177,48 @@ function renderVideos() {
 
     videoGrid.innerHTML =
         filtered
-        .map(
-            (
-                video,
-                index
-            ) =>
-                createVideoCard(
+            .map(
+                (
                     video,
                     index
-                )
+                ) =>
+                    createVideoCard(
+                        video,
+                        index
+                    )
+            )
+            .join("");
+
+
+    document
+        .querySelectorAll(
+            ".video-card"
         )
-        .join("");
+        .forEach(
+            (
+                card,
+                index
+            ) => {
+
+                card.addEventListener(
+                    "click",
+                    () => {
+
+                        openVideo(
+                            filtered[index]
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
 
 /* =====================================================
-   CARD
+   VIDEO CARD
    ===================================================== */
 
 function createVideoCard(
@@ -1446,45 +1230,38 @@ function createVideoCard(
         escapeHtml(
             video.title
             ||
-            `${video.home || ""} vs ${video.away || ""}`
+            (
+                video.home
+                + " vs "
+                + video.away
+            )
         );
 
 
     const thumbnail =
-        escapeHtml(
-            video.thumbnail
-            ||
-            (
-                video.video_id
-                ?
-                `https://i.ytimg.com/vi/${video.video_id}/hqdefault.jpg`
-                :
-                ""
-            )
-        );
+        video.thumbnail
+        ||
+        "";
 
 
     const league =
         escapeHtml(
             video.league
-            ||
-            "Football"
+            || ""
         );
 
 
     const date =
         escapeHtml(
             video.date
-            ||
-            ""
+            || ""
         );
 
 
-    const channel =
+    const source =
         escapeHtml(
-            video.channel
-            ||
-            ""
+            video.source
+            || "Highlightly"
         );
 
 
@@ -1499,17 +1276,34 @@ function createVideoCard(
                 class="thumbnail">
 
 
-                <img
-                    src="${thumbnail}"
-                    alt="${title}"
-                    loading="lazy">
+                ${
+                    thumbnail
+                    ?
+                    `
+                    <img
+                        src="${escapeAttribute(thumbnail)}"
+                        alt="${title}"
+                        loading="lazy">
+                    `
+                    :
+                    `
+                    <div
+                        style="
+                        width:100%;
+                        height:100%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:50px;
+                        ">
+                        ⚽
+                    </div>
+                    `
+                }
 
 
-                <div
-                    class="play">
-
+                <div class="play">
                     ▶
-
                 </div>
 
 
@@ -1531,7 +1325,6 @@ function createVideoCard(
                 <div
                     class="video-meta">
 
-
                     <span
                         class="video-league">
 
@@ -1546,30 +1339,16 @@ function createVideoCard(
 
                     </span>
 
-
                 </div>
 
 
-                ${
-                    channel
+                <div
+                    class="video-source">
 
-                    ?
+                    المصدر:
+                    ${source}
 
-                    `
-
-                    <div
-                        class="video-channel">
-
-                        ▶ ${channel}
-
-                    </div>
-
-                    `
-
-                    :
-
-                    ""
-                }
+                </div>
 
 
             </div>
@@ -1583,111 +1362,42 @@ function createVideoCard(
 
 
 /* =====================================================
-   CARD CLICK
-   ===================================================== */
-
-videoGrid.addEventListener(
-    "click",
-    event => {
-
-        const card =
-            event.target.closest(
-                ".video-card"
-            );
-
-
-        if (!card) {
-
-            return;
-
-        }
-
-
-        const index =
-            Number(
-                card.dataset.index
-            );
-
-
-        const filtered =
-            getFilteredVideos();
-
-
-        const video =
-            filtered[index];
-
-
-        if (!video) {
-
-            return;
-
-        }
-
-
-        openVideo(
-            video
-        );
-
-    }
-);
-
-
-/* =====================================================
-   OPEN VIDEO INSIDE GOALINS
+   OPEN VIDEO
    ===================================================== */
 
 function openVideo(
     video
 ) {
 
-    if (
-        !video ||
-        !video.video_id
-    ) {
+    const embedUrl =
+        video.embed_url
+        ||
+        video.embed;
+
+
+    if (!embedUrl) {
 
         return;
 
     }
 
 
-    const videoId =
-        video.video_id;
-
-
-    /*
-     * YouTube embed stays inside GOALINS.
-     *
-     * No window.open()
-     * No direct youtube.com/watch URL.
-     */
-
-
-    videoFrame.src =
-        "https://www.youtube-nocookie.com/"
-        + "embed/"
-        + encodeURIComponent(
-            videoId
-        )
-        + "?autoplay=1"
-        + "&rel=0"
-        + "&modestbranding=1"
-        + "&playsinline=1";
-
-
     modalTitle.textContent =
         video.title
         ||
-        "ملخص المباراة";
+        (
+            video.home
+            + " vs "
+            + video.away
+        );
+
+
+    videoFrame.src =
+        embedUrl;
 
 
     videoModal.classList.add(
         "active"
-    );
-
-
-    videoModal.setAttribute(
-        "aria-hidden",
-        "false"
     );
 
 
@@ -1701,20 +1411,15 @@ function openVideo(
    CLOSE VIDEO
    ===================================================== */
 
-function closeVideoPlayer() {
-
-    videoFrame.src = "";
-
+function closeVideoModal() {
 
     videoModal.classList.remove(
         "active"
     );
 
 
-    videoModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    videoFrame.src =
+        "";
 
 
     document.body.style.overflow =
@@ -1725,34 +1430,26 @@ function closeVideoPlayer() {
 
 closeVideo.addEventListener(
     "click",
-    closeVideoPlayer
+    closeVideoModal
 );
 
-
-/* =====================================================
-   CLOSE BY BACKDROP
-   ===================================================== */
 
 videoModal.addEventListener(
     "click",
     event => {
 
         if (
-            event.target
-            === videoModal
+            event.target ===
+            videoModal
         ) {
 
-            closeVideoPlayer();
+            closeVideoModal();
 
         }
 
     }
 );
 
-
-/* =====================================================
-   ESC KEY
-   ===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -1762,7 +1459,7 @@ document.addEventListener(
             event.key === "Escape"
         ) {
 
-            closeVideoPlayer();
+            closeVideoModal();
 
         }
 
@@ -1831,10 +1528,56 @@ if (
 
 
 /* =====================================================
+   SECURITY HELPERS
+   ===================================================== */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(
+    value
+) {
+
+    return escapeHtml(
+        value
+    );
+
+}
+
+
+/* =====================================================
    START
    ===================================================== */
 
-loadHighlights();
+loadVideos();
 
 </script>
 
