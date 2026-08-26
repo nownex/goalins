@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
-# GOALINS — HIGHLIGHTLY HIGHLIGHTS ENGINE
+# GOALINS — HIGHLIGHTLY VIDEO ENGINE
 # =========================================================
 
 API_KEY = os.environ.get("HIGHLIGHTLY_API_KEY")
@@ -18,48 +18,15 @@ if not API_KEY:
     )
 
 
-MATCHES_FILE = "data/matches.json"
-OUTPUT_FILE = "data/highlights.json"
-
 API_URL = (
     "https://soccer.highlightly.net/highlights"
 )
 
-LOOKBACK_DAYS = 7
+OUTPUT_FILE = "data/highlights.json"
+
+LOOKBACK_DAYS = 3
+
 MAX_HIGHLIGHTS = 50
-
-
-# =========================================================
-# ALLOWED LEAGUES
-# =========================================================
-
-ALLOWED_LEAGUES = {
-
-    "Premier League",
-
-    "La Liga",
-
-    "Ligue 1",
-
-    "Serie A",
-
-    "Eredivisie",
-
-    "Jupiler Pro League",
-
-    "Primeira Liga",
-
-    "Bundesliga",
-
-    "UEFA Champions League",
-
-    "UEFA Europa League",
-
-    "UEFA Europa Conference League",
-
-    "UEFA Europa Conference League Qualification",
-
-}
 
 
 # =========================================================
@@ -88,7 +55,8 @@ GAMING_WORDS = [
     "simulation",
     "simulated",
     "video game",
-    "virtual",
+    "virtual match",
+
 ]
 
 
@@ -99,46 +67,6 @@ GAMING_WORDS = [
 def normalize(text):
 
     text = str(text or "").lower()
-
-    # Remove accents that can cause small differences
-    replacements = {
-        "á": "a",
-        "à": "a",
-        "â": "a",
-        "ä": "a",
-        "ã": "a",
-        "å": "a",
-        "é": "e",
-        "è": "e",
-        "ê": "e",
-        "ë": "e",
-        "í": "i",
-        "ì": "i",
-        "î": "i",
-        "ï": "i",
-        "ó": "o",
-        "ò": "o",
-        "ô": "o",
-        "ö": "o",
-        "õ": "o",
-        "ú": "u",
-        "ù": "u",
-        "û": "u",
-        "ü": "u",
-        "ý": "y",
-        "ñ": "n",
-        "ø": "o",
-        "ł": "l",
-        "č": "c",
-        "ć": "c",
-        "š": "s",
-        "ž": "z",
-        "đ": "d",
-        "ğ": "g",
-    }
-
-    for old, new in replacements.items():
-        text = text.replace(old, new)
 
     text = re.sub(
         r"[^a-z0-9\u0600-\u06ff]+",
@@ -169,609 +97,25 @@ def is_gaming(text):
 
 
 # =========================================================
-# MATCH HELPERS
+# HEADERS
 # =========================================================
 
-def get_date(match):
+headers = {
 
-    return str(
-        match.get(
-            "date",
-            ""
-        )
-    )[:10]
+    "x-rapidapi-key":
+        API_KEY,
 
+    "x-rapidapi-host":
+        "football-highlights-api.p.rapidapi.com",
 
-def get_league(match):
+    "Accept":
+        "application/json"
 
-    league = match.get(
-        "league",
-        {}
-    )
-
-    if isinstance(
-        league,
-        dict
-    ):
-
-        return str(
-            league.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-    return str(
-        league or ""
-    ).strip()
-
-
-def get_home(match):
-
-    home = match.get(
-        "home",
-        {}
-    )
-
-    if isinstance(
-        home,
-        dict
-    ):
-
-        return str(
-            home.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-    return str(
-        home or ""
-    ).strip()
-
-
-def get_away(match):
-
-    away = match.get(
-        "away",
-        {}
-    )
-
-    if isinstance(
-        away,
-        dict
-    ):
-
-        return str(
-            away.get(
-                "name",
-                ""
-            )
-        ).strip()
-
-    return str(
-        away or ""
-    ).strip()
-
-
-def get_status(match):
-
-    status = match.get(
-        "status",
-        ""
-    )
-
-    if isinstance(
-        status,
-        dict
-    ):
-
-        return str(
-            status.get(
-                "short",
-                ""
-            )
-        ).upper()
-
-    return str(
-        status
-    ).upper()
+}
 
 
 # =========================================================
-# FINISHED
-# =========================================================
-
-def is_finished(match):
-
-    return get_status(match) in {
-
-        "FT",
-        "AET",
-        "PEN"
-
-    }
-
-
-# =========================================================
-# TEAM NAME MATCHING
-# =========================================================
-
-def team_name_match(
-    expected,
-    actual
-):
-
-    expected = normalize(
-        expected
-    )
-
-    actual = normalize(
-        actual
-    )
-
-    if not expected or not actual:
-
-        return False
-
-
-    # Exact
-
-    if expected == actual:
-
-        return True
-
-
-    # Full containment
-
-    if (
-        expected in actual
-        or actual in expected
-    ):
-
-        return True
-
-
-    expected_tokens = {
-
-        token
-
-        for token in expected.split()
-
-        if len(token) >= 3
-
-    }
-
-
-    actual_tokens = {
-
-        token
-
-        for token in actual.split()
-
-        if len(token) >= 3
-
-    }
-
-
-    if not expected_tokens:
-
-        return False
-
-
-    common = (
-        expected_tokens
-        & actual_tokens
-    )
-
-
-    # Require at least one meaningful
-    # common token.
-
-    return len(common) >= 1
-
-
-# =========================================================
-# GET HIGHLIGHT TEAM NAMES
-# =========================================================
-
-def get_video_teams(video):
-
-    video_match = video.get(
-        "match",
-        {}
-    )
-
-    if not isinstance(
-        video_match,
-        dict
-    ):
-
-        return "", ""
-
-
-    home_team = video_match.get(
-        "homeTeam",
-        {}
-    )
-
-    away_team = video_match.get(
-        "awayTeam",
-        {}
-    )
-
-
-    if not isinstance(
-        home_team,
-        dict
-    ):
-
-        home_team = {}
-
-
-    if not isinstance(
-        away_team,
-        dict
-    ):
-
-        away_team = {}
-
-
-    video_home = (
-
-        home_team.get(
-            "name"
-        )
-
-        or home_team.get(
-            "displayName"
-        )
-
-        or ""
-
-    )
-
-
-    video_away = (
-
-        away_team.get(
-            "name"
-        )
-
-        or away_team.get(
-            "displayName"
-        )
-
-        or ""
-
-    )
-
-
-    return (
-        str(video_home).strip(),
-        str(video_away).strip()
-    )
-
-
-# =========================================================
-# MATCH VIDEO TO FIXTURE
-# =========================================================
-
-def highlight_matches_fixture(
-    video,
-    fixture
-):
-
-    video_home, video_away = (
-        get_video_teams(video)
-    )
-
-
-    fixture_home = fixture[
-        "home"
-    ]
-
-    fixture_away = fixture[
-        "away"
-    ]
-
-
-    # -----------------------------------------------------
-    # FIRST: USE HIGHLIGHTLY MATCH DATA
-    # -----------------------------------------------------
-
-    if video_home and video_away:
-
-        home_ok = team_name_match(
-            fixture_home,
-            video_home
-        )
-
-        away_ok = team_name_match(
-            fixture_away,
-            video_away
-        )
-
-
-        if home_ok and away_ok:
-
-            print(
-                "MATCH VERIFIED BY API MATCH DATA:"
-            )
-
-            print(
-                f"  Highlightly: "
-                f"{video_home} vs {video_away}"
-            )
-
-            print(
-                f"  GOALINS: "
-                f"{fixture_home} vs {fixture_away}"
-            )
-
-            return True
-
-
-    # -----------------------------------------------------
-    # SECOND: CHECK TITLE
-    # -----------------------------------------------------
-
-    title = str(
-        video.get(
-            "title",
-            ""
-        )
-    )
-
-
-    description = str(
-        video.get(
-            "description",
-            ""
-        )
-    )
-
-
-    combined_text = (
-        title
-        + " "
-        + description
-    )
-
-
-    home_ok = team_name_match(
-        fixture_home,
-        combined_text
-    )
-
-    away_ok = team_name_match(
-        fixture_away,
-        combined_text
-    )
-
-
-    if home_ok and away_ok:
-
-        print(
-            "MATCH VERIFIED BY TITLE:"
-        )
-
-        print(
-            f"  GOALINS: "
-            f"{fixture_home} vs {fixture_away}"
-        )
-
-        print(
-            f"  Title: {title}"
-        )
-
-        return True
-
-
-    return False
-
-
-# =========================================================
-# LOAD MATCHES
-# =========================================================
-
-with open(
-    MATCHES_FILE,
-    "r",
-    encoding="utf-8"
-) as file:
-
-    matches_data = json.load(
-        file
-    )
-
-
-matches = matches_data.get(
-    "matches",
-    []
-)
-
-
-print("=" * 60)
-
-print(
-    "GOALINS - HIGHLIGHTLY HIGHLIGHTS ENGINE"
-)
-
-print("=" * 60)
-
-print(
-    f"Total matches in matches.json: "
-    f"{len(matches)}"
-)
-
-
-# =========================================================
-# ALGERIA DATE
-# =========================================================
-
-algeria_now = (
-
-    datetime.now(
-        timezone.utc
-    )
-
-    + timedelta(
-        hours=1
-    )
-
-)
-
-
-today = algeria_now.date()
-
-
-start_date = (
-
-    today
-
-    - timedelta(
-        days=LOOKBACK_DAYS
-    )
-
-)
-
-
-print(
-    f"Algeria date: {today}"
-)
-
-print(
-    f"Searching from: {start_date}"
-)
-
-print(
-    f"Searching to: {today}"
-)
-
-
-# =========================================================
-# TARGET MATCHES
-# =========================================================
-
-target_matches = []
-
-
-for match in matches:
-
-    league = get_league(
-        match
-    )
-
-    match_date = get_date(
-        match
-    )
-
-    home = get_home(
-        match
-    )
-
-    away = get_away(
-        match
-    )
-
-
-    if league not in ALLOWED_LEAGUES:
-
-        continue
-
-
-    if not is_finished(
-        match
-    ):
-
-        continue
-
-
-    try:
-
-        date_obj = datetime.strptime(
-            match_date,
-            "%Y-%m-%d"
-        ).date()
-
-    except Exception:
-
-        continue
-
-
-    if date_obj < start_date:
-
-        continue
-
-
-    if date_obj > today:
-
-        continue
-
-
-    if not home or not away:
-
-        continue
-
-
-    target_matches.append({
-
-        "fixture_id":
-            match.get(
-                "fixture_id"
-            ),
-
-        "date":
-            match_date,
-
-        "league":
-            league,
-
-        "home":
-            home,
-
-        "away":
-            away,
-
-    })
-
-
-# =========================================================
-# DIAGNOSTIC
-# =========================================================
-
-print("-" * 60)
-
-print(
-    f"Finished allowed matches: "
-    f"{len(target_matches)}"
-)
-
-print("-" * 60)
-
-print(
-    "TARGET MATCHES:"
-)
-
-
-for match in target_matches:
-
-    print(
-
-        f"  {match['date']} | "
-        f"{match['league']} | "
-        f"{match['home']} vs "
-        f"{match['away']}"
-
-    )
-
-
-print("-" * 60)
-
-
-# =========================================================
-# LOAD OLD HIGHLIGHTS
+# LOAD OLD DATA
 # =========================================================
 
 old_highlights = []
@@ -806,7 +150,6 @@ if os.path.exists(
                 )
             )
 
-
         elif isinstance(
             old_data,
             list
@@ -838,44 +181,72 @@ old_ids = {
 
 
 # =========================================================
-# HEADERS
+# ALGERIA DATE
 # =========================================================
 
-headers = {
+algeria_now = (
 
-    "x-rapidapi-key":
-        API_KEY,
+    datetime.now(
+        timezone.utc
+    )
 
-    "x-rapidapi-host":
-        "football-highlights-api.p.rapidapi.com",
+    + timedelta(
+        hours=1
+    )
 
-    "Accept":
-        "application/json"
+)
 
-}
+
+today = algeria_now.date()
+
+
+start_date = (
+
+    today
+
+    - timedelta(
+        days=LOOKBACK_DAYS
+    )
+
+)
+
+
+print("=" * 60)
+
+print(
+    "GOALINS — HIGHLIGHTLY VIDEO ENGINE"
+)
+
+print("=" * 60)
+
+print(
+    f"Algeria date: {today}"
+)
+
+print(
+    f"Searching from: {start_date}"
+)
+
+print(
+    f"Searching to: {today}"
+)
+
+print("=" * 60)
 
 
 # =========================================================
-# API REQUEST
+# FETCH ALL HIGHLIGHTS FOR DATE
 # =========================================================
 
-def fetch_highlights(
-    fixture
-):
+def fetch_highlights(date):
 
     params = {
 
         "date":
-            fixture["date"],
-
-        "homeTeamName":
-            fixture["home"],
-
-        "awayTeamName":
-            fixture["away"],
+            date,
 
         "limit":
-            40,
+            100,
 
         "offset":
             0
@@ -884,10 +255,7 @@ def fetch_highlights(
 
 
     print(
-        "Request:",
-        fixture["home"],
-        "vs",
-        fixture["away"]
+        f"Request date: {date}"
     )
 
 
@@ -912,22 +280,21 @@ def fetch_highlights(
 
     if response.status_code != 200:
 
-        try:
+        print(
+            "API response:",
+            response.text[:500]
+        )
 
-            print(
-                "API response:",
-                response.text[:500]
-            )
-
-        except Exception:
-
-            pass
+        return []
 
 
-        response.raise_for_status()
+    try:
 
+        data = response.json()
 
-    data = response.json()
+    except Exception:
+
+        return []
 
 
     if isinstance(
@@ -953,68 +320,64 @@ def fetch_highlights(
 
 
 # =========================================================
-# SEARCH
+# COLLECT
 # =========================================================
 
 new_highlights = []
 
-
-searched_fixtures = 0
-
-
-for fixture in target_matches:
-
-    if len(
-        new_highlights
-    ) >= MAX_HIGHLIGHTS:
-
-        break
+seen_ids = set(
+    old_ids
+)
 
 
-    searched_fixtures += 1
+dates = []
 
+
+current = start_date
+
+
+while current <= today:
+
+    dates.append(
+        current.strftime(
+            "%Y-%m-%d"
+        )
+    )
+
+    current += timedelta(
+        days=1
+    )
+
+
+print(
+    f"Dates to search: {len(dates)}"
+)
+
+
+# =========================================================
+# SEARCH ALL VIDEOS
+# =========================================================
+
+for date in dates:
 
     print("=" * 60)
 
     print(
-        f"Searching Highlightly:"
-    )
-
-    print(
-        f"{fixture['date']} | "
-        f"{fixture['league']} | "
-        f"{fixture['home']} vs "
-        f"{fixture['away']}"
+        f"Searching Highlightly: {date}"
     )
 
     print("=" * 60)
 
 
-    try:
-
-        videos = fetch_highlights(
-            fixture
-        )
-
-    except Exception as error:
-
-        print(
-            "Highlightly ERROR:",
-            error
-        )
-
-        continue
-
-
-    print(
-        f"Videos returned: "
-        f"{len(videos)}"
+    videos = fetch_highlights(
+        date
     )
 
 
-    # =====================================================
-    # VIDEOS
-    # =====================================================
+    print(
+        f"Videos returned: {len(videos)}"
+    )
+
 
     for video in videos:
 
@@ -1041,18 +404,13 @@ for fixture in target_matches:
         )
 
 
-        if video_id in old_ids:
-
-            print(
-                "Already saved:",
-                video_id
-            )
+        if video_id in seen_ids:
 
             continue
 
 
         # -------------------------------------------------
-        # BASIC DATA
+        # DATA
         # -------------------------------------------------
 
         title = str(
@@ -1095,13 +453,21 @@ for fixture in target_matches:
         ).upper()
 
 
-        embed_url = video.get(
-            "embedUrl"
-        )
+        category = str(
+            video.get(
+                "category",
+                ""
+            )
+        ).lower()
 
 
         thumbnail = video.get(
             "imgUrl"
+        )
+
+
+        embed_url = video.get(
+            "embedUrl"
         )
 
 
@@ -1111,27 +477,13 @@ for fixture in target_matches:
 
 
         # -------------------------------------------------
-        # VERIFIED ONLY
-        # -------------------------------------------------
-
-        if video_type != "VERIFIED":
-
-            print(
-                "REJECTED non-VERIFIED:",
-                title
-            )
-
-            continue
-
-
-        # -------------------------------------------------
-        # EMBED REQUIRED
+        # MUST HAVE EMBED
         # -------------------------------------------------
 
         if not embed_url:
 
             print(
-                "REJECTED no embedUrl:",
+                "REJECTED — no embedUrl:",
                 title
             )
 
@@ -1139,7 +491,7 @@ for fixture in target_matches:
 
 
         # -------------------------------------------------
-        # GAMING FILTER
+        # GAMING
         # -------------------------------------------------
 
         searchable = " ".join([
@@ -1148,6 +500,7 @@ for fixture in target_matches:
             description,
             source,
             channel,
+            category,
 
         ])
 
@@ -1157,7 +510,7 @@ for fixture in target_matches:
         ):
 
             print(
-                "REJECTED GAMING:",
+                "REJECTED — GAMING:",
                 title
             )
 
@@ -1165,65 +518,36 @@ for fixture in target_matches:
 
 
         # -------------------------------------------------
-        # REAL FOOTBALL MATCH
+        # ACCEPT
+        #
+        # We no longer require:
+        # - exact fixture match
+        # - allowed league
+        # - VERIFIED only
+        #
+        # We only require:
+        # - football highlight API result
+        # - embedUrl
+        # - not gaming
         # -------------------------------------------------
 
-        if not highlight_matches_fixture(
-            video,
-            fixture
-        ):
-
-            print(
-                "REJECTED: fixture mismatch"
-            )
-
-            print(
-                "Title:",
-                title
-            )
-
-            video_home, video_away = (
-                get_video_teams(video)
-            )
-
-            print(
-                "Highlightly teams:",
-                video_home,
-                "vs",
-                video_away
-            )
-
-            print(
-                "GOALINS teams:",
-                fixture["home"],
-                "vs",
-                fixture["away"]
-            )
-
-            continue
-
-
-        # =================================================
-        # SUCCESS
-        # =================================================
-
         print(
-            "=============================================="
-        )
-
-        print(
-            "SELECTED REAL FOOTBALL HIGHLIGHT"
-        )
-
-        print(
-            f"{fixture['home']} "
-            f"vs "
-            f"{fixture['away']}"
+            "ACCEPTED VIDEO:"
         )
 
         print(
             "Title:",
             title
+        )
+
+        print(
+            "Type:",
+            video_type
+        )
+
+        print(
+            "Category:",
+            category
         )
 
         print(
@@ -1236,20 +560,110 @@ for fixture in target_matches:
             embed_url
         )
 
-        print(
-            "=============================================="
+        print("-" * 60)
+
+
+        # -------------------------------------------------
+        # MATCH INFORMATION IF AVAILABLE
+        # -------------------------------------------------
+
+        match = video.get(
+            "match",
+            {}
         )
 
+
+        if not isinstance(
+            match,
+            dict
+        ):
+
+            match = {}
+
+
+        home_team = match.get(
+            "homeTeam",
+            {}
+        )
+
+
+        away_team = match.get(
+            "awayTeam",
+            {}
+        )
+
+
+        if not isinstance(
+            home_team,
+            dict
+        ):
+
+            home_team = {}
+
+
+        if not isinstance(
+            away_team,
+            dict
+        ):
+
+            away_team = {}
+
+
+        home = (
+
+            home_team.get(
+                "name"
+            )
+
+            or ""
+
+        )
+
+
+        away = (
+
+            away_team.get(
+                "name"
+            )
+
+            or ""
+
+        )
+
+
+        league = match.get(
+            "league",
+            {}
+        )
+
+
+        if isinstance(
+            league,
+            dict
+        ):
+
+            league_name = (
+                league.get(
+                    "name"
+                )
+                or ""
+            )
+
+        else:
+
+            league_name = str(
+                league or ""
+            )
+
+
+        # -------------------------------------------------
+        # SAVE
+        # -------------------------------------------------
 
         item = {
 
             "highlight_id":
                 video_id,
-
-            "fixture_id":
-                fixture[
-                    "fixture_id"
-                ],
 
             "title":
                 title,
@@ -1276,27 +690,22 @@ for fixture in target_matches:
                 channel,
 
             "type":
-                "VERIFIED",
+                video_type,
+
+            "category":
+                category,
 
             "date":
-                fixture[
-                    "date"
-                ],
+                date,
 
             "league":
-                fixture[
-                    "league"
-                ],
+                league_name,
 
             "home":
-                fixture[
-                    "home"
-                ],
+                home,
 
             "away":
-                fixture[
-                    "away"
-                ],
+                away,
 
         }
 
@@ -1306,7 +715,7 @@ for fixture in target_matches:
         )
 
 
-        old_ids.add(
+        seen_ids.add(
             video_id
         )
 
@@ -1316,6 +725,13 @@ for fixture in target_matches:
         ) >= MAX_HIGHLIGHTS:
 
             break
+
+
+    if len(
+        new_highlights
+    ) >= MAX_HIGHLIGHTS:
+
+        break
 
 
 # =========================================================
@@ -1376,7 +792,7 @@ combined.sort(
         ),
 
         item.get(
-            "title",
+            "highlight_id",
             ""
         )
 
@@ -1393,7 +809,7 @@ combined = combined[
 
 
 # =========================================================
-# SAVE
+# OUTPUT
 # =========================================================
 
 output = {
@@ -1405,9 +821,6 @@ output = {
 
     "source":
         "Highlightly",
-
-    "type":
-        "VERIFIED",
 
     "count":
         len(combined),
@@ -1444,41 +857,38 @@ with open(
 
 
 # =========================================================
-# FINAL DIAGNOSTIC
+# FINAL
 # =========================================================
 
 print("=" * 60)
 
 print(
-    f"GOALINS: "
-    f"{len(combined)} real football highlights saved."
+    "GOALINS HIGHLIGHTS RESULT"
 )
 
+print("=" * 60)
+
 print(
-    f"New videos: "
+    f"Videos found: "
     f"{len(new_highlights)}"
 )
 
 print(
-    f"Fixtures searched: "
-    f"{searched_fixtures}"
+    f"Total saved: "
+    f"{len(combined)}"
 )
 
 print(
-    f"Target matches: "
-    f"{len(target_matches)}"
+    f"Dates searched: "
+    f"{len(dates)}"
 )
 
 print(
-    "Source: Highlightly"
+    "Gaming videos rejected."
 )
 
 print(
-    "Type: VERIFIED only"
-)
-
-print(
-    "Gaming videos rejected automatically."
+    "Videos require embedUrl."
 )
 
 print("=" * 60)
