@@ -1,6 +1,7 @@
 name: GOALINS - Update Highlights
 
 on:
+
   workflow_dispatch:
 
   schedule:
@@ -17,51 +18,58 @@ jobs:
 
     steps:
 
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
+
         with:
-          python-version: "3.12"
+          python-version: "3.x"
+
 
       - name: Install requests
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Check secrets
+
+      - name: Check Highlightly API key
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
+
         run: |
-          if [ -z "$YOUTUBE_API_KEY" ]; then
-            echo "ERROR: YOUTUBE_API_KEY is missing"
+
+          if [ -z "$HIGHLIGHTLY_API_KEY" ]; then
+
+            echo "ERROR: HIGHLIGHTLY_API_KEY is missing."
+
             exit 1
+
           fi
 
-          if [ -z "$API_FOOTBALL_KEY" ]; then
-            echo "ERROR: API_FOOTBALL_KEY is missing"
-            exit 1
-          fi
+          echo "Highlightly API key detected."
 
-          echo "Both API secrets are available."
 
       - name: Update highlights
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          HIGHLIGHTLY_API_KEY: ${{ secrets.HIGHLIGHTLY_API_KEY }}
+
         run: |
+
           python scripts/update_highlights.py
+
 
       - name: Show highlights result
         run: |
-          echo "======================================"
-          echo "GOALINS HIGHLIGHTS OUTPUT"
+
           echo "======================================"
 
           if [ -f data/highlights.json ]; then
+
             python - <<'PY'
+
           import json
 
           with open(
@@ -69,24 +77,34 @@ jobs:
               "r",
               encoding="utf-8"
           ) as f:
+
               data = json.load(f)
 
           print(
-              f"Highlights count: {data.get('count', 0)}"
+              f"Highlights saved: {data.get('count', 0)}"
           )
 
-          for item in data.get("highlights", []):
+          for item in data.get("highlights", [])[:10]:
+
               print(
-                  f"- {item.get('date', '')} | "
-                  f"{item.get('home', '')} vs "
-                  f"{item.get('away', '')} | "
-                  f"{item.get('title', '')}"
+                  f"- {item.get('home')} vs "
+                  f"{item.get('away')} | "
+                  f"{item.get('type')} | "
+                  f"{item.get('source')}"
               )
+
           PY
+
           else
-            echo "ERROR: data/highlights.json was not created."
+
+            echo "data/highlights.json was not created."
+
             exit 1
+
           fi
+
+          echo "======================================"
+
 
       - name: Commit highlights
         run: |
@@ -94,15 +112,12 @@ jobs:
           git config user.name "GOALINS Bot"
 
           git config user.email \
-            "goalins-bot@users.noreply.github.com"
+            "actions@users.noreply.github.com"
 
           git add data/highlights.json
 
-          if git diff --cached --quiet; then
-            echo "No highlight changes."
-            exit 0
-          fi
-
-          git commit -m "Update football highlights"
+          git diff --cached --quiet || \
+            git commit \
+            -m "Update football highlights"
 
           git push
