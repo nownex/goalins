@@ -16,6 +16,12 @@
 <meta name="theme-color"
       content="#07111f">
 
+<!-- خط عربي احترافي -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 
 
@@ -33,8 +39,17 @@
     padding:
         35px 0 70px;
 
+    font-family:
+        "Cairo",
+        Arial,
+        sans-serif;
+
 }
 
+
+/* =====================================================
+   PAGE TITLE
+   ===================================================== */
 
 .page-title {
 
@@ -50,7 +65,10 @@
         var(--accent);
 
     font-weight:
-        800;
+        900;
+
+    letter-spacing:
+        .5px;
 
 }
 
@@ -62,6 +80,12 @@
 
     font-size:
         32px;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.5;
 
 }
 
@@ -76,6 +100,9 @@
 
     font-size:
         14px;
+
+    font-weight:
+        500;
 
 }
 
@@ -106,14 +133,17 @@
     width:
         100%;
 
+    min-height:
+        52px;
+
     padding:
-        13px;
+        12px 15px;
 
     border:
         1px solid var(--border);
 
     border-radius:
-        12px;
+        14px;
 
     background:
         var(--card);
@@ -122,7 +152,60 @@
         white;
 
     font-family:
-        inherit;
+        "Cairo",
+        Arial,
+        sans-serif;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    outline:
+        none;
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s ease;
+
+}
+
+
+.filter:hover {
+
+    border-color:
+        rgba(37,211,102,.55);
+
+}
+
+
+.filter:focus {
+
+    border-color:
+        var(--accent);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,211,102,.10);
+
+}
+
+
+.filter option {
+
+    background:
+        #07111f;
+
+    color:
+        white;
+
+    font-family:
+        "Cairo",
+        Arial,
+        sans-serif;
 
 }
 
@@ -154,7 +237,10 @@
         0;
 
     font-size:
-        20px;
+        21px;
+
+    font-weight:
+        900;
 
 }
 
@@ -166,6 +252,9 @@
 
     font-size:
         12px;
+
+    font-weight:
+        600;
 
 }
 
@@ -207,7 +296,8 @@
 
     transition:
         transform .2s ease,
-        border-color .2s ease;
+        border-color .2s ease,
+        box-shadow .2s ease;
 
 }
 
@@ -219,6 +309,10 @@
 
     border-color:
         rgba(37,211,102,.45);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.20);
 
 }
 
@@ -254,6 +348,21 @@
 
     object-fit:
         cover;
+
+    display:
+        block;
+
+    transition:
+        transform .3s ease;
+
+}
+
+
+.video-card:hover
+.thumbnail img {
+
+    transform:
+        scale(1.025);
 
 }
 
@@ -303,8 +412,25 @@
     font-size:
         23px;
 
+    font-weight:
+        900;
+
     box-shadow:
-        0 5px 25px rgba(0,0,0,.4);
+        0 5px 25px
+        rgba(0,0,0,.4);
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+
+}
+
+
+.video-card:hover .play {
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.08);
 
 }
 
@@ -324,16 +450,19 @@
 .video-title {
 
     margin:
-        0 0 9px;
+        0 0 10px;
 
     font-size:
         15px;
 
     line-height:
-        1.6;
+        1.8;
 
     font-weight:
         800;
+
+    color:
+        #fff;
 
 }
 
@@ -358,6 +487,9 @@
     font-size:
         11px;
 
+    font-weight:
+        500;
+
 }
 
 
@@ -365,6 +497,9 @@
 
     color:
         var(--accent);
+
+    font-weight:
+        700;
 
 }
 
@@ -379,6 +514,9 @@
 
     font-size:
         11px;
+
+    font-weight:
+        500;
 
 }
 
@@ -408,13 +546,17 @@
         center;
 
     border:
-        1px dashed rgba(255,255,255,.13);
+        1px dashed
+        rgba(255,255,255,.13);
 
     border-radius:
         18px;
 
     padding:
         30px;
+
+    grid-column:
+        1 / -1;
 
 }
 
@@ -434,6 +576,9 @@
 
     margin:
         0 0 8px;
+
+    font-weight:
+        800;
 
 }
 
@@ -499,7 +644,7 @@
 
 
 /* =====================================================
-   YOUTUBE LINK NOTICE
+   YOUTUBE NOTE
    ===================================================== */
 
 .youtube-note {
@@ -511,7 +656,8 @@
         14px 16px;
 
     border:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        rgba(255,255,255,.08);
 
     border-radius:
         14px;
@@ -526,7 +672,7 @@
         12px;
 
     line-height:
-        1.8;
+        1.9;
 
     text-align:
         center;
@@ -559,7 +705,7 @@
     .page-title h1 {
 
         font-size:
-            28px;
+            27px;
 
     }
 
@@ -576,6 +722,39 @@
 
         grid-template-columns:
             1fr;
+
+    }
+
+
+    .video-title {
+
+        font-size:
+            14px;
+
+        line-height:
+            1.8;
+
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL SCREENS
+   ===================================================== */
+
+@media(max-width:380px) {
+
+    .play {
+
+        width:
+            52px;
+
+        height:
+            52px;
+
+        font-size:
+            21px;
 
     }
 
@@ -654,6 +833,10 @@
 <div class="container">
 
 
+<!-- =====================================================
+     PAGE TITLE
+     ===================================================== -->
+
 <div class="page-title">
 
     <small>
@@ -709,50 +892,6 @@
         جميع البطولات
     </option>
 
-    <option value="premier-league">
-        🇬🇧 الدوري الإنجليزي
-    </option>
-
-    <option value="la-liga">
-        🇪🇸 الدوري الإسباني
-    </option>
-
-    <option value="ligue-1">
-        🇫🇷 الدوري الفرنسي
-    </option>
-
-    <option value="serie-a">
-        🇮🇹 الدوري الإيطالي
-    </option>
-
-    <option value="eredivisie">
-        🇳🇱 الدوري الهولندي
-    </option>
-
-    <option value="jupiler-pro-league">
-        🇧🇪 الدوري البلجيكي
-    </option>
-
-    <option value="primeira-liga">
-        🇵🇹 الدوري البرتغالي
-    </option>
-
-    <option value="bundesliga">
-        🇩🇪 الدوري الألماني
-    </option>
-
-    <option value="champions-league">
-        🏆 دوري أبطال أوروبا
-    </option>
-
-    <option value="europa-league">
-        🏆 الدوري الأوروبي
-    </option>
-
-    <option value="conference-league">
-        🏆 دوري المؤتمر الأوروبي
-    </option>
-
 </select>
 
 </div>
@@ -804,6 +943,10 @@
 </div>
 
 
+
+<!-- =====================================================
+     YOUTUBE NOTE
+     ===================================================== -->
 
 <div class="youtube-note">
 
@@ -865,6 +1008,250 @@ let videos = [];
 
 
 /* =====================================================
+   ARABIC LEAGUE NAMES
+   ===================================================== */
+
+const leagueNames = {
+
+    "premier league":
+        "🇬🇧 الدوري الإنجليزي",
+
+    "la liga":
+        "🇪🇸 الدوري الإسباني",
+
+    "ligue 1":
+        "🇫🇷 الدوري الفرنسي",
+
+    "serie a":
+        "🇮🇹 الدوري الإيطالي",
+
+    "eredivisie":
+        "🇳🇱 الدوري الهولندي",
+
+    "jupiler pro league":
+        "🇧🇪 الدوري البلجيكي",
+
+    "primeira liga":
+        "🇵🇹 الدوري البرتغالي",
+
+    "bundesliga":
+        "🇩🇪 الدوري الألماني",
+
+    "uefa champions league":
+        "🏆 دوري أبطال أوروبا",
+
+    "champions league":
+        "🏆 دوري أبطال أوروبا",
+
+    "uefa europa league":
+        "🏆 الدوري الأوروبي",
+
+    "europa league":
+        "🏆 الدوري الأوروبي",
+
+    "uefa europa conference league":
+        "🏆 دوري المؤتمر الأوروبي",
+
+    "europa conference league":
+        "🏆 دوري المؤتمر الأوروبي",
+
+    "uefa europa conference league qualification":
+        "🏆 تصفيات دوري المؤتمر الأوروبي",
+
+    "uefa champions league qualification":
+        "🏆 تصفيات دوري أبطال أوروبا",
+
+    "uefa europa league qualification":
+        "🏆 تصفيات الدوري الأوروبي"
+
+};
+
+
+
+/* =====================================================
+   NORMALIZE LEAGUE
+   ===================================================== */
+
+function normalizeLeague(
+    league
+) {
+
+    return String(
+        league || ""
+    )
+    .toLowerCase()
+    .trim()
+    .replace(
+        /\s+/g,
+        " "
+    );
+
+}
+
+
+
+/* =====================================================
+   GET LEAGUE LABEL
+   ===================================================== */
+
+function getLeagueLabel(
+    league
+) {
+
+    const normalized =
+        normalizeLeague(
+            league
+        );
+
+
+    if (
+        leagueNames[
+            normalized
+        ]
+    ) {
+
+        return leagueNames[
+            normalized
+        ];
+
+    }
+
+
+    /*
+     * إذا كانت البطولة جديدة
+     * وليست في القائمة،
+     * نعرض اسمها كما جاء من JSON.
+     */
+
+    return String(
+        league || "بطولة"
+    );
+
+}
+
+
+
+/* =====================================================
+   BUILD LEAGUE FILTER
+   ===================================================== */
+
+function buildLeagueFilter() {
+
+    /*
+     * استخراج البطولات الموجودة فعليًا
+     * داخل highlights.json.
+     */
+
+    const leagues =
+        new Map();
+
+
+    videos.forEach(
+        video => {
+
+            const original =
+                String(
+                    video.league || ""
+                ).trim();
+
+
+            if (!original) {
+
+                return;
+
+            }
+
+
+            const key =
+                normalizeLeague(
+                    original
+                );
+
+
+            if (!leagues.has(key)) {
+
+                leagues.set(
+                    key,
+                    original
+                );
+
+            }
+
+        }
+    );
+
+
+    /*
+     * ترتيب البطولات أبجديًا.
+     */
+
+    const sorted =
+        Array.from(
+            leagues.entries()
+        )
+        .sort(
+            (
+                a,
+                b
+            ) =>
+                a[1].localeCompare(
+                    b[1],
+                    "ar"
+                )
+        );
+
+
+    /*
+     * إعادة بناء القائمة.
+     */
+
+    leagueFilter.innerHTML = `
+
+        <option value="all">
+            جميع البطولات
+        </option>
+
+    `;
+
+
+    sorted.forEach(
+        (
+            [key, original]
+        ) => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            /*
+             * قيمة الفلتر = الاسم
+             * الموحد للبطولة.
+             */
+
+            option.value =
+                key;
+
+
+            option.textContent =
+                getLeagueLabel(
+                    original
+                );
+
+
+            leagueFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
    LOAD DATA
    ===================================================== */
 
@@ -901,6 +1288,14 @@ async function loadVideos() {
             data.highlights
             :
             [];
+
+
+        /*
+         * بناء فلتر البطولات
+         * من البيانات الحقيقية.
+         */
+
+        buildLeagueFilter();
 
 
         renderVideos();
@@ -945,30 +1340,98 @@ async function loadVideos() {
 
 
 /* =====================================================
-   DATE HELPERS
+   ALGERIA DATE
    ===================================================== */
 
-function getToday() {
+function getAlgeriaDate(
+    offsetDays = 0
+) {
 
-    return new Date()
-        .toISOString()
-        .slice(
-            0,
-            10
-        );
+    /*
+     * نعتمد توقيت الجزائر بدل UTC
+     * حتى لا يحدث اختلاف في اليوم.
+     */
 
-}
-
-
-
-function getYesterday() {
-
-    const date =
+    const now =
         new Date();
 
 
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-CA",
+            {
+                timeZone:
+                    "Africa/Algiers",
+
+                year:
+                    "numeric",
+
+                month:
+                    "2-digit",
+
+                day:
+                    "2-digit"
+            }
+        )
+        .formatToParts(
+            now
+        );
+
+
+    let year = "";
+    let month = "";
+    let day = "";
+
+
+    parts.forEach(
+        part => {
+
+            if (
+                part.type ===
+                "year"
+            ) {
+
+                year =
+                    part.value;
+
+            }
+
+
+            if (
+                part.type ===
+                "month"
+            ) {
+
+                month =
+                    part.value;
+
+            }
+
+
+            if (
+                part.type ===
+                "day"
+            ) {
+
+                day =
+                    part.value;
+
+            }
+
+        }
+    );
+
+
+    const date =
+        new Date(
+            `${year}-${month}-${day}T12:00:00`
+        );
+
+
     date.setDate(
-        date.getDate() - 1
+        date.getDate()
+        +
+        offsetDays
     );
 
 
@@ -983,79 +1446,52 @@ function getYesterday() {
 
 
 
+function getToday() {
+
+    return getAlgeriaDate(
+        0
+    );
+
+}
+
+
+
+function getYesterday() {
+
+    return getAlgeriaDate(
+        -1
+    );
+
+}
+
+
+
 /* =====================================================
-   LEAGUE KEY
+   LEAGUE FILTER MATCH
    ===================================================== */
 
-function getLeagueKey(
-    league
+function leagueMatches(
+    videoLeague,
+    selectedLeague
 ) {
 
-    const value =
-        String(
-            league || ""
+    if (
+        selectedLeague ===
+        "all"
+    ) {
+
+        return true;
+
+    }
+
+
+    return (
+        normalizeLeague(
+            videoLeague
         )
-        .toLowerCase()
-        .trim();
-
-
-    const map = {
-
-        "premier league":
-            "premier-league",
-
-        "la liga":
-            "la-liga",
-
-        "ligue 1":
-            "ligue-1",
-
-        "serie a":
-            "serie-a",
-
-        "eredivisie":
-            "eredivisie",
-
-        "jupiler pro league":
-            "jupiler-pro-league",
-
-        "primeira liga":
-            "primeira-liga",
-
-        "bundesliga":
-            "bundesliga",
-
-        "uefa champions league":
-            "champions-league",
-
-        "champions league":
-            "champions-league",
-
-        "uefa europa league":
-            "europa-league",
-
-        "europa league":
-            "europa-league",
-
-        "uefa europa conference league":
-            "conference-league",
-
-        "europa conference league":
-            "conference-league"
-
-    };
-
-
-    return map[value]
-        || value
-            .replace(
-                /[^a-z0-9]+/g,
-                "-"
-            )
-            .replace(
-                /^-|-$/g,
-                ""
-            );
+        ===
+        selectedLeague
+    );
 
 }
 
@@ -1079,43 +1515,65 @@ function getFilteredVideos() {
         video => {
 
 
-            /* DATE */
+            /* =========================================
+               DATE
+               ========================================= */
 
             if (
-                dateValue === "today"
-                &&
-                video.date !==
+                dateValue ===
+                "today"
+            ) {
+
+                if (
+                    String(
+                        video.date || ""
+                    ).slice(
+                        0,
+                        10
+                    )
+                    !==
                     getToday()
-            ) {
+                ) {
 
-                return false;
+                    return false;
+
+                }
 
             }
 
 
             if (
-                dateValue === "yesterday"
-                &&
-                video.date !==
+                dateValue ===
+                "yesterday"
+            ) {
+
+                if (
+                    String(
+                        video.date || ""
+                    ).slice(
+                        0,
+                        10
+                    )
+                    !==
                     getYesterday()
-            ) {
+                ) {
 
-                return false;
+                    return false;
+
+                }
 
             }
 
 
-
-            /* LEAGUE */
+            /* =========================================
+               LEAGUE
+               ========================================= */
 
             if (
-                leagueValue !== "all"
-                &&
-                getLeagueKey(
-                    video.league
+                !leagueMatches(
+                    video.league,
+                    leagueValue
                 )
-                !==
-                leagueValue
             ) {
 
                 return false;
@@ -1165,8 +1623,8 @@ function renderVideos() {
                 </h2>
 
                 <p>
-                    لا توجد فيديوهات موثوقة
-                    مطابقة للفلاتر الحالية.
+                    لا توجد فيديوهات مطابقة
+                    للفلاتر الحالية.
                 </p>
 
             </div>
@@ -1198,7 +1656,7 @@ function renderVideos() {
 
 
     /*
-     * Attach click events.
+     * ربط الضغط بالبطاقات.
      */
 
     document
@@ -1239,17 +1697,25 @@ function createVideoCard(
 ) {
 
 
+    const rawTitle =
+        video.title
+        ||
+        (
+            String(
+                video.home || ""
+            )
+            +
+            " vs "
+            +
+            String(
+                video.away || ""
+            )
+        );
+
+
     const title =
         escapeHtml(
-            video.title
-            ||
-            (
-                video.home
-                +
-                " vs "
-                +
-                video.away
-            )
+            rawTitle
         );
 
 
@@ -1261,17 +1727,20 @@ function createVideoCard(
 
     const league =
         escapeHtml(
-            video.league
-            ||
-            ""
+            getLeagueLabel(
+                video.league
+            )
         );
 
 
     const date =
         escapeHtml(
-            video.date
-            ||
-            ""
+            String(
+                video.date || ""
+            ).slice(
+                0,
+                10
+            )
         );
 
 
@@ -1304,7 +1773,8 @@ function createVideoCard(
                     <img
                         src="${escapeAttribute(thumbnail)}"
                         alt="${title}"
-                        loading="lazy">
+                        loading="lazy"
+                        onerror="this.style.display='none';">
 
                     `
 
@@ -1406,16 +1876,15 @@ function openVideo(
 
 
     let youtubeUrl =
-        video.url
-        ||
-        "";
+        String(
+            video.url || ""
+        ).trim();
 
 
 
     /*
-     * Preferred:
-     *
-     * https://www.youtube.com/watch?v=VIDEO_ID
+     * الطريقة الأولى:
+     * youtube_id
      */
 
     if (
@@ -1427,17 +1896,17 @@ function openVideo(
         youtubeUrl =
             "https://www.youtube.com/watch?v="
             +
-            video.youtube_id;
+            encodeURIComponent(
+                video.youtube_id
+            );
 
     }
 
 
 
     /*
-     * Fallback:
-     *
-     * convert embed URL
-     * into normal YouTube URL.
+     * الطريقة الثانية:
+     * embed_url
      */
 
     if (
@@ -1460,7 +1929,9 @@ function openVideo(
             youtubeUrl =
                 "https://www.youtube.com/watch?v="
                 +
-                match[1];
+                encodeURIComponent(
+                    match[1]
+                );
 
         }
 
@@ -1469,7 +1940,8 @@ function openVideo(
 
 
     /*
-     * Second fallback.
+     * الطريقة الثالثة:
+     * embed
      */
 
     if (
@@ -1492,7 +1964,9 @@ function openVideo(
             youtubeUrl =
                 "https://www.youtube.com/watch?v="
                 +
-                match[1];
+                encodeURIComponent(
+                    match[1]
+                );
 
         }
 
@@ -1501,7 +1975,7 @@ function openVideo(
 
 
     /*
-     * Nothing available.
+     * لا يوجد فيديو.
      */
 
     if (!youtubeUrl) {
@@ -1518,8 +1992,7 @@ function openVideo(
 
 
     /*
-     * Open the official
-     * YouTube video directly.
+     * فتح الفيديو الأصلي على YouTube.
      */
 
     window.location.href =
