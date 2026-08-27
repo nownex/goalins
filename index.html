@@ -3,21 +3,1741 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>GOALINS | كل ما يهمك في كرة القدم</title>
+<title>GOALINS | كرة القدم</title>
 
-    <meta name="description"
-          content="GOALINS - مباريات، نتائج، ملخصات وأهداف كرة القدم في مكان واحد">
+<meta name="description"
+      content="GOALINS - مباريات، نتائج، ملخصات وأهداف كرة القدم">
 
-    <meta name="theme-color"
-          content="#06111d">
+<meta name="theme-color"
+      content="#06121f">
 
-    <link rel="stylesheet"
-          href="style.css">
+<style>
+
+/* =========================================================
+   GOALINS
+   PROFESSIONAL FOOTBALL HOMEPAGE
+   CSS ONLY — NO EXTERNAL IMAGES
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --bg: #04111d;
+    --bg2: #061827;
+    --card: #091d2e;
+    --card2: #0b2235;
+
+    --green: #00e676;
+    --green2: #00c968;
+
+    --white: #ffffff;
+    --text: #f4f7fa;
+    --muted: #91a6b9;
+
+    --border: rgba(255,255,255,.09);
+
+    --container: 1180px;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    background:
+        linear-gradient(
+            180deg,
+            #04111d 0%,
+            #061522 100%
+        );
+
+    color: var(--text);
+
+    font-family:
+        "Cairo",
+        "Tajawal",
+        Arial,
+        sans-serif;
+
+    overflow-x: hidden;
+
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+.container {
+
+    width:
+        min(
+            calc(100% - 48px),
+            var(--container)
+        );
+
+    margin:
+        0 auto;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+
+    height: 68px;
+
+    background:
+        rgba(3,13,23,.96);
+
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
+
+    position:
+        relative;
+
+    z-index:
+        100;
+
+}
+
+
+.header-inner {
+
+    height: 68px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+}
+
+
+.logo {
+
+    font-size:
+        27px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        -1px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.logo span {
+    color: var(--green);
+}
+
+
+.nav {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        35px;
+
+}
+
+
+.nav a {
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    color:
+        #d9e1e7;
+
+    transition:
+        .2s;
+
+}
+
+
+.nav a:hover {
+    color: var(--green);
+}
+
+
+.header-left {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        20px;
+
+}
+
+
+.header-icon {
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        white;
+
+    font-size:
+        21px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.menu {
+
+    width:
+        43px;
+
+    height:
+        43px;
+
+    border:
+        1px solid rgba(0,230,118,.18);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(0,230,118,.04);
+
+    color:
+        white;
+
+    font-size:
+        22px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    cursor:
+        pointer;
+
+    transition:
+        .25s;
+
+}
+
+
+.menu:hover {
+
+    color:
+        var(--green);
+
+    border-color:
+        var(--green);
+
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav {
+
+    display:
+        none;
+
+    background:
+        #061522;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.mobile-nav.open {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+}
+
+
+.mobile-nav a {
+
+    padding:
+        15px 24px;
+
+    border-top:
+        1px solid rgba(255,255,255,.06);
+
+    color:
+        #e7edf2;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    min-height:
+        470px;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+    background:
+
+        radial-gradient(
+            ellipse at 20% 65%,
+            rgba(0,230,118,.17),
+            transparent 36%
+        ),
+
+        radial-gradient(
+            ellipse at 70% 10%,
+            rgba(20,100,160,.20),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            135deg,
+            #071a2a,
+            #04111d 65%
+        );
+
+}
+
+
+/* CSS FOOTBALL STADIUM */
+
+.hero::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -5%;
+
+    bottom:
+        -80px;
+
+    width:
+        62%;
+
+    height:
+        330px;
+
+    transform:
+        perspective(500px)
+        rotateX(58deg);
+
+    transform-origin:
+        bottom;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(0,230,118,.08) 0 2px,
+            transparent 2px 75px
+        ),
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.035) 0 2px,
+            transparent 2px 48px
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0,120,65,.10),
+            rgba(0,230,118,.15)
+        );
+
+    opacity:
+        .8;
+
+}
+
+
+.hero::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    width:
+        58%;
+
+    height:
+        65%;
+
+    background:
+
+        repeating-linear-gradient(
+            165deg,
+            transparent 0 34px,
+            rgba(0,230,118,.13) 35px 36px,
+            transparent 37px 75px
+        );
+
+    opacity:
+        .65;
+
+}
+
+
+.hero-content {
+
+    min-height:
+        470px;
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        center;
+
+    align-items:
+        flex-start;
+
+    width:
+        100%;
+
+}
+
+
+.hero-badge {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        7px 15px;
+
+    border:
+        1px solid rgba(0,230,118,.35);
+
+    background:
+        rgba(0,230,118,.055);
+
+    border-radius:
+        50px;
+
+    color:
+        var(--green);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.hero-title {
+
+    font-size:
+        clamp(43px, 6vw, 70px);
+
+    line-height:
+        1.15;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        -2px;
+
+    max-width:
+        650px;
+
+}
+
+
+.hero-title span {
+
+    display:
+        block;
+
+    color:
+        var(--green);
+
+}
+
+
+.hero-description {
+
+    margin-top:
+        17px;
+
+    max-width:
+        570px;
+
+    color:
+        #9db0c1;
+
+    font-size:
+        15px;
+
+    line-height:
+        2;
+
+}
+
+
+.hero-button {
+
+    margin-top:
+        25px;
+
+    min-width:
+        205px;
+
+    height:
+        56px;
+
+    padding:
+        0 22px;
+
+    border-radius:
+        14px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        16px;
+
+    background:
+        var(--green);
+
+    color:
+        #03130b;
+
+    font-size:
+        15px;
+
+    font-weight:
+        900;
+
+    box-shadow:
+        0 12px 35px rgba(0,230,118,.18);
+
+    transition:
+        .25s;
+
+}
+
+
+.hero-button:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 17px 45px rgba(0,230,118,.28);
+
+}
+
+
+.hero-button span {
+
+    font-size:
+        23px;
+
+}
+
+
+/* =========================================================
+   HERO DECORATION BALL
+========================================================= */
+
+.hero-ball {
+
+    position:
+        absolute;
+
+    z-index:
+        1;
+
+    left:
+        23%;
+
+    bottom:
+        35px;
+
+    width:
+        155px;
+
+    height:
+        155px;
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        78px;
+
+    background:
+        radial-gradient(
+            circle at 35% 28%,
+            #ffffff 0 5%,
+            #b9c3ca 7%,
+            #161d22 45%,
+            #020609 75%
+        );
+
+    box-shadow:
+        0 25px 45px rgba(0,0,0,.45);
+
+    opacity:
+        .9;
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section {
+
+    padding:
+        55px 0;
+
+}
+
+
+.section-head {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        30px;
+
+}
+
+
+.section-label {
+
+    color:
+        var(--green);
+
+    font-size:
+        12px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .5px;
+
+}
+
+
+.section-head h2 {
+
+    margin-top:
+        5px;
+
+    font-size:
+        30px;
+
+    line-height:
+        1.4;
+
+    font-weight:
+        900;
+
+}
+
+
+.section-line {
+
+    width:
+        55px;
+
+    height:
+        3px;
+
+    background:
+        var(--green);
+
+    margin:
+        10px auto 0;
+
+    border-radius:
+        20px;
+
+}
+
+
+/* =========================================================
+   CATEGORY CARDS
+========================================================= */
+
+.categories-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap:
+        15px;
+
+}
+
+
+.category {
+
+    min-height:
+        270px;
+
+    padding:
+        24px 19px 20px;
+
+    border:
+        1px solid rgba(255,255,255,.09);
+
+    border-radius:
+        16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0a2032,
+            #071827
+        );
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    transition:
+        .25s;
+
+}
+
+
+.category:hover {
+
+    transform:
+        translateY(-5px);
+
+    border-color:
+        rgba(0,230,118,.45);
+
+}
+
+
+.category.active {
+
+    border-color:
+        var(--green);
+
+    box-shadow:
+        0 0 28px rgba(0,230,118,.09);
+
+}
+
+
+.category-icon {
+
+    width:
+        62px;
+
+    height:
+        62px;
+
+    border-radius:
+        16px;
+
+    background:
+        rgba(0,230,118,.06);
+
+    border:
+        1px solid rgba(0,230,118,.13);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        var(--green);
+
+    font-size:
+        31px;
+
+    margin-bottom:
+        22px;
+
+}
+
+
+.category h3 {
+
+    font-size:
+        17px;
+
+    font-weight:
+        900;
+
+    margin-bottom:
+        9px;
+
+}
+
+
+.category p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    line-height:
+        2;
+
+}
+
+
+.category-arrow {
+
+    margin-top:
+        auto;
+
+    color:
+        var(--green);
+
+    font-size:
+        23px;
+
+    font-weight:
+        900;
+
+}
+
+
+/* =========================================================
+   MAIN FEATURES
+========================================================= */
+
+.features {
+
+    padding-top:
+        10px;
+
+    padding-bottom:
+        75px;
+
+}
+
+
+.features-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        15px;
+
+}
+
+
+.feature {
+
+    min-height:
+        190px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius:
+        17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a1e30,
+            #071725
+        );
+
+    display:
+        flex;
+
+    align-items:
+        stretch;
+
+    overflow:
+        hidden;
+
+    transition:
+        .25s;
+
+}
+
+
+.feature:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(0,230,118,.32);
+
+}
+
+
+.feature-info {
+
+    flex:
+        1;
+
+    padding:
+        24px;
+
+}
+
+
+.feature-label {
+
+    color:
+        var(--green);
+
+    font-size:
+        11px;
+
+    font-weight:
+        900;
+
+}
+
+
+.feature h3 {
+
+    font-size:
+        20px;
+
+    margin:
+        4px 0 7px;
+
+}
+
+
+.feature p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.9;
+
+}
+
+
+.feature-link {
+
+    display:
+        inline-block;
+
+    margin-top:
+        13px;
+
+    color:
+        var(--green);
+
+    font-size:
+        12px;
+
+    font-weight:
+        900;
+
+}
+
+
+.feature-visual {
+
+    width:
+        38%;
+
+    min-height:
+        190px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        65px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,230,118,.15),
+            rgba(0,230,118,.015)
+        );
+
+    border-right:
+        1px solid rgba(255,255,255,.05);
+
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+
+    padding:
+        0 0 70px;
+
+}
+
+
+.cta-inner {
+
+    min-height:
+        170px;
+
+    padding:
+        30px 40px;
+
+    border:
+        1px solid rgba(0,230,118,.20);
+
+    border-radius:
+        20px;
+
+    background:
+        linear-gradient(
+            105deg,
+            rgba(0,230,118,.08),
+            rgba(7,25,40,.95)
+        );
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+}
+
+
+.cta-inner small {
+
+    color:
+        var(--green);
+
+    font-weight:
+        900;
+
+}
+
+
+.cta-inner h2 {
+
+    font-size:
+        27px;
+
+    margin:
+        4px 0;
+
+}
+
+
+.cta-inner p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    background:
+        #03101a;
+
+    border-top:
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+.footer-grid {
+
+    padding:
+        55px 0;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.4fr 1fr 1fr 1.3fr;
+
+    gap:
+        45px;
+
+}
+
+
+.footer-logo {
+
+    font-size:
+        27px;
+
+    font-weight:
+        900;
+
+}
+
+
+.footer-logo span {
+    color: var(--green);
+}
+
+
+.footer-description {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+}
+
+
+.footer-title {
+
+    font-size:
+        14px;
+
+    font-weight:
+        900;
+
+    margin-bottom:
+        13px;
+
+}
+
+
+.footer-links {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        6px;
+
+}
+
+
+.footer-links a {
+
+    color:
+        var(--muted);
+
+    font-size:
+        11px;
+
+    transition:
+        .2s;
+
+}
+
+
+.footer-links a:hover {
+
+    color:
+        var(--green);
+
+}
+
+
+.footer-text {
+
+    color:
+        var(--muted);
+
+    font-size:
+        11px;
+
+    line-height:
+        2;
+
+}
+
+
+.socials {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    margin-top:
+        15px;
+
+}
+
+
+.social {
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    font-size:
+        12px;
+
+    font-weight:
+        900;
+
+    transition:
+        .2s;
+
+}
+
+
+.social:hover {
+
+    background:
+        var(--green);
+
+    color:
+        #03130b;
+
+}
+
+
+.footer-bottom {
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+    padding:
+        15px 0;
+
+    text-align:
+        center;
+
+    color:
+        #6f8293;
+
+    font-size:
+        10px;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .nav {
+        gap: 18px;
+    }
+
+    .categories-grid {
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
+    }
+
+    .hero-ball {
+        left: 8%;
+        opacity: .45;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        width:
+            calc(100% - 28px);
+
+    }
+
+
+    .header {
+
+        height:
+            62px;
+
+    }
+
+
+    .header-inner {
+
+        height:
+            62px;
+
+    }
+
+
+    .nav {
+
+        display:
+            none;
+
+    }
+
+
+    .header-left {
+
+        gap:
+            8px;
+
+    }
+
+
+    .logo {
+
+        font-size:
+            24px;
+
+    }
+
+
+    .hero {
+
+        min-height:
+            560px;
+
+    }
+
+
+    .hero-content {
+
+        min-height:
+            560px;
+
+        justify-content:
+            center;
+
+    }
+
+
+    .hero-title {
+
+        font-size:
+            44px;
+
+        letter-spacing:
+            -1px;
+
+    }
+
+
+    .hero-description {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .hero-button {
+
+        width:
+            100%;
+
+    }
+
+
+    .hero-ball {
+
+        width:
+            110px;
+
+        height:
+            110px;
+
+        font-size:
+            55px;
+
+        left:
+            5%;
+
+        bottom:
+            25px;
+
+        opacity:
+            .22;
+
+    }
+
+
+    .categories-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+
+        gap:
+            12px;
+
+    }
+
+
+    .category {
+
+        min-height:
+            245px;
+
+        padding:
+            19px 16px;
+
+    }
+
+
+    .category-icon {
+
+        width:
+            55px;
+
+        height:
+            55px;
+
+        font-size:
+            27px;
+
+        margin-bottom:
+            17px;
+
+    }
+
+
+    .category h3 {
+
+        font-size:
+            15px;
+
+    }
+
+
+    .category p {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .features-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .feature {
+
+        min-height:
+            170px;
+
+    }
+
+
+    .feature-visual {
+
+        min-height:
+            170px;
+
+    }
+
+
+    .cta-inner {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .cta-inner .hero-button {
+
+        width:
+            auto;
+
+    }
+
+
+    .footer-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:
+            35px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .hero-title {
+
+        font-size:
+            38px;
+
+    }
+
+
+    .categories-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .category {
+
+        min-height:
+            205px;
+
+    }
+
+
+    .feature-visual {
+
+        width:
+            33%;
+
+        font-size:
+            45px;
+
+    }
+
+
+    .feature-info {
+
+        padding:
+            19px;
+
+    }
+
+
+    .footer-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -29,83 +1749,20 @@
      HEADER
 ===================================================== -->
 
-<header class="site-header">
+<header class="header">
 
-    <div class="container header-inner">
-
-
-        <a href="index.html"
-           class="brand">
-
-            <span>GOAL</span>INS
-
-        </a>
+<div class="container header-inner">
 
 
-        <nav class="desktop-nav">
+    <a href="index.html"
+       class="logo">
 
-            <a href="matches.html">
-                المباريات
-            </a>
+        <span>GOAL</span>INS
 
-            <a href="national-teams.html">
-                المنتخبات
-            </a>
-
-            <a href="highlights.html">
-                الملخصات
-            </a>
-
-            <a href="goals.html">
-                الأهداف
-            </a>
-
-            <a href="football.html">
-                كرة القدم
-            </a>
-
-        </nav>
+    </a>
 
 
-        <div class="header-actions">
-
-            <button
-                class="icon-button"
-                aria-label="البحث">
-
-                ⌕
-
-            </button>
-
-
-            <button
-                class="icon-button"
-                aria-label="الوضع الليلي">
-
-                ◐
-
-            </button>
-
-
-            <button
-                class="mobile-menu-button"
-                id="menuBtn"
-                aria-label="فتح القائمة"
-                aria-expanded="false">
-
-                ☰
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- MOBILE NAV -->
-
-    <nav class="mobile-nav"
-         id="mobileNav">
+    <nav class="nav">
 
         <a href="matches.html">
             المباريات
@@ -129,6 +1786,52 @@
 
     </nav>
 
+
+    <div class="header-left">
+
+        <button class="header-icon">
+            ☾
+        </button>
+
+        <button
+            class="menu"
+            id="menuBtn"
+            aria-label="القائمة">
+
+            ☰
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<nav class="mobile-nav"
+     id="mobileNav">
+
+    <a href="matches.html">
+        المباريات
+    </a>
+
+    <a href="national-teams.html">
+        المنتخبات
+    </a>
+
+    <a href="highlights.html">
+        الملخصات
+    </a>
+
+    <a href="goals.html">
+        الأهداف
+    </a>
+
+    <a href="football.html">
+        كرة القدم
+    </a>
+
+</nav>
+
 </header>
 
 
@@ -137,138 +1840,60 @@
      HERO
 ===================================================== -->
 
-<main>
-
-
 <section class="hero">
 
-    <div class="hero-background">
+<div class="container">
 
-        <div class="glow glow-one"></div>
-
-        <div class="glow glow-two"></div>
-
-        <div class="stadium-lines"></div>
-
-    </div>
+    <div class="hero-content">
 
 
-    <div class="container hero-container">
+        <div class="hero-badge">
 
-
-        <div class="hero-content">
-
-
-            <div class="hero-badge">
-
-                <span>⚽</span>
-
-                عالم كرة القدم
-
-                <i></i>
-
-            </div>
-
-
-            <h1>
-
-                كل ما يهمك
-
-                <strong>
-                    في كرة القدم
-                </strong>
-
-            </h1>
-
-
-            <p>
-
-                تابع المباريات والنتائج والملخصات
-                والأهداف في مكان واحد وبجودة عالية.
-
-            </p>
-
-
-            <div class="hero-buttons">
-
-                <a href="matches.html"
-                   class="primary-button">
-
-                    تصفح المباريات
-
-                    <span>←</span>
-
-                </a>
-
-
-                <a href="highlights.html"
-                   class="secondary-button">
-
-                    شاهد الملخصات
-
-                    <span>▶</span>
-
-                </a>
-
-            </div>
-
-
-            <div class="hero-stats">
-
-                <div>
-
-                    <strong>
-                        24/7
-                    </strong>
-
-                    <span>
-                        تغطية مستمرة
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        ⚡
-                    </strong>
-
-                    <span>
-                        تحديثات سريعة
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        🎬
-                    </strong>
-
-                    <span>
-                        ملخصات موثوقة
-                    </span>
-
-                </div>
-
-            </div>
+            ⚽
+            عالم كرة القدم
 
         </div>
 
 
-        <div class="hero-ball">
+        <h1 class="hero-title">
 
-            <div class="ball-circle">
+            كل ما يهمك
 
-                ⚽
+            <span>
+                في كرة القدم
+            </span>
 
-            </div>
+        </h1>
 
-        </div>
+
+        <p class="hero-description">
+
+            تابع المباريات والنتائج والملخصات والأهداف
+            في مكان واحد وبجودة عالية.
+
+        </p>
+
+
+        <a href="matches.html"
+           class="hero-button">
+
+            تصفح المباريات
+
+            <span>
+                ←
+            </span>
+
+        </a>
+
 
     </div>
+
+
+    <div class="hero-ball">
+        ⚽
+    </div>
+
+</div>
 
 </section>
 
@@ -278,156 +1903,147 @@
      CATEGORIES
 ===================================================== -->
 
-<section class="categories section">
+<section class="section">
 
-    <div class="container">
+<div class="container">
 
 
-        <div class="section-heading centered">
+    <div class="section-head">
 
-            <span>
-                — GOALINS —
-            </span>
-
-            <h2>
-                ماذا تريد أن تشاهد؟
-            </h2>
-
-            <div class="heading-line"></div>
-
+        <div class="section-label">
+            — GOALINS —
         </div>
 
+        <h2>
+            ماذا تريد أن تشاهد؟
+        </h2>
 
-        <div class="category-grid">
-
-
-            <!-- MATCHES -->
-
-            <a href="matches.html"
-               class="category-card">
-
-                <div class="category-icon">
-                    📅
-                </div>
-
-                <h3>
-                    مباريات مبرمجة
-                </h3>
-
-                <p>
-                    تابع المباريات القادمة
-                    حسب التاريخ والبطولة.
-                </p>
-
-                <span class="card-arrow">
-                    ←
-                </span>
-
-            </a>
-
-
-            <!-- NATIONAL -->
-
-            <a href="national-teams.html"
-               class="category-card">
-
-                <div class="category-icon">
-                    🌍
-                </div>
-
-                <h3>
-                    مباريات المنتخبات
-                </h3>
-
-                <p>
-                    أهم مباريات المنتخبات
-                    والمنافسات الدولية.
-                </p>
-
-                <span class="card-arrow">
-                    ←
-                </span>
-
-            </a>
-
-
-            <!-- HIGHLIGHTS -->
-
-            <a href="highlights.html"
-               class="category-card featured">
-
-                <div class="category-icon">
-                    🎬
-                </div>
-
-                <h3>
-                    ملخصات المباريات
-                </h3>
-
-                <p>
-                    شاهد أبرز أحداث
-                    ولقطات المباريات.
-                </p>
-
-                <span class="card-arrow">
-                    ←
-                </span>
-
-            </a>
-
-
-            <!-- GOALS -->
-
-            <a href="goals.html"
-               class="category-card">
-
-                <div class="category-icon">
-                    ⚽
-                </div>
-
-                <h3>
-                    أهداف المباريات
-                </h3>
-
-                <p>
-                    أحدث الأهداف واللقطات
-                    المهمة في المباريات.
-                </p>
-
-                <span class="card-arrow">
-                    ←
-                </span>
-
-            </a>
-
-
-            <!-- FOOTBALL -->
-
-            <a href="football.html"
-               class="category-card">
-
-                <div class="category-icon">
-                    🔥
-                </div>
-
-                <h3>
-                    كرة القدم
-                </h3>
-
-                <p>
-                    أخبار وفيديوهات وأفضل
-                    لحظات كرة القدم.
-                </p>
-
-                <span class="card-arrow">
-                    ←
-                </span>
-
-            </a>
-
-        </div>
+        <div class="section-line"></div>
 
     </div>
+
+
+    <div class="categories-grid">
+
+
+        <a href="matches.html"
+           class="category">
+
+            <div class="category-icon">
+                📅
+            </div>
+
+            <h3>
+                مباريات مبرمجة
+            </h3>
+
+            <p>
+                تابع المباريات القادمة
+                حسب التاريخ والبطولة.
+            </p>
+
+            <span class="category-arrow">
+                ←
+            </span>
+
+        </a>
+
+
+        <a href="national-teams.html"
+           class="category">
+
+            <div class="category-icon">
+                🌍
+            </div>
+
+            <h3>
+                مباريات المنتخبات
+            </h3>
+
+            <p>
+                أهم مباريات المنتخبات
+                والمنافسات الدولية.
+            </p>
+
+            <span class="category-arrow">
+                ←
+            </span>
+
+        </a>
+
+
+        <a href="highlights.html"
+           class="category active">
+
+            <div class="category-icon">
+                🎬
+            </div>
+
+            <h3>
+                ملخصات المباريات
+            </h3>
+
+            <p>
+                شاهد أبرز أحداث
+                ولقطات المباريات.
+            </p>
+
+            <span class="category-arrow">
+                ←
+            </span>
+
+        </a>
+
+
+        <a href="goals.html"
+           class="category">
+
+            <div class="category-icon">
+                ⚽
+            </div>
+
+            <h3>
+                أهداف المباريات
+            </h3>
+
+            <p>
+                شاهد أحدث الأهداف
+                واللقطات المهمة.
+            </p>
+
+            <span class="category-arrow">
+                ←
+            </span>
+
+        </a>
+
+
+        <a href="football.html"
+           class="category">
+
+            <div class="category-icon">
+                🔥
+            </div>
+
+            <h3>
+                كرة القدم
+            </h3>
+
+            <p>
+                أخبار وفيديوهات وأفضل
+                لحظات كرة القدم.
+            </p>
+
+            <span class="category-arrow">
+                ←
+            </span>
+
+        </a>
+
+
+    </div>
+
+</div>
 
 </section>
 
@@ -437,163 +2053,156 @@
      MAIN SECTIONS
 ===================================================== -->
 
-<section class="main-sections section">
+<section class="features">
 
-    <div class="container">
+<div class="container">
 
 
-        <div class="section-heading centered">
+    <div class="section-head">
 
-            <span>
-                GOALINS
-            </span>
-
-            <h2>
-                الأقسام الرئيسية
-            </h2>
-
-            <div class="heading-line"></div>
-
+        <div class="section-label">
+            GOALINS
         </div>
 
+        <h2>
+            الأقسام الرئيسية
+        </h2>
 
-        <div class="feature-grid">
-
-
-            <!-- TODAY MATCHES -->
-
-            <a href="matches.html"
-               class="feature-card">
-
-                <div class="feature-text">
-
-                    <span class="feature-label">
-                        المباريات
-                    </span>
-
-                    <h3>
-                        مباريات اليوم
-                    </h3>
-
-                    <p>
-                        تابع جميع مباريات اليوم
-                        مع النتائج والتفاصيل الكاملة.
-                    </p>
-
-                    <span class="feature-link">
-                        عرض الكل ←
-                    </span>
-
-                </div>
-
-                <div class="feature-visual match-visual">
-                    ⚽
-                </div>
-
-            </a>
-
-
-            <!-- HIGHLIGHTS -->
-
-            <a href="highlights.html"
-               class="feature-card">
-
-                <div class="feature-text">
-
-                    <span class="feature-label">
-                        فيديو
-                    </span>
-
-                    <h3>
-                        أحدث الملخصات
-                    </h3>
-
-                    <p>
-                        شاهد أحدث ملخصات المباريات
-                        من المصادر الرسمية.
-                    </p>
-
-                    <span class="feature-link">
-                        عرض الكل ←
-                    </span>
-
-                </div>
-
-                <div class="feature-visual video-visual">
-                    ▶
-                </div>
-
-            </a>
-
-
-            <!-- GOALS -->
-
-            <a href="goals.html"
-               class="feature-card">
-
-                <div class="feature-text">
-
-                    <span class="feature-label">
-                        الأهداف
-                    </span>
-
-                    <h3>
-                        أحدث الأهداف
-                    </h3>
-
-                    <p>
-                        شاهد أجمل الأهداف واللقطات
-                        المميزة من مختلف البطولات.
-                    </p>
-
-                    <span class="feature-link">
-                        عرض الكل ←
-                    </span>
-
-                </div>
-
-                <div class="feature-visual goal-visual">
-                    🥅
-                </div>
-
-            </a>
-
-
-            <!-- FOOTBALL -->
-
-            <a href="football.html"
-               class="feature-card">
-
-                <div class="feature-text">
-
-                    <span class="feature-label">
-                        GOALINS
-                    </span>
-
-                    <h3>
-                        كرة القدم
-                    </h3>
-
-                    <p>
-                        كل ما يخص كرة القدم
-                        في مكان واحد.
-                    </p>
-
-                    <span class="feature-link">
-                        اكتشف المزيد ←
-                    </span>
-
-                </div>
-
-                <div class="feature-visual cup-visual">
-                    🏆
-                </div>
-
-            </a>
-
-        </div>
+        <div class="section-line"></div>
 
     </div>
+
+
+    <div class="features-grid">
+
+
+        <a href="matches.html"
+           class="feature">
+
+            <div class="feature-info">
+
+                <div class="feature-label">
+                    المباريات
+                </div>
+
+                <h3>
+                    مباريات اليوم
+                </h3>
+
+                <p>
+                    تابع جميع مباريات اليوم
+                    مع النتائج والتفاصيل الكاملة.
+                </p>
+
+                <span class="feature-link">
+                    عرض الكل ←
+                </span>
+
+            </div>
+
+            <div class="feature-visual">
+                📅
+            </div>
+
+        </a>
+
+
+        <a href="highlights.html"
+           class="feature">
+
+            <div class="feature-info">
+
+                <div class="feature-label">
+                    فيديو
+                </div>
+
+                <h3>
+                    أحدث الملخصات
+                </h3>
+
+                <p>
+                    شاهد أحدث ملخصات المباريات
+                    من المصادر الموثوقة.
+                </p>
+
+                <span class="feature-link">
+                    عرض الكل ←
+                </span>
+
+            </div>
+
+            <div class="feature-visual">
+                ▶
+            </div>
+
+        </a>
+
+
+        <a href="goals.html"
+           class="feature">
+
+            <div class="feature-info">
+
+                <div class="feature-label">
+                    الأهداف
+                </div>
+
+                <h3>
+                    أحدث الأهداف
+                </h3>
+
+                <p>
+                    شاهد أجمل الأهداف واللقطات
+                    المميزة من مختلف البطولات.
+                </p>
+
+                <span class="feature-link">
+                    عرض الكل ←
+                </span>
+
+            </div>
+
+            <div class="feature-visual">
+                🥅
+            </div>
+
+        </a>
+
+
+        <a href="football.html"
+           class="feature">
+
+            <div class="feature-info">
+
+                <div class="feature-label">
+                    GOALINS
+                </div>
+
+                <h3>
+                    كرة القدم
+                </h3>
+
+                <p>
+                    كل ما يخص كرة القدم
+                    في مكان واحد.
+                </p>
+
+                <span class="feature-link">
+                    اكتشف المزيد ←
+                </span>
+
+            </div>
+
+            <div class="feature-visual">
+                🏆
+            </div>
+
+        </a>
+
+
+    </div>
+
+</div>
 
 </section>
 
@@ -603,49 +2212,46 @@
      CTA
 ===================================================== -->
 
-<section class="cta-section">
+<section class="cta">
 
-    <div class="container">
+<div class="container">
 
-        <div class="cta-box">
+    <div class="cta-inner">
 
-            <div>
+        <div>
 
-                <span>
-                    GOALINS
-                </span>
+            <small>
+                GOALINS
+            </small>
 
-                <h2>
-                    كرة القدم تبدأ من هنا
-                </h2>
+            <h2>
+                كرة القدم في مكان واحد
+            </h2>
 
-                <p>
-                    المباريات، الملخصات، الأهداف
-                    وكل ما يهمك في عالم كرة القدم.
-                </p>
-
-            </div>
-
-
-            <a href="highlights.html"
-               class="primary-button">
-
-                شاهد الملخصات
-
-                <span>
-                    ←
-                </span>
-
-            </a>
+            <p>
+                مباريات، أهداف، ملخصات
+                وأهم لحظات كرة القدم.
+            </p>
 
         </div>
 
+
+        <a href="highlights.html"
+           class="hero-button">
+
+            شاهد الملخصات
+
+            <span>
+                ←
+            </span>
+
+        </a>
+
     </div>
 
+</div>
+
 </section>
-
-
-</main>
 
 
 
@@ -655,56 +2261,56 @@
 
 <footer class="footer">
 
-    <div class="container footer-grid">
+<div class="container footer-grid">
 
 
-        <div class="footer-brand">
+    <div>
 
-            <div class="footer-logo">
+        <div class="footer-logo">
 
-                <span>
-                    GOAL
-                </span>INS
-
-            </div>
-
-            <p>
-                كل ما يهمك في كرة القدم.
-            </p>
-
-
-            <div class="socials">
-
-                <a href="#"
-                   aria-label="Facebook">
-                    f
-                </a>
-
-                <a href="#"
-                   aria-label="YouTube">
-                    ▶
-                </a>
-
-                <a href="#"
-                   aria-label="X">
-                    X
-                </a>
-
-                <a href="#"
-                   aria-label="Telegram">
-                    ✈
-                </a>
-
-            </div>
+            <span>GOAL</span>INS
 
         </div>
 
+        <p class="footer-description">
+            كل ما يهمك في كرة القدم.
+        </p>
 
-        <div class="footer-column">
 
-            <h3>
-                روابط سريعة
-            </h3>
+        <div class="socials">
+
+            <a class="social"
+               href="#">
+                f
+            </a>
+
+            <a class="social"
+               href="#">
+                ▶
+            </a>
+
+            <a class="social"
+               href="#">
+                X
+            </a>
+
+            <a class="social"
+               href="#">
+                ✈
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div>
+
+        <h3 class="footer-title">
+            روابط سريعة
+        </h3>
+
+        <div class="footer-links">
 
             <a href="matches.html">
                 المباريات
@@ -728,12 +2334,16 @@
 
         </div>
 
+    </div>
 
-        <div class="footer-column">
 
-            <h3>
-                معلومات
-            </h3>
+    <div>
+
+        <h3 class="footer-title">
+            معلومات
+        </h3>
+
+        <div class="footer-links">
 
             <a href="#">
                 من نحن
@@ -753,55 +2363,63 @@
 
         </div>
 
-
-        <div class="footer-column contact">
-
-            <h3>
-                تواصل معنا
-            </h3>
-
-            <p>
-                تابعنا على منصات التواصل
-                الاجتماعي للحصول على آخر
-                الأخبار والتحديثات.
-            </p>
+    </div>
 
 
-            <div class="socials">
+    <div>
 
-                <a href="#">
-                    f
-                </a>
+        <h3 class="footer-title">
+            تواصل معنا
+        </h3>
 
-                <a href="#">
-                    X
-                </a>
+        <p class="footer-text">
 
-                <a href="#">
-                    ▶
-                </a>
+            تابع GOALINS للحصول على
+            آخر الأخبار والتحديثات
+            المتعلقة بعالم كرة القدم.
 
-                <a href="#">
-                    ✈
-                </a>
+        </p>
 
-            </div>
+
+        <div class="socials">
+
+            <a class="social"
+               href="#">
+                f
+            </a>
+
+            <a class="social"
+               href="#">
+                X
+            </a>
+
+            <a class="social"
+               href="#">
+                ▶
+            </a>
+
+            <a class="social"
+               href="#">
+                ✈
+            </a>
 
         </div>
 
     </div>
 
 
-    <div class="footer-bottom">
+</div>
 
-        <div class="container">
 
-            © 2026 GOALINS.
-            جميع الحقوق محفوظة.
+<div class="footer-bottom">
 
-        </div>
+    <div class="container">
+
+        © 2026 GOALINS — جميع الحقوق محفوظة.
 
     </div>
+
+</div>
 
 </footer>
 
@@ -820,45 +2438,36 @@ const mobileNav =
     document.getElementById("mobileNav");
 
 
-if (menuBtn && mobileNav) {
+menuBtn.addEventListener(
+    "click",
+    function () {
 
-    menuBtn.addEventListener(
-        "click",
-        function () {
+        const opened =
+            mobileNav.classList.toggle("open");
 
-            const isOpen =
-                mobileNav.classList.toggle("open");
+        menuBtn.setAttribute(
+            "aria-expanded",
+            opened ? "true" : "false"
+        );
 
-            menuBtn.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
-
-        }
-    );
-
-}
+    }
+);
 
 
-document.querySelectorAll(
-    ".mobile-nav a"
-).forEach(function (link) {
+document
+    .querySelectorAll(".mobile-nav a")
+    .forEach(function(link) {
 
-    link.addEventListener(
-        "click",
-        function () {
+        link.addEventListener(
+            "click",
+            function() {
 
-            mobileNav.classList.remove("open");
+                mobileNav.classList.remove("open");
 
-            menuBtn.setAttribute(
-                "aria-expanded",
-                "false"
-            );
+            }
+        );
 
-        }
-    );
-
-});
+    });
 
 </script>
 
