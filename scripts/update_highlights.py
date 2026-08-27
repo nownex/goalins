@@ -7,53 +7,86 @@ from datetime import datetime, timezone, timedelta
 
 
 # =========================================================
-# GOALINS — AUTOMATIC FOOTBALL HIGHLIGHTS ENGINE
+# GOALINS — BEIN SPORTS HIGHLIGHTS ENGINE
 # =========================================================
 #
 # IMPORTANT:
-# This version DOES NOT depend on matches.json.
 #
-# It scans the official beIN SPORTS YouTube channel directly
-# and automatically collects real football match highlights.
+# This engine does NOT use matches.json.
 #
-# YouTube API usage:
-# - channels.list
-# - playlistItems.list
-# - videos.list
+# It scans the official beIN SPORTS YouTube channel directly.
 #
-# It does NOT use search.list for every match.
+# It does NOT use YouTube search.list.
+#
+# It DOES NOT require videos to be embeddable.
+#
+# Why?
+#
+# beIN SPORTS MENA may block YouTube iframe embedding.
+# The video can still be opened normally on YouTube.
+#
+# GOALINS therefore saves the video and uses:
+#
+# https://www.youtube.com/watch?v=VIDEO_ID
+#
+# for opening the video.
 #
 # =========================================================
 
 
-API_KEY = os.environ.get("YOUTUBE_API_KEY")
+# =========================================================
+# API
+# =========================================================
+
+API_KEY = os.environ.get(
+    "YOUTUBE_API_KEY"
+)
 
 if not API_KEY:
+
     raise RuntimeError(
         "YOUTUBE_API_KEY is missing"
     )
 
 
-OUTPUT_FILE = "data/highlights.json"
+# =========================================================
+# FILES
+# =========================================================
 
-YOUTUBE_CHANNELS_URL = (
+OUTPUT_FILE = (
+    "data/highlights.json"
+)
+
+
+# =========================================================
+# YOUTUBE API
+# =========================================================
+
+CHANNELS_URL = (
     "https://www.googleapis.com/youtube/v3/channels"
 )
 
-YOUTUBE_PLAYLIST_URL = (
+PLAYLIST_ITEMS_URL = (
     "https://www.googleapis.com/youtube/v3/playlistItems"
 )
 
-YOUTUBE_VIDEOS_URL = (
+VIDEOS_URL = (
     "https://www.googleapis.com/youtube/v3/videos"
+)
+
+
+# =========================================================
+# BEIN SPORTS
+# =========================================================
+
+BEIN_HANDLE = (
+    "@beinsports"
 )
 
 
 # =========================================================
 # SETTINGS
 # =========================================================
-
-BEIN_HANDLE = "@beinsports"
 
 MAX_CHANNEL_VIDEOS = 50
 
@@ -63,25 +96,24 @@ LOOKBACK_DAYS = 14
 
 
 # =========================================================
-# FOOTBALL / HIGHLIGHT KEYWORDS
+# HIGHLIGHT KEYWORDS
 # =========================================================
 
-HIGHLIGHT_KEYWORDS = [
+HIGHLIGHT_WORDS = [
 
     # Arabic
     "ملخص مباراة",
+    "ملخص المباراه",
     "ملخص المبار",
     "ملخص لقاء",
-    "ملخص ",
-    "أهداف مباراة",
-    "اهداف مباراة",
-    "أهداف",
-    "اهداف",
-    "هدف المباراة",
     "ملخص وأهداف",
     "ملخص واهداف",
     "ملخص و أهداف",
     "ملخص و اهداف",
+    "أهداف مباراة",
+    "اهداف مباراة",
+    "أهداف المباراه",
+    "اهداف المباراه",
 
     # English
     "highlights",
@@ -89,13 +121,12 @@ HIGHLIGHT_KEYWORDS = [
     "extended highlights",
     "full highlights",
     "match recap",
-    "goals",
 
 ]
 
 
 # =========================================================
-# STRONG FOOTBALL WORDS
+# FOOTBALL WORDS
 # =========================================================
 
 FOOTBALL_WORDS = [
@@ -108,16 +139,23 @@ FOOTBALL_WORDS = [
     "دوري",
     "كأس",
     "كاس",
+    "أهداف",
+    "اهداف",
+    "كرة القدم",
+    "القدم",
     "دوري الأبطال",
     "دوري ابطال",
     "دوري أبطال",
     "أبطال أوروبا",
     "ابطال اوروبا",
     "الدوري الإنجليزي",
-    "الدوري الاسباني",
+    "الدوري الانجليزي",
     "الدوري الإسباني",
+    "الدوري الاسباني",
     "الدوري الإيطالي",
+    "الدوري الايطالي",
     "الدوري الألماني",
+    "الدوري الالماني",
     "الدوري الفرنسي",
     "الدوري التركي",
     "الدوري السعودي",
@@ -125,17 +163,19 @@ FOOTBALL_WORDS = [
     "الدوري المغربي",
     "الدوري القطري",
     "الدوري الإماراتي",
+    "الدوري الاماراتي",
     "الدوري الهولندي",
     "الدوري البرتغالي",
-    "دوري المؤتمر",
     "الدوري الأوروبي",
+    "الدوري الاوروبي",
+    "دوري المؤتمر",
     "كأس العالم",
-    "المنتخب",
-    "منتخب",
+    "كاس العالم",
 
     # English
+    "football",
+    "soccer",
     "match",
-    "game",
     "league",
     "cup",
     "premier league",
@@ -147,14 +187,12 @@ FOOTBALL_WORDS = [
     "bundesliga",
     "ligue 1",
     "eredivisie",
-    "football",
-    "soccer",
 
 ]
 
 
 # =========================================================
-# NON-HIGHLIGHT / NEWS WORDS
+# WORDS THAT ARE NOT MATCH HIGHLIGHTS
 # =========================================================
 
 NEWS_WORDS = [
@@ -168,7 +206,6 @@ NEWS_WORDS = [
     "اخر الاخبار",
     "أهم الأخبار",
     "اهم الاخبار",
-    "ترند",
     "تصريحات",
     "تصريح",
     "مؤتمر صحفي",
@@ -176,26 +213,19 @@ NEWS_WORDS = [
     "كواليس",
     "انتقال",
     "انتقالات",
-    "ينضم",
-    "يعلن",
-    "إعلان",
-    "اعلان",
     "صفقة",
     "صفقات",
     "سوق الانتقالات",
     "تحليل",
     "تحليلات",
-    "تعليق",
     "استوديو",
     "استديو",
     "برنامج",
     "حلقة",
     "تقرير",
     "تقارير",
-    "حديث",
-    "حديث خاص",
-    "رأي",
-    "آراء",
+    "توقعات",
+    "preview",
 
     # English
     "news",
@@ -206,15 +236,15 @@ NEWS_WORDS = [
     "studio",
     "interview",
     "press conference",
-    "preview",
     "podcast",
     "report",
+    "preview",
 
 ]
 
 
 # =========================================================
-# GAMING FILTER
+# GAMING
 # =========================================================
 
 GAMING_WORDS = [
@@ -249,7 +279,10 @@ GAMING_WORDS = [
 
 def normalize(text):
 
-    text = str(text or "").lower()
+    text = str(
+        text or ""
+    ).lower()
+
 
     text = re.sub(
         r"[^a-z0-9\u0600-\u06ff]+",
@@ -257,69 +290,99 @@ def normalize(text):
         text
     )
 
+
     return " ".join(
         text.split()
     )
 
 
 # =========================================================
-# KEYWORD CHECK
+# CONTAINS
 # =========================================================
 
-def contains_keyword(
+def contains(
     text,
-    keywords
+    words
 ):
 
-    value = normalize(text)
+    value = normalize(
+        text
+    )
 
-    for keyword in keywords:
 
-        keyword_normalized = normalize(
-            keyword
-        )
+    for word in words:
 
-        if keyword_normalized in value:
+        if normalize(word) in value:
 
             return True
+
 
     return False
 
 
 # =========================================================
-# GAMING CHECK
+# GAMING
 # =========================================================
 
 def is_gaming(text):
 
-    return contains_keyword(
+    return contains(
         text,
         GAMING_WORDS
     )
 
 
 # =========================================================
-# NEWS CHECK
+# STRONG MATCH TITLE
 # =========================================================
 
-def is_news(text):
+def is_strong_highlight_title(
+    title
+):
 
-    return contains_keyword(
-        text,
-        NEWS_WORDS
+    value = normalize(
+        title
     )
 
 
+    strong_words = [
+
+        "ملخص مباراة",
+        "ملخص المباراه",
+        "ملخص لقاء",
+        "ملخص وأهداف",
+        "ملخص واهداف",
+        "أهداف مباراة",
+        "اهداف مباراة",
+        "highlights",
+        "match highlights",
+        "extended highlights",
+        "full highlights",
+        "match recap",
+
+    ]
+
+
+    for word in strong_words:
+
+        if normalize(word) in value:
+
+            return True
+
+
+    return False
+
+
 # =========================================================
-# REAL FOOTBALL HIGHLIGHT CHECK
+# REAL FOOTBALL HIGHLIGHT
 # =========================================================
 
 def is_real_highlight(
     title,
-    description=""
+    description
 ):
 
-    searchable = " ".join([
+    combined = " ".join([
 
         str(title or ""),
 
@@ -329,79 +392,89 @@ def is_real_highlight(
 
 
     # -----------------------------------------------------
-    # Gaming is never accepted
+    # Gaming
     # -----------------------------------------------------
 
-    if is_gaming(searchable):
-
-        return False
-
-
-    # -----------------------------------------------------
-    # Must contain a highlight keyword
-    # -----------------------------------------------------
-
-    if not contains_keyword(
-        title,
-        HIGHLIGHT_KEYWORDS
+    if is_gaming(
+        combined
     ):
 
-        return False
-
-
-    # -----------------------------------------------------
-    # Reject obvious news / analysis videos
-    # -----------------------------------------------------
-
-    if is_news(title):
-
-        # Exception:
-        # "ملخص مباراة" is much stronger than news words.
-
-        strong_match = (
-
-            "ملخص مباراة" in normalize(title)
-
-            or
-
-            "أهداف مباراة" in normalize(title)
-
-            or
-
-            "اهداف مباراة" in normalize(title)
-
-            or
-
-            "match highlights" in normalize(title)
-
-            or
-
-            "highlights" in normalize(title)
-
+        return False, (
+            "gaming content"
         )
 
-        if not strong_match:
 
-            return False
+    # -----------------------------------------------------
+    # Must look like highlight
+    # -----------------------------------------------------
+
+    if not contains(
+        title,
+        HIGHLIGHT_WORDS
+    ):
+
+        return False, (
+            "no highlight keyword"
+        )
 
 
     # -----------------------------------------------------
-    # Must contain football context
+    # News / analysis
     # -----------------------------------------------------
 
-    if not contains_keyword(
-        searchable,
+    if contains(
+        title,
+        NEWS_WORDS
+    ):
+
+        if not is_strong_highlight_title(
+            title
+        ):
+
+            return False, (
+                "news/analysis content"
+            )
+
+
+    # -----------------------------------------------------
+    # Football context
+    # -----------------------------------------------------
+
+    if not contains(
+        combined,
         FOOTBALL_WORDS
     ):
 
-        return False
+        # Important:
+        #
+        # Arabic beIN titles may only contain:
+        #
+        # "ملخص مباراة فنربهتشة وقونيا سبور"
+        #
+        # In that case "مباراة" itself is enough.
+        #
+
+        value = normalize(
+            title
+        )
 
 
-    return True
+        if "مباراة" not in value:
+
+            if "مباراه" not in value:
+
+                return False, (
+                    "no football context"
+                )
+
+
+    return True, (
+        "real football highlight"
+    )
 
 
 # =========================================================
-# GET BEIN CHANNEL
+# FIND BEIN CHANNEL
 # =========================================================
 
 def get_bein_channel():
@@ -429,7 +502,7 @@ def get_bein_channel():
 
     response = requests.get(
 
-        YOUTUBE_CHANNELS_URL,
+        CHANNELS_URL,
 
         params=params,
 
@@ -465,7 +538,7 @@ def get_bein_channel():
     if not items:
 
         raise RuntimeError(
-            "Official beIN SPORTS channel not found."
+            "beIN SPORTS channel not found"
         )
 
 
@@ -501,14 +574,14 @@ def get_bein_channel():
     if not channel_id:
 
         raise RuntimeError(
-            "beIN channel ID missing."
+            "beIN channel ID missing"
         )
 
 
     if not uploads_playlist:
 
         raise RuntimeError(
-            "beIN uploads playlist missing."
+            "beIN uploads playlist missing"
         )
 
 
@@ -516,6 +589,7 @@ def get_bein_channel():
         "beIN Channel ID:",
         channel_id
     )
+
 
     print(
         "Uploads playlist:",
@@ -533,7 +607,7 @@ def get_bein_channel():
 
 
 # =========================================================
-# GET LATEST CHANNEL VIDEOS
+# GET LATEST VIDEOS
 # =========================================================
 
 def get_latest_videos(
@@ -566,7 +640,7 @@ def get_latest_videos(
 
     response = requests.get(
 
-        YOUTUBE_PLAYLIST_URL,
+        PLAYLIST_ITEMS_URL,
 
         params=params,
 
@@ -609,7 +683,7 @@ def get_latest_videos(
 
 
 # =========================================================
-# CHECK VIDEO DETAILS
+# GET VIDEO DETAILS
 # =========================================================
 
 def get_video_details(
@@ -637,7 +711,7 @@ def get_video_details(
 
     response = requests.get(
 
-        YOUTUBE_VIDEOS_URL,
+        VIDEOS_URL,
 
         params=params,
 
@@ -677,24 +751,21 @@ def get_video_details(
         )
 
 
-        if not video_id:
+        if video_id:
 
-            continue
-
-
-        result[
-            video_id
-        ] = item
+            result[
+                video_id
+            ] = item
 
 
     return result
 
 
 # =========================================================
-# LOAD OLD DATA
+# LOAD OLD HIGHLIGHTS
 # =========================================================
 
-def load_old_highlights():
+def load_old():
 
     if not os.path.exists(
         OUTPUT_FILE
@@ -721,18 +792,18 @@ def load_old_highlights():
             dict
         ):
 
-            highlights = data.get(
+            result = data.get(
                 "highlights",
                 []
             )
 
 
             if isinstance(
-                highlights,
+                result,
                 list
             ):
 
-                return highlights
+                return result
 
 
         if isinstance(
@@ -746,7 +817,7 @@ def load_old_highlights():
     except Exception as error:
 
         print(
-            "Could not read old highlights:",
+            "Old data error:",
             error
         )
 
@@ -755,10 +826,10 @@ def load_old_highlights():
 
 
 # =========================================================
-# VIDEO DATE
+# DATE
 # =========================================================
 
-def parse_youtube_date(
+def parse_date(
     value
 ):
 
@@ -776,16 +847,17 @@ def parse_youtube_date(
             )
         )
 
+
     except Exception:
 
         return None
 
 
 # =========================================================
-# BUILD HIGHLIGHT
+# BUILD ITEM
 # =========================================================
 
-def build_highlight(
+def build_item(
     video,
     channel_id
 ):
@@ -831,12 +903,13 @@ def build_highlight(
     )
 
 
-    thumbnail = None
+    thumbnail = ""
 
 
     for size in [
 
         "maxres",
+        "standard",
         "high",
         "medium",
         "default",
@@ -860,30 +933,34 @@ def build_highlight(
             break
 
 
-    # -----------------------------------------------------
-    # Date
-    # -----------------------------------------------------
-
     published_date = ""
 
 
-    parsed_date = parse_youtube_date(
+    parsed = parse_date(
         published_at
     )
 
 
-    if parsed_date:
+    if parsed:
 
         published_date = (
-            parsed_date
+            parsed
             .date()
             .isoformat()
         )
 
 
-    # -----------------------------------------------------
-    # Save
-    # -----------------------------------------------------
+    watch_url = (
+        "https://www.youtube.com/watch?v="
+        + video_id
+    )
+
+
+    embed_url = (
+        "https://www.youtube.com/embed/"
+        + video_id
+    )
+
 
     return {
 
@@ -902,23 +979,20 @@ def build_highlight(
         "thumbnail":
             thumbnail,
 
+        # Kept for compatibility
         "embed":
-            (
-                "https://www.youtube.com/embed/"
-                + video_id
-            ),
+            embed_url,
 
         "embed_url":
-            (
-                "https://www.youtube.com/embed/"
-                + video_id
-            ),
+            embed_url,
 
+        # IMPORTANT:
+        # Frontend should open THIS URL.
         "url":
-            (
-                "https://www.youtube.com/watch?v="
-                + video_id
-            ),
+            watch_url,
+
+        "youtube_url":
+            watch_url,
 
         "source":
             "YouTube",
@@ -948,7 +1022,7 @@ def build_highlight(
 print("=" * 60)
 
 print(
-    "GOALINS — AUTOMATIC FOOTBALL HIGHLIGHTS"
+    "GOALINS — BEIN SPORTS HIGHLIGHTS ENGINE"
 )
 
 print("=" * 60)
@@ -958,11 +1032,11 @@ print(
 )
 
 print(
-    "Mode: Channel scan"
+    "Mode: Direct channel scan"
 )
 
 print(
-    "Match database requirement: DISABLED"
+    "Match database: DISABLED"
 )
 
 print(
@@ -974,7 +1048,11 @@ print(
 )
 
 print(
-    "Embeddable videos: REQUIRED"
+    "Embeddable requirement: DISABLED"
+)
+
+print(
+    "YouTube search.list: DISABLED"
 )
 
 print("=" * 60)
@@ -990,17 +1068,13 @@ channel_id, uploads_playlist = (
 
 
 # =========================================================
-# GET LATEST VIDEOS
+# LATEST VIDEOS
 # =========================================================
 
 playlist_items = get_latest_videos(
     uploads_playlist
 )
 
-
-# =========================================================
-# VIDEO IDS
-# =========================================================
 
 video_ids = []
 
@@ -1025,36 +1099,32 @@ for item in playlist_items:
         )
 
 
+print(
+    "Video IDs found:",
+    len(video_ids)
+)
+
+
 # =========================================================
-# GET DETAILS
+# DETAILS
 # =========================================================
 
-video_details = get_video_details(
+videos = get_video_details(
     video_ids
 )
 
 
-print("=" * 60)
-
 print(
-    "Inspecting videos..."
+    "Videos inspected:",
+    len(videos)
 )
-
-print(
-    f"Videos inspected: "
-    f"{len(video_details)}"
-)
-
-print("=" * 60)
 
 
 # =========================================================
-# LOAD OLD
+# OLD DATA
 # =========================================================
 
-old_highlights = (
-    load_old_highlights()
-)
+old_highlights = load_old()
 
 
 old_ids = set()
@@ -1092,12 +1162,15 @@ for item in old_highlights:
         )
 
 
-# =========================================================
-# FIND NEW HIGHLIGHTS
-# =========================================================
+print(
+    "Already saved:",
+    len(old_ids)
+)
 
-new_highlights = []
 
+# =========================================================
+# CUTOFF
+# =========================================================
 
 now = datetime.now(
     timezone.utc
@@ -1115,14 +1188,27 @@ cutoff = (
 )
 
 
+# =========================================================
+# SCAN
+# =========================================================
+
+new_highlights = []
+
+
 for video_id in video_ids:
 
-    video = video_details.get(
+    video = videos.get(
         video_id
     )
 
 
     if not video:
+
+        print(
+            "SKIP:",
+            video_id,
+            "details unavailable"
+        )
 
         continue
 
@@ -1166,13 +1252,27 @@ for video_id in video_ids:
     print("-" * 60)
 
     print(
-        "Checking:",
+        "CHECKING VIDEO:"
+    )
+
+    print(
+        "ID:",
+        video_id
+    )
+
+    print(
+        "TITLE:",
         title
+    )
+
+    print(
+        "PUBLISHED:",
+        published_at
     )
 
 
     # -----------------------------------------------------
-    # Correct channel
+    # CHANNEL
     # -----------------------------------------------------
 
     result_channel = str(
@@ -1193,61 +1293,42 @@ for video_id in video_ids:
 
 
     # -----------------------------------------------------
-    # Already saved
+    # OLD
     # -----------------------------------------------------
 
     if video_id in old_ids:
 
         print(
-            "Already saved:",
-            video_id
+            "SKIPPED: already saved"
         )
 
         continue
 
 
     # -----------------------------------------------------
-    # Date
+    # DATE
     # -----------------------------------------------------
 
-    parsed_date = parse_youtube_date(
+    parsed = parse_date(
         published_at
     )
 
 
-    if parsed_date:
+    if parsed:
 
-        if parsed_date < cutoff:
+        if parsed < cutoff:
 
             print(
-                "REJECTED: older than "
-                f"{LOOKBACK_DAYS} days"
+                "REJECTED: older than",
+                LOOKBACK_DAYS,
+                "days"
             )
 
             continue
 
 
     # -----------------------------------------------------
-    # Embeddable
-    # -----------------------------------------------------
-
-    embeddable = status.get(
-        "embeddable",
-        False
-    )
-
-
-    if not embeddable:
-
-        print(
-            "REJECTED: not embeddable"
-        )
-
-        continue
-
-
-    # -----------------------------------------------------
-    # Privacy
+    # PRIVACY
     # -----------------------------------------------------
 
     privacy = status.get(
@@ -1256,28 +1337,40 @@ for video_id in video_ids:
     )
 
 
-    if privacy not in {
-
-        "public",
-
-    }:
+    if privacy != "public":
 
         print(
-            "REJECTED: not public"
+            "REJECTED: privacy =",
+            privacy
         )
 
         continue
 
 
     # -----------------------------------------------------
-    # Gaming
+    # DO NOT CHECK EMBEDDABLE
+    # -----------------------------------------------------
+    #
+    # This is intentional.
+    #
+    # beIN may block iframe embedding.
+    # We still want the video on GOALINS.
+    #
+    # The frontend will open YouTube.
+    #
+    # -----------------------------------------------------
+
+    print(
+        "Embeddable check: SKIPPED"
+    )
+
+
+    # -----------------------------------------------------
+    # GAMING
     # -----------------------------------------------------
 
     if is_gaming(
-        " ".join([
-            title,
-            description
-        ])
+        title + " " + description
     ):
 
         print(
@@ -1288,17 +1381,22 @@ for video_id in video_ids:
 
 
     # -----------------------------------------------------
-    # Real football highlight
+    # HIGHLIGHT
     # -----------------------------------------------------
 
-    if not is_real_highlight(
-        title,
-        description
-    ):
+    accepted, reason = (
+        is_real_highlight(
+            title,
+            description
+        )
+    )
+
+
+    if not accepted:
 
         print(
-            "REJECTED: not a football "
-            "match highlight"
+            "REJECTED:",
+            reason
         )
 
         continue
@@ -1309,15 +1407,32 @@ for video_id in video_ids:
     # -----------------------------------------------------
 
     print(
-        "SELECTED REAL FOOTBALL HIGHLIGHT:"
+        "=============================================="
+    )
+
+    print(
+        "SELECTED REAL FOOTBALL HIGHLIGHT"
     )
 
     print(
         title
     )
 
+    print(
+        "YouTube URL:"
+    )
 
-    item = build_highlight(
+    print(
+        "https://www.youtube.com/watch?v="
+        + video_id
+    )
+
+    print(
+        "=============================================="
+    )
+
+
+    item = build_item(
 
         video,
 
@@ -1335,10 +1450,6 @@ for video_id in video_ids:
         video_id
     )
 
-
-    # -----------------------------------------------------
-    # Limit
-    # -----------------------------------------------------
 
     if len(
         new_highlights
@@ -1410,44 +1521,44 @@ for item in (
 
 
     # -----------------------------------------------------
-    # Make sure old records also have embed fields
+    # Compatibility
     # -----------------------------------------------------
 
-    if not item.get(
+    item[
         "youtube_id"
-    ):
-
-        item["youtube_id"] = video_id
+    ] = video_id
 
 
-    if not item.get(
-        "embed_url"
-    ):
-
-        item["embed_url"] = (
-            "https://www.youtube.com/embed/"
-            + video_id
-        )
-
-
-    if not item.get(
-        "embed"
-    ):
-
-        item["embed"] = (
-            "https://www.youtube.com/embed/"
-            + video_id
-        )
-
-
-    if not item.get(
+    item[
         "url"
-    ):
+    ] = (
+        "https://www.youtube.com/watch?v="
+        + video_id
+    )
 
-        item["url"] = (
-            "https://www.youtube.com/watch?v="
-            + video_id
-        )
+
+    item[
+        "youtube_url"
+    ] = (
+        "https://www.youtube.com/watch?v="
+        + video_id
+    )
+
+
+    item[
+        "embed"
+    ] = (
+        "https://www.youtube.com/embed/"
+        + video_id
+    )
+
+
+    item[
+        "embed_url"
+    ] = (
+        "https://www.youtube.com/embed/"
+        + video_id
+    )
 
 
     combined.append(
@@ -1456,7 +1567,7 @@ for item in (
 
 
 # =========================================================
-# SORT NEWEST FIRST
+# SORT
 # =========================================================
 
 combined.sort(
@@ -1481,7 +1592,7 @@ combined.sort(
 
 
 # =========================================================
-# KEEP LAST 50
+# KEEP 50
 # =========================================================
 
 combined = combined[
@@ -1544,7 +1655,7 @@ with open(
 
 
 # =========================================================
-# FINAL RESULT
+# FINAL
 # =========================================================
 
 print("=" * 60)
@@ -1556,26 +1667,26 @@ print(
 print("=" * 60)
 
 print(
-    f"YouTube search.list calls: 0"
+    "YouTube search.list calls: 0"
 )
 
 print(
-    f"Channel videos inspected: "
-    f"{len(video_details)}"
+    "Channel videos inspected:",
+    len(videos)
 )
 
 print(
-    f"New football highlights: "
-    f"{len(new_highlights)}"
+    "New football highlights:",
+    len(new_highlights)
 )
 
 print(
-    f"Total saved: "
-    f"{len(combined)}"
+    "Total saved:",
+    len(combined)
 )
 
 print(
-    "Source: Official beIN SPORTS channel"
+    "Source: Official beIN SPORTS"
 )
 
 print(
@@ -1591,11 +1702,11 @@ print(
 )
 
 print(
-    "Embeddable videos: REQUIRED"
+    "Embeddable requirement: DISABLED"
 )
 
 print(
-    "Real football highlights only."
+    "Videos open on YouTube: ENABLED"
 )
 
 print("=" * 60)
