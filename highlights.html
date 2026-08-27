@@ -18,7 +18,12 @@
 
 <link rel="stylesheet" href="style.css">
 
+
 <style>
+
+/* =====================================================
+   GOALINS HIGHLIGHTS PAGE
+   ===================================================== */
 
 .highlights-page {
 
@@ -75,6 +80,10 @@
 }
 
 
+/* =====================================================
+   FILTERS
+   ===================================================== */
+
 .filters {
 
     display:
@@ -118,6 +127,10 @@
 }
 
 
+/* =====================================================
+   SECTION HEADER
+   ===================================================== */
+
 .section-header {
 
     display:
@@ -156,6 +169,10 @@
 
 }
 
+
+/* =====================================================
+   VIDEO GRID
+   ===================================================== */
 
 .video-grid {
 
@@ -206,6 +223,10 @@
 }
 
 
+/* =====================================================
+   THUMBNAIL
+   ===================================================== */
+
 .thumbnail {
 
     position:
@@ -236,6 +257,10 @@
 
 }
 
+
+/* =====================================================
+   PLAY BUTTON
+   ===================================================== */
 
 .play {
 
@@ -283,6 +308,10 @@
 
 }
 
+
+/* =====================================================
+   CARD CONTENT
+   ===================================================== */
 
 .video-content {
 
@@ -354,6 +383,10 @@
 }
 
 
+/* =====================================================
+   STATES
+   ===================================================== */
+
 .state {
 
     min-height:
@@ -422,6 +455,10 @@
 }
 
 
+/* =====================================================
+   LOADER
+   ===================================================== */
+
 .loader {
 
     width:
@@ -462,155 +499,52 @@
 
 
 /* =====================================================
-   VIDEO MODAL
+   YOUTUBE LINK NOTICE
    ===================================================== */
 
-.video-modal {
+.youtube-note {
 
-    position:
-        fixed;
-
-    inset:
-        0;
-
-    z-index:
-        9999;
-
-    display:
-        none;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    padding:
+    margin-top:
         20px;
 
-    background:
-        rgba(0,0,0,.88);
-
-}
-
-
-.video-modal.active {
-
-    display:
-        flex;
-
-}
-
-
-.video-modal-box {
-
-    width:
-        min(1000px, 100%);
-
-    background:
-        #07111f;
+    padding:
+        14px 16px;
 
     border:
-        1px solid
-        rgba(255,255,255,.12);
+        1px solid rgba(255,255,255,.08);
 
     border-radius:
-        18px;
+        14px;
 
-    overflow:
-        hidden;
-
-    box-shadow:
-        0 20px 80px rgba(0,0,0,.6);
-
-}
-
-
-.video-modal-header {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        space-between;
-
-    gap:
-        15px;
-
-    padding:
-        14px 18px;
-
-}
-
-
-.video-modal-title {
-
-    margin:
-        0;
+    background:
+        rgba(255,255,255,.025);
 
     color:
-        white;
+        var(--muted);
 
     font-size:
-        15px;
+        12px;
 
     line-height:
-        1.5;
+        1.8;
+
+    text-align:
+        center;
 
 }
 
 
-.close-video {
-
-    width:
-        40px;
-
-    height:
-        40px;
-
-    border:
-        0;
-
-    border-radius:
-        50%;
-
-    background:
-        rgba(255,255,255,.1);
+.youtube-note strong {
 
     color:
         white;
 
-    font-size:
-        22px;
-
-    cursor:
-        pointer;
-
 }
 
 
-.video-frame {
-
-    width:
-        100%;
-
-    aspect-ratio:
-        16 / 9;
-
-    border:
-        0;
-
-    display:
-        block;
-
-    background:
-        #000;
-
-}
-
+/* =====================================================
+   MOBILE
+   ===================================================== */
 
 @media(max-width:650px) {
 
@@ -645,22 +579,6 @@
 
     }
 
-
-    .video-modal {
-
-        padding:
-            8px;
-
-    }
-
-
-    .video-modal-box {
-
-        border-radius:
-            12px;
-
-    }
-
 }
 
 </style>
@@ -670,6 +588,10 @@
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header class="header">
 
@@ -722,6 +644,11 @@
 </header>
 
 
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
 <main class="highlights-page">
 
 <div class="container">
@@ -733,9 +660,11 @@
         GOALINS VIDEO
     </small>
 
+
     <h1>
         🎬 ملخصات المباريات
     </h1>
+
 
     <p>
         ملخصات موثوقة لأهم مباريات كرة القدم
@@ -743,6 +672,11 @@
 
 </div>
 
+
+
+<!-- =====================================================
+     FILTERS
+     ===================================================== -->
 
 <div class="filters">
 
@@ -764,6 +698,7 @@
     </option>
 
 </select>
+
 
 
 <select
@@ -823,6 +758,11 @@
 </div>
 
 
+
+<!-- =====================================================
+     SECTION HEADER
+     ===================================================== -->
+
 <div class="section-header">
 
     <h2>
@@ -836,9 +776,15 @@
 </div>
 
 
+
+<!-- =====================================================
+     VIDEO GRID
+     ===================================================== -->
+
 <div
     class="video-grid"
     id="videoGrid">
+
 
     <div class="state">
 
@@ -854,6 +800,22 @@
 
     </div>
 
+
+</div>
+
+
+
+<div class="youtube-note">
+
+    <strong>
+        ▶ مشاهدة الفيديو
+    </strong>
+
+    <br>
+
+    عند الضغط على أي ملخص سيتم فتح الفيديو الأصلي
+    على YouTube مباشرة.
+
 </div>
 
 
@@ -862,49 +824,10 @@
 </main>
 
 
+
 <!-- =====================================================
-     VIDEO MODAL
+     JAVASCRIPT
      ===================================================== -->
-
-<div
-    class="video-modal"
-    id="videoModal">
-
-    <div class="video-modal-box">
-
-        <div class="video-modal-header">
-
-            <h3
-                class="video-modal-title"
-                id="modalTitle">
-
-            </h3>
-
-            <button
-                class="close-video"
-                id="closeVideo"
-                aria-label="إغلاق">
-
-                ×
-
-            </button>
-
-        </div>
-
-
-        <iframe
-            class="video-frame"
-            id="videoFrame"
-            src=""
-            title="GOALINS Football Highlight"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowfullscreen>
-        </iframe>
-
-    </div>
-
-</div>
-
 
 <script>
 
@@ -937,31 +860,8 @@ const leagueFilter =
     );
 
 
-const videoModal =
-    document.getElementById(
-        "videoModal"
-    );
-
-
-const videoFrame =
-    document.getElementById(
-        "videoFrame"
-    );
-
-
-const modalTitle =
-    document.getElementById(
-        "modalTitle"
-    );
-
-
-const closeVideo =
-    document.getElementById(
-        "closeVideo"
-    );
-
-
 let videos = [];
+
 
 
 /* =====================================================
@@ -975,7 +875,8 @@ async function loadVideos() {
         const response =
             await fetch(
                 "data/highlights.json?v="
-                + Date.now()
+                +
+                Date.now()
             );
 
 
@@ -1042,6 +943,7 @@ async function loadVideos() {
 }
 
 
+
 /* =====================================================
    DATE HELPERS
    ===================================================== */
@@ -1050,9 +952,13 @@ function getToday() {
 
     return new Date()
         .toISOString()
-        .slice(0, 10);
+        .slice(
+            0,
+            10
+        );
 
 }
+
 
 
 function getYesterday() {
@@ -1060,15 +966,99 @@ function getYesterday() {
     const date =
         new Date();
 
+
     date.setDate(
         date.getDate() - 1
     );
 
+
     return date
         .toISOString()
-        .slice(0, 10);
+        .slice(
+            0,
+            10
+        );
 
 }
+
+
+
+/* =====================================================
+   LEAGUE KEY
+   ===================================================== */
+
+function getLeagueKey(
+    league
+) {
+
+    const value =
+        String(
+            league || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const map = {
+
+        "premier league":
+            "premier-league",
+
+        "la liga":
+            "la-liga",
+
+        "ligue 1":
+            "ligue-1",
+
+        "serie a":
+            "serie-a",
+
+        "eredivisie":
+            "eredivisie",
+
+        "jupiler pro league":
+            "jupiler-pro-league",
+
+        "primeira liga":
+            "primeira-liga",
+
+        "bundesliga":
+            "bundesliga",
+
+        "uefa champions league":
+            "champions-league",
+
+        "champions league":
+            "champions-league",
+
+        "uefa europa league":
+            "europa-league",
+
+        "europa league":
+            "europa-league",
+
+        "uefa europa conference league":
+            "conference-league",
+
+        "europa conference league":
+            "conference-league"
+
+    };
+
+
+    return map[value]
+        || value
+            .replace(
+                /[^a-z0-9]+/g,
+                "-"
+            )
+            .replace(
+                /^-|-$/g,
+                ""
+            );
+
+}
+
 
 
 /* =====================================================
@@ -1089,10 +1079,13 @@ function getFilteredVideos() {
         video => {
 
 
+            /* DATE */
+
             if (
                 dateValue === "today"
                 &&
-                video.date !== getToday()
+                video.date !==
+                    getToday()
             ) {
 
                 return false;
@@ -1103,7 +1096,8 @@ function getFilteredVideos() {
             if (
                 dateValue === "yesterday"
                 &&
-                video.date !== getYesterday()
+                video.date !==
+                    getYesterday()
             ) {
 
                 return false;
@@ -1111,10 +1105,17 @@ function getFilteredVideos() {
             }
 
 
+
+            /* LEAGUE */
+
             if (
                 leagueValue !== "all"
                 &&
-                video.league_key !== leagueValue
+                getLeagueKey(
+                    video.league
+                )
+                !==
+                leagueValue
             ) {
 
                 return false;
@@ -1130,6 +1131,7 @@ function getFilteredVideos() {
 }
 
 
+
 /* =====================================================
    RENDER
    ===================================================== */
@@ -1142,7 +1144,8 @@ function renderVideos() {
 
     videoCount.textContent =
         filtered.length
-        + " فيديو";
+        +
+        " فيديو";
 
 
     if (
@@ -1175,6 +1178,7 @@ function renderVideos() {
     }
 
 
+
     videoGrid.innerHTML =
         filtered
             .map(
@@ -1182,13 +1186,20 @@ function renderVideos() {
                     video,
                     index
                 ) =>
+
                     createVideoCard(
                         video,
                         index
                     )
+
             )
             .join("");
 
+
+
+    /*
+     * Attach click events.
+     */
 
     document
         .querySelectorAll(
@@ -1217,6 +1228,7 @@ function renderVideos() {
 }
 
 
+
 /* =====================================================
    VIDEO CARD
    ===================================================== */
@@ -1226,14 +1238,17 @@ function createVideoCard(
     index
 ) {
 
+
     const title =
         escapeHtml(
             video.title
             ||
             (
                 video.home
-                + " vs "
-                + video.away
+                +
+                " vs "
+                +
+                video.away
             )
         );
 
@@ -1247,22 +1262,26 @@ function createVideoCard(
     const league =
         escapeHtml(
             video.league
-            || ""
+            ||
+            ""
         );
 
 
     const date =
         escapeHtml(
             video.date
-            || ""
+            ||
+            ""
         );
 
 
     const source =
         escapeHtml(
             video.source
-            || "Highlightly"
+            ||
+            "YouTube"
         );
+
 
 
     return `
@@ -1279,14 +1298,20 @@ function createVideoCard(
                 ${
                     thumbnail
                     ?
+
                     `
+
                     <img
                         src="${escapeAttribute(thumbnail)}"
                         alt="${title}"
                         loading="lazy">
+
                     `
+
                     :
+
                     `
+
                     <div
                         style="
                         width:100%;
@@ -1296,10 +1321,14 @@ function createVideoCard(
                         justify-content:center;
                         font-size:50px;
                         ">
+
                         ⚽
+
                     </div>
+
                     `
                 }
+
 
 
                 <div class="play">
@@ -1308,6 +1337,7 @@ function createVideoCard(
 
 
             </div>
+
 
 
             <div
@@ -1322,8 +1352,10 @@ function createVideoCard(
                 </h3>
 
 
+
                 <div
                     class="video-meta">
+
 
                     <span
                         class="video-league">
@@ -1339,7 +1371,9 @@ function createVideoCard(
 
                     </span>
 
+
                 </div>
+
 
 
                 <div
@@ -1361,110 +1395,138 @@ function createVideoCard(
 }
 
 
+
 /* =====================================================
-   OPEN VIDEO
+   OPEN VIDEO — YOUTUBE DIRECT
    ===================================================== */
 
 function openVideo(
     video
 ) {
 
-    const embedUrl =
-        video.embed_url
+
+    let youtubeUrl =
+        video.url
         ||
-        video.embed;
+        "";
 
 
-    if (!embedUrl) {
+
+    /*
+     * Preferred:
+     *
+     * https://www.youtube.com/watch?v=VIDEO_ID
+     */
+
+    if (
+        !youtubeUrl
+        &&
+        video.youtube_id
+    ) {
+
+        youtubeUrl =
+            "https://www.youtube.com/watch?v="
+            +
+            video.youtube_id;
+
+    }
+
+
+
+    /*
+     * Fallback:
+     *
+     * convert embed URL
+     * into normal YouTube URL.
+     */
+
+    if (
+        !youtubeUrl
+        &&
+        video.embed_url
+    ) {
+
+        const match =
+            String(
+                video.embed_url
+            )
+            .match(
+                /embed\/([^?&#/]+)/
+            );
+
+
+        if (match) {
+
+            youtubeUrl =
+                "https://www.youtube.com/watch?v="
+                +
+                match[1];
+
+        }
+
+    }
+
+
+
+    /*
+     * Second fallback.
+     */
+
+    if (
+        !youtubeUrl
+        &&
+        video.embed
+    ) {
+
+        const match =
+            String(
+                video.embed
+            )
+            .match(
+                /embed\/([^?&#/]+)/
+            );
+
+
+        if (match) {
+
+            youtubeUrl =
+                "https://www.youtube.com/watch?v="
+                +
+                match[1];
+
+        }
+
+    }
+
+
+
+    /*
+     * Nothing available.
+     */
+
+    if (!youtubeUrl) {
+
+        console.warn(
+            "No YouTube URL available:",
+            video
+        );
 
         return;
 
     }
 
 
-    modalTitle.textContent =
-        video.title
-        ||
-        (
-            video.home
-            + " vs "
-            + video.away
-        );
 
+    /*
+     * Open the official
+     * YouTube video directly.
+     */
 
-    videoFrame.src =
-        embedUrl;
-
-
-    videoModal.classList.add(
-        "active"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
+    window.location.href =
+        youtubeUrl;
 
 }
 
-
-/* =====================================================
-   CLOSE VIDEO
-   ===================================================== */
-
-function closeVideoModal() {
-
-    videoModal.classList.remove(
-        "active"
-    );
-
-
-    videoFrame.src =
-        "";
-
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-closeVideo.addEventListener(
-    "click",
-    closeVideoModal
-);
-
-
-videoModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            videoModal
-        ) {
-
-            closeVideoModal();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeVideoModal();
-
-        }
-
-    }
-);
 
 
 /* =====================================================
@@ -1481,6 +1543,7 @@ leagueFilter.addEventListener(
     "change",
     renderVideos
 );
+
 
 
 /* =====================================================
@@ -1500,13 +1563,15 @@ const nav =
 
 
 if (
-    menuBtn &&
+    menuBtn
+    &&
     nav
 ) {
 
     menuBtn.addEventListener(
         "click",
         () => {
+
 
             const open =
                 nav.classList.toggle(
@@ -1517,9 +1582,12 @@ if (
             menuBtn.setAttribute(
                 "aria-expanded",
                 open
-                ? "true"
-                : "false"
+                ?
+                "true"
+                :
+                "false"
             );
+
 
         }
     );
@@ -1527,8 +1595,9 @@ if (
 }
 
 
+
 /* =====================================================
-   SECURITY HELPERS
+   SECURITY
    ===================================================== */
 
 function escapeHtml(
@@ -1538,28 +1607,34 @@ function escapeHtml(
     return String(
         value || ""
     )
+
     .replace(
         /&/g,
         "&amp;"
     )
+
     .replace(
         /</g,
         "&lt;"
     )
+
     .replace(
         />/g,
         "&gt;"
     )
+
     .replace(
         /"/g,
         "&quot;"
     )
+
     .replace(
         /'/g,
         "&#039;"
     );
 
 }
+
 
 
 function escapeAttribute(
@@ -1571,6 +1646,7 @@ function escapeAttribute(
     );
 
 }
+
 
 
 /* =====================================================
