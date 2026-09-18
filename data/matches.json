@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-09-18T03:14:29.688679+00:00",
+  "updated_at": "2026-09-18T10:35:35.291131+00:00",
   "timezone": "Africa/Algiers",
   "days_before": 7,
   "days_after": 7,
-  "count": 2155,
+  "count": 2159,
   "matches": [
     {
       "fixture_id": 1493995,
@@ -1510,38 +1510,6 @@
       }
     },
     {
-      "fixture_id": 1507445,
-      "date": "2026-09-17T13:00:00+01:00",
-      "timestamp": 1789646400,
-      "status": "FT",
-      "status_long": "Match Finished",
-      "elapsed": 90,
-      "league": {
-        "id": 1104,
-        "name": "Liga 3",
-        "country": "Georgia",
-        "logo": "https://media.api-sports.io/football/leagues/1104.png",
-        "flag": "https://media.api-sports.io/flags/ge.svg",
-        "round": "Regular Season - 22"
-      },
-      "home": {
-        "id": 16505,
-        "name": "Iberia 2010",
-        "logo": "https://media.api-sports.io/football/teams/16505.png",
-        "winner": null
-      },
-      "away": {
-        "id": 3508,
-        "name": "Merani Tbilisi",
-        "logo": "https://media.api-sports.io/football/teams/3508.png",
-        "winner": null
-      },
-      "goals": {
-        "home": 2,
-        "away": 2
-      }
-    },
-    {
       "fixture_id": 1507447,
       "date": "2026-09-17T13:00:00+01:00",
       "timestamp": 1789646400,
@@ -1699,6 +1667,38 @@
       "goals": {
         "home": 0,
         "away": 3
+      }
+    },
+    {
+      "fixture_id": 1507445,
+      "date": "2026-09-17T13:10:00+01:00",
+      "timestamp": 1789647000,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
+      "league": {
+        "id": 1104,
+        "name": "Liga 3",
+        "country": "Georgia",
+        "logo": "https://media.api-sports.io/football/leagues/1104.png",
+        "flag": "https://media.api-sports.io/flags/ge.svg",
+        "round": "Regular Season - 22"
+      },
+      "home": {
+        "id": 16505,
+        "name": "Iberia 2010",
+        "logo": "https://media.api-sports.io/football/teams/16505.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3508,
+        "name": "Merani Tbilisi",
+        "logo": "https://media.api-sports.io/football/teams/3508.png",
+        "winner": null
+      },
+      "goals": {
+        "home": 2,
+        "away": 2
       }
     },
     {
@@ -1987,38 +1987,6 @@
       "goals": {
         "home": 0,
         "away": 1
-      }
-    },
-    {
-      "fixture_id": 1619558,
-      "date": "2026-09-17T14:00:00+01:00",
-      "timestamp": 1789650000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 566,
-        "name": "Ligue A",
-        "country": "Burundi",
-        "logo": "https://media.api-sports.io/football/leagues/566.png",
-        "flag": "https://media.api-sports.io/flags/bi.svg",
-        "round": "Regular Season - 4"
-      },
-      "home": {
-        "id": 28129,
-        "name": "Young Star",
-        "logo": "https://media.api-sports.io/football/teams/28129.png",
-        "winner": null
-      },
-      "away": {
-        "id": 24755,
-        "name": "Royal Vision",
-        "logo": "https://media.api-sports.io/football/teams/24755.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
       }
     },
     {
@@ -5990,6 +5958,38 @@
       }
     },
     {
+      "fixture_id": 1619017,
+      "date": "2026-09-17T23:00:00+01:00",
+      "timestamp": 1789682400,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
+      "league": {
+        "id": 344,
+        "name": "Primera División",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/344.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Apertura - 20"
+      },
+      "home": {
+        "id": 15708,
+        "name": "Real Tomayapo",
+        "logo": "https://media.api-sports.io/football/teams/15708.png",
+        "winner": false
+      },
+      "away": {
+        "id": 3707,
+        "name": "Oriente Petrolero",
+        "logo": "https://media.api-sports.io/football/teams/3707.png",
+        "winner": true
+      },
+      "goals": {
+        "home": 0,
+        "away": 2
+      }
+    },
+    {
       "fixture_id": 1610832,
       "date": "2026-09-17T23:30:00+01:00",
       "timestamp": 1789684200,
@@ -6019,38 +6019,6 @@
       "goals": {
         "home": 0,
         "away": 1
-      }
-    },
-    {
-      "fixture_id": 1619017,
-      "date": "2026-09-17T23:30:00+01:00",
-      "timestamp": 1789684200,
-      "status": "FT",
-      "status_long": "Match Finished",
-      "elapsed": 90,
-      "league": {
-        "id": 344,
-        "name": "Primera División",
-        "country": "Bolivia",
-        "logo": "https://media.api-sports.io/football/leagues/344.png",
-        "flag": "https://media.api-sports.io/flags/bo.svg",
-        "round": "Apertura - 20"
-      },
-      "home": {
-        "id": 15708,
-        "name": "Real Tomayapo",
-        "logo": "https://media.api-sports.io/football/teams/15708.png",
-        "winner": false
-      },
-      "away": {
-        "id": 3707,
-        "name": "Oriente Petrolero",
-        "logo": "https://media.api-sports.io/football/teams/3707.png",
-        "winner": true
-      },
-      "goals": {
-        "home": 0,
-        "away": 2
       }
     },
     {
@@ -6345,9 +6313,9 @@
       "fixture_id": 1581422,
       "date": "2026-09-18T02:00:00+01:00",
       "timestamp": 1789693200,
-      "status": "2H",
-      "status_long": "Second Half",
-      "elapsed": 62,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 263,
         "name": "Liga de Expansión MX",
@@ -6369,7 +6337,7 @@
         "winner": false
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 0
       }
     },
@@ -6377,9 +6345,9 @@
       "fixture_id": 1636691,
       "date": "2026-09-18T04:15:00+01:00",
       "timestamp": 1789701300,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 1028,
         "name": "CONCACAF Central American Cup",
@@ -6392,26 +6360,26 @@
         "id": 1051,
         "name": "CD Olimpia",
         "logo": "https://media.api-sports.io/football/teams/1051.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 4303,
         "name": "Firpo",
         "logo": "https://media.api-sports.io/football/teams/4303.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 3,
+        "away": 0
       }
     },
     {
       "fixture_id": 1606656,
       "date": "2026-09-18T05:00:00+01:00",
       "timestamp": 1789704000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 99,
         "name": "J2 League",
@@ -6424,26 +6392,26 @@
         "id": 4326,
         "name": "Vanraure Hachinohe",
         "logo": "https://media.api-sports.io/football/teams/4326.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 10409,
         "name": "Tegevajaro Miyazaki",
         "logo": "https://media.api-sports.io/football/teams/10409.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 3
       }
     },
     {
       "fixture_id": 1639455,
       "date": "2026-09-18T07:30:00+01:00",
       "timestamp": 1789713000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 803,
         "name": "Asian Games",
@@ -6456,26 +6424,26 @@
         "id": 10953,
         "name": "Philippines U23",
         "logo": "https://media.api-sports.io/football/teams/10953.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 10964,
         "name": "Vietnam U23",
         "logo": "https://media.api-sports.io/football/teams/10964.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 2
       }
     },
     {
       "fixture_id": 1628498,
       "date": "2026-09-18T08:30:00+01:00",
       "timestamp": 1789716600,
-      "status": "SUSP",
-      "status_long": "Match Suspended",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 399,
         "name": "NPFL",
@@ -6488,16 +6456,16 @@
         "id": 5176,
         "name": "Enugu Rangers",
         "logo": "https://media.api-sports.io/football/teams/5176.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 5188,
         "name": "Nasarawa United",
         "logo": "https://media.api-sports.io/football/teams/5188.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 1
       }
     },
@@ -6505,9 +6473,9 @@
       "fixture_id": 1519161,
       "date": "2026-09-18T09:00:00+01:00",
       "timestamp": 1789718400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 238,
         "name": "Youth Championship",
@@ -6520,17 +6488,17 @@
         "id": 9231,
         "name": "Ural U20",
         "logo": "https://media.api-sports.io/football/teams/9231.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 27236,
         "name": "Dynamo Makhachkala U19",
         "logo": "https://media.api-sports.io/football/teams/27236.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       }
     },
     {
@@ -6569,9 +6537,9 @@
       "fixture_id": 1638500,
       "date": "2026-09-18T09:00:00+01:00",
       "timestamp": 1789718400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 929,
         "name": "League Two",
@@ -6593,17 +6561,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1638501,
       "date": "2026-09-18T09:00:00+01:00",
       "timestamp": 1789718400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 929,
         "name": "League Two",
@@ -6616,26 +6584,26 @@
         "id": 21328,
         "name": "Rizhao Yuqi",
         "logo": "https://media.api-sports.io/football/teams/21328.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 17272,
         "name": "Yichun Grand Tiger",
         "logo": "https://media.api-sports.io/football/teams/17272.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 2,
+        "away": 0
       }
     },
     {
       "fixture_id": 1622772,
       "date": "2026-09-18T09:30:00+01:00",
       "timestamp": 1789720200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 274,
         "name": "Liga 1",
@@ -6657,17 +6625,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 1
       }
     },
     {
       "fixture_id": 1637631,
       "date": "2026-09-18T09:30:00+01:00",
       "timestamp": 1789720200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "FT",
+      "status_long": "Match Finished",
+      "elapsed": 90,
       "league": {
         "id": 275,
         "name": "Liga 2",
@@ -6689,17 +6657,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1621334,
       "date": "2026-09-18T09:50:00+01:00",
       "timestamp": 1789721400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 86,
       "league": {
         "id": 496,
         "name": "Liga Alef",
@@ -6712,26 +6680,26 @@
         "id": 4502,
         "name": "Ironi Nesher",
         "logo": "https://media.api-sports.io/football/teams/4502.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 20706,
         "name": "Tzeirei Umm al-Fahm",
         "logo": "https://media.api-sports.io/football/teams/20706.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 4,
+        "away": 1
       }
     },
     {
       "fixture_id": 1621606,
       "date": "2026-09-18T09:50:00+01:00",
       "timestamp": 1789721400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 85,
       "league": {
         "id": 496,
         "name": "Liga Alef",
@@ -6744,26 +6712,26 @@
         "id": 4498,
         "name": "Hapoel Marmorek",
         "logo": "https://media.api-sports.io/football/teams/4498.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 4490,
         "name": "Hapoel Ramat HaSharon",
         "logo": "https://media.api-sports.io/football/teams/4490.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       }
     },
     {
       "fixture_id": 1621609,
       "date": "2026-09-18T09:55:00+01:00",
       "timestamp": 1789721700,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 82,
       "league": {
         "id": 496,
         "name": "Liga Alef",
@@ -6776,26 +6744,26 @@
         "id": 6201,
         "name": "Nordia Jerusalem",
         "logo": "https://media.api-sports.io/football/teams/6201.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 17996,
         "name": "FC Jerusalem",
         "logo": "https://media.api-sports.io/football/teams/17996.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 3
       }
     },
     {
       "fixture_id": 1638502,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 77,
       "league": {
         "id": 929,
         "name": "League Two",
@@ -6808,26 +6776,26 @@
         "id": 25840,
         "name": "Wuhan Three Towns II",
         "logo": "https://media.api-sports.io/football/teams/25840.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 19319,
         "name": "Nantong Haimen Codion",
         "logo": "https://media.api-sports.io/football/teams/19319.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 2
       }
     },
     {
       "fixture_id": 1640095,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 72,
       "league": {
         "id": 398,
         "name": "Premier League",
@@ -6849,17 +6817,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1640096,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 66,
       "league": {
         "id": 398,
         "name": "Premier League",
@@ -6872,26 +6840,26 @@
         "id": 5013,
         "name": "Brothers Union",
         "logo": "https://media.api-sports.io/football/teams/5013.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 28429,
         "name": "City Club",
         "logo": "https://media.api-sports.io/football/teams/28429.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 2
       }
     },
     {
       "fixture_id": 1640097,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 55,
       "league": {
         "id": 398,
         "name": "Premier League",
@@ -6904,26 +6872,26 @@
         "id": 25416,
         "name": "Fakirerpool",
         "logo": "https://media.api-sports.io/football/teams/25416.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 25415,
         "name": "Dhaka Wanderers",
         "logo": "https://media.api-sports.io/football/teams/25415.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 2,
+        "away": 1
       }
     },
     {
       "fixture_id": 1640098,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 72,
       "league": {
         "id": 398,
         "name": "Premier League",
@@ -6936,26 +6904,26 @@
         "id": 20780,
         "name": "Fortis",
         "logo": "https://media.api-sports.io/football/teams/20780.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 28428,
         "name": "Chattogram",
         "logo": "https://media.api-sports.io/football/teams/28428.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 2,
+        "away": 0
       }
     },
     {
       "fixture_id": 1640099,
       "date": "2026-09-18T10:00:00+01:00",
       "timestamp": 1789722000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 71,
       "league": {
         "id": 398,
         "name": "Premier League",
@@ -6977,17 +6945,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1621332,
       "date": "2026-09-18T10:30:00+01:00",
       "timestamp": 1789723800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "2H",
+      "status_long": "Second Half",
+      "elapsed": 47,
       "league": {
         "id": 496,
         "name": "Liga Alef",
@@ -7000,26 +6968,26 @@
         "id": 20110,
         "name": "Tzeirey Tamra",
         "logo": "https://media.api-sports.io/football/teams/20110.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 6169,
         "name": "Hapoel Tirat HaCarmel",
         "logo": "https://media.api-sports.io/football/teams/6169.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       }
     },
     {
       "fixture_id": 1528714,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 36,
       "league": {
         "id": 170,
         "name": "League One",
@@ -7041,17 +7009,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1534858,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 35,
       "league": {
         "id": 388,
         "name": "1. Division",
@@ -7064,26 +7032,26 @@
         "id": 4548,
         "name": "Astana II",
         "logo": "https://media.api-sports.io/football/teams/4548.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 4551,
         "name": "Ekibastuz",
         "logo": "https://media.api-sports.io/football/teams/4551.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 5,
+        "away": 0
       }
     },
     {
       "fixture_id": 1534859,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 27,
       "league": {
         "id": 388,
         "name": "1. Division",
@@ -7105,17 +7073,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1555705,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 32,
       "league": {
         "id": 100,
         "name": "J3 League",
@@ -7137,17 +7105,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1555708,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 32,
       "league": {
         "id": 100,
         "name": "J3 League",
@@ -7169,16 +7137,16 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1565481,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
+      "status": "INT",
+      "status_long": "Match Interrupted",
       "elapsed": null,
       "league": {
         "id": 333,
@@ -7201,17 +7169,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1568495,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 33,
       "league": {
         "id": 782,
         "name": "III Liga - Group 3",
@@ -7224,17 +7192,17 @@
         "id": 6963,
         "name": "Zagłębie Lubin II",
         "logo": "https://media.api-sports.io/football/teams/6963.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 17401,
         "name": "Carina Gubin",
         "logo": "https://media.api-sports.io/football/teams/17401.png",
-        "winner": null
+        "winner": false
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       }
     },
     {
@@ -7273,9 +7241,9 @@
       "fixture_id": 1639456,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 36,
       "league": {
         "id": 803,
         "name": "Asian Games",
@@ -7288,26 +7256,26 @@
         "id": 10940,
         "name": "Kuwait U23",
         "logo": "https://media.api-sports.io/football/teams/10940.png",
-        "winner": null
+        "winner": false
       },
       "away": {
         "id": 10963,
         "name": "Uzbekistan U23",
         "logo": "https://media.api-sports.io/football/teams/10963.png",
-        "winner": null
+        "winner": true
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       }
     },
     {
       "fixture_id": 1640444,
       "date": "2026-09-18T11:00:00+01:00",
       "timestamp": 1789725600,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 35,
       "league": {
         "id": 771,
         "name": "COSAFA U20 Championship",
@@ -7329,17 +7297,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1628898,
       "date": "2026-09-18T11:30:00+01:00",
       "timestamp": 1789727400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 1,
       "league": {
         "id": 496,
         "name": "Liga Alef",
@@ -7361,17 +7329,17 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
       "fixture_id": 1639466,
       "date": "2026-09-18T11:30:00+01:00",
       "timestamp": 1789727400,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
+      "status": "1H",
+      "status_long": "First Half",
+      "elapsed": 5,
       "league": {
         "id": 803,
         "name": "Asian Games",
@@ -7393,8 +7361,8 @@
         "winner": null
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       }
     },
     {
@@ -8798,6 +8766,38 @@
         "id": 3577,
         "name": "Ümraniyespor",
         "logo": "https://media.api-sports.io/football/teams/3577.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1627216,
+      "date": "2026-09-18T14:00:00+01:00",
+      "timestamp": 1789736400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1088,
+        "name": "Pernambucano - U20",
+        "country": "Brazil",
+        "logo": "https://media.api-sports.io/football/leagues/1088.png",
+        "flag": "https://media.api-sports.io/flags/br.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 23496,
+        "name": "Jaguar U20",
+        "logo": "https://media.api-sports.io/football/teams/23496.png",
+        "winner": null
+      },
+      "away": {
+        "id": 23488,
+        "name": "America PE U20",
+        "logo": "https://media.api-sports.io/football/teams/23488.png",
         "winner": null
       },
       "goals": {
@@ -11718,6 +11718,38 @@
       }
     },
     {
+      "fixture_id": 1640520,
+      "date": "2026-09-18T16:30:00+01:00",
+      "timestamp": 1789745400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 423,
+        "name": "Ligue 1",
+        "country": "Burkina-Faso",
+        "logo": "https://media.api-sports.io/football/leagues/423.png",
+        "flag": "https://media.api-sports.io/flags/bf.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 8111,
+        "name": "SONABEL",
+        "logo": "https://media.api-sports.io/football/teams/8111.png",
+        "winner": null
+      },
+      "away": {
+        "id": 8566,
+        "name": "Majestic",
+        "logo": "https://media.api-sports.io/football/teams/8566.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1601899,
       "date": "2026-09-18T16:45:00+01:00",
       "timestamp": 1789746300,
@@ -12574,38 +12606,6 @@
         "id": 11043,
         "name": "Seychelles U20",
         "logo": "https://media.api-sports.io/football/teams/11043.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1640447,
-      "date": "2026-09-18T17:00:00+01:00",
-      "timestamp": 1789747200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 771,
-        "name": "COSAFA U20 Championship",
-        "country": "World",
-        "logo": "https://media.api-sports.io/football/leagues/771.png",
-        "flag": null,
-        "round": "Group Stage - C"
-      },
-      "home": {
-        "id": 16196,
-        "name": "Comoros U20",
-        "logo": "https://media.api-sports.io/football/teams/16196.png",
-        "winner": null
-      },
-      "away": {
-        "id": 11020,
-        "name": "Botswana U20",
-        "logo": "https://media.api-sports.io/football/teams/11020.png",
         "winner": null
       },
       "goals": {
@@ -19942,6 +19942,38 @@
       }
     },
     {
+      "fixture_id": 1606423,
+      "date": "2026-09-19T01:00:00+01:00",
+      "timestamp": 1789776000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/134.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "round": "Winners Stage - 9"
+      },
+      "home": {
+        "id": 1961,
+        "name": "Juventud Antoniana",
+        "logo": "https://media.api-sports.io/football/teams/1961.png",
+        "winner": null
+      },
+      "away": {
+        "id": 1949,
+        "name": "Cipolletti",
+        "logo": "https://media.api-sports.io/football/teams/1949.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1631725,
       "date": "2026-09-19T01:00:00+01:00",
       "timestamp": 1789776000,
@@ -22246,6 +22278,70 @@
       }
     },
     {
+      "fixture_id": 1623569,
+      "date": "2026-09-19T10:00:00+01:00",
+      "timestamp": 1789808400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 706,
+        "name": "Campionato Primavera - 2",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/706.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "round": "Regular Season - 3"
+      },
+      "home": {
+        "id": 15688,
+        "name": "Virtus Entella U19",
+        "logo": "https://media.api-sports.io/football/teams/15688.png",
+        "winner": null
+      },
+      "away": {
+        "id": 19856,
+        "name": "Padova U19",
+        "logo": "https://media.api-sports.io/football/teams/19856.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1623574,
+      "date": "2026-09-19T10:00:00+01:00",
+      "timestamp": 1789808400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 706,
+        "name": "Campionato Primavera - 2",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/706.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "round": "Regular Season - 3"
+      },
+      "home": {
+        "id": 22404,
+        "name": "Palermo U19",
+        "logo": "https://media.api-sports.io/football/teams/22404.png",
+        "winner": null
+      },
+      "away": {
+        "id": 22403,
+        "name": "Bari U19",
+        "logo": "https://media.api-sports.io/football/teams/22403.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1630087,
       "date": "2026-09-19T10:00:00+01:00",
       "timestamp": 1789808400,
@@ -24350,6 +24446,38 @@
         "id": 22192,
         "name": "Farul Constanţa W",
         "logo": "https://media.api-sports.io/football/teams/22192.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1623565,
+      "date": "2026-09-19T11:00:00+01:00",
+      "timestamp": 1789812000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 706,
+        "name": "Campionato Primavera - 2",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/706.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "round": "Regular Season - 3"
+      },
+      "home": {
+        "id": 15654,
+        "name": "Ascoli U19",
+        "logo": "https://media.api-sports.io/football/teams/15654.png",
+        "winner": null
+      },
+      "away": {
+        "id": 7917,
+        "name": "Napoli U19",
+        "logo": "https://media.api-sports.io/football/teams/7917.png",
         "winner": null
       },
       "goals": {
@@ -32070,6 +32198,38 @@
       }
     },
     {
+      "fixture_id": 1640528,
+      "date": "2026-09-19T13:00:00+01:00",
+      "timestamp": 1789819200,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 16826,
+        "name": "Highlanders",
+        "logo": "https://media.api-sports.io/football/teams/16826.png",
+        "winner": null
+      },
+      "away": {
+        "id": 6421,
+        "name": "Green Mamba",
+        "logo": "https://media.api-sports.io/football/teams/6421.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1530009,
       "date": "2026-09-19T13:30:00+01:00",
       "timestamp": 1789821000,
@@ -36070,6 +36230,38 @@
       }
     },
     {
+      "fixture_id": 1619558,
+      "date": "2026-09-19T14:00:00+01:00",
+      "timestamp": 1789822800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 566,
+        "name": "Ligue A",
+        "country": "Burundi",
+        "logo": "https://media.api-sports.io/football/leagues/566.png",
+        "flag": "https://media.api-sports.io/flags/bi.svg",
+        "round": "Regular Season - 4"
+      },
+      "home": {
+        "id": 28129,
+        "name": "Young Star",
+        "logo": "https://media.api-sports.io/football/teams/28129.png",
+        "winner": null
+      },
+      "away": {
+        "id": 24755,
+        "name": "Royal Vision",
+        "logo": "https://media.api-sports.io/football/teams/24755.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1619853,
       "date": "2026-09-19T14:00:00+01:00",
       "timestamp": 1789822800,
@@ -36294,70 +36486,6 @@
       }
     },
     {
-      "fixture_id": 1623565,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 15654,
-        "name": "Ascoli U19",
-        "logo": "https://media.api-sports.io/football/teams/15654.png",
-        "winner": null
-      },
-      "away": {
-        "id": 7917,
-        "name": "Napoli U19",
-        "logo": "https://media.api-sports.io/football/teams/7917.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1623566,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 24356,
-        "name": "Avellino U19",
-        "logo": "https://media.api-sports.io/football/teams/24356.png",
-        "winner": null
-      },
-      "away": {
-        "id": 27997,
-        "name": "Latina U19",
-        "logo": "https://media.api-sports.io/football/teams/27997.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1623567,
       "date": "2026-09-19T14:00:00+01:00",
       "timestamp": 1789822800,
@@ -36422,70 +36550,6 @@
       }
     },
     {
-      "fixture_id": 1623569,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 15688,
-        "name": "Virtus Entella U19",
-        "logo": "https://media.api-sports.io/football/teams/15688.png",
-        "winner": null
-      },
-      "away": {
-        "id": 19856,
-        "name": "Padova U19",
-        "logo": "https://media.api-sports.io/football/teams/19856.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1623570,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 26372,
-        "name": "Lecco U19",
-        "logo": "https://media.api-sports.io/football/teams/26372.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22405,
-        "name": "Renate U19",
-        "logo": "https://media.api-sports.io/football/teams/22405.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1623571,
       "date": "2026-09-19T14:00:00+01:00",
       "timestamp": 1789822800,
@@ -36542,70 +36606,6 @@
         "id": 15680,
         "name": "Sampdoria U19",
         "logo": "https://media.api-sports.io/football/teams/15680.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1623573,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 19855,
-        "name": "Monopoli U19",
-        "logo": "https://media.api-sports.io/football/teams/19855.png",
-        "winner": null
-      },
-      "away": {
-        "id": 15673,
-        "name": "Pescara U19",
-        "logo": "https://media.api-sports.io/football/teams/15673.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1623574,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 706,
-        "name": "Campionato Primavera - 2",
-        "country": "Italy",
-        "logo": "https://media.api-sports.io/football/leagues/706.png",
-        "flag": "https://media.api-sports.io/flags/it.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 22404,
-        "name": "Palermo U19",
-        "logo": "https://media.api-sports.io/football/teams/22404.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22403,
-        "name": "Bari U19",
-        "logo": "https://media.api-sports.io/football/teams/22403.png",
         "winner": null
       },
       "goals": {
@@ -36798,38 +36798,6 @@
         "id": 24358,
         "name": "Pro Vercelli U19",
         "logo": "https://media.api-sports.io/football/teams/24358.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1627216,
-      "date": "2026-09-19T14:00:00+01:00",
-      "timestamp": 1789822800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1088,
-        "name": "Pernambucano - U20",
-        "country": "Brazil",
-        "logo": "https://media.api-sports.io/football/leagues/1088.png",
-        "flag": "https://media.api-sports.io/flags/br.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 23496,
-        "name": "Jaguar U20",
-        "logo": "https://media.api-sports.io/football/teams/23496.png",
-        "winner": null
-      },
-      "away": {
-        "id": 23488,
-        "name": "America PE U20",
-        "logo": "https://media.api-sports.io/football/teams/23488.png",
         "winner": null
       },
       "goals": {
@@ -38206,6 +38174,134 @@
         "id": 11028,
         "name": "Eswatini U20",
         "logo": "https://media.api-sports.io/football/teams/11028.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640529,
+      "date": "2026-09-19T14:00:00+01:00",
+      "timestamp": 1789822800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 16817,
+        "name": "Manzini Sea Birds",
+        "logo": "https://media.api-sports.io/football/teams/16817.png",
+        "winner": null
+      },
+      "away": {
+        "id": 16822,
+        "name": "Royal Leopards",
+        "logo": "https://media.api-sports.io/football/teams/16822.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640530,
+      "date": "2026-09-19T14:00:00+01:00",
+      "timestamp": 1789822800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 28439,
+        "name": "PPK Professionals",
+        "logo": "https://media.api-sports.io/football/teams/28439.png",
+        "winner": null
+      },
+      "away": {
+        "id": 28440,
+        "name": "Red Rhinos",
+        "logo": "https://media.api-sports.io/football/teams/28440.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640531,
+      "date": "2026-09-19T14:00:00+01:00",
+      "timestamp": 1789822800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 26848,
+        "name": "Tabankulu",
+        "logo": "https://media.api-sports.io/football/teams/26848.png",
+        "winner": null
+      },
+      "away": {
+        "id": 20371,
+        "name": "Madlenya",
+        "logo": "https://media.api-sports.io/football/teams/20371.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640532,
+      "date": "2026-09-19T14:00:00+01:00",
+      "timestamp": 1789822800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 26849,
+        "name": "Ubombo Sugar",
+        "logo": "https://media.api-sports.io/football/teams/26849.png",
+        "winner": null
+      },
+      "away": {
+        "id": 8107,
+        "name": "Mbabane Swallows",
+        "logo": "https://media.api-sports.io/football/teams/8107.png",
         "winner": null
       },
       "goals": {
@@ -40094,38 +40190,6 @@
         "id": 4912,
         "name": "Khorfakkan",
         "logo": "https://media.api-sports.io/football/teams/4912.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1553639,
-      "date": "2026-09-19T14:45:00+01:00",
-      "timestamp": 1789825500,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 372,
-        "name": "Second League",
-        "country": "Macedonia",
-        "logo": "https://media.api-sports.io/football/leagues/372.png",
-        "flag": "https://media.api-sports.io/flags/mk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 4194,
-        "name": "Akademija Pandev",
-        "logo": "https://media.api-sports.io/football/teams/4194.png",
-        "winner": null
-      },
-      "away": {
-        "id": 2265,
-        "name": "Shkupi 1927",
-        "logo": "https://media.api-sports.io/football/teams/2265.png",
         "winner": null
       },
       "goals": {
@@ -43262,6 +43326,38 @@
         "id": 12805,
         "name": "Kirchanschöring",
         "logo": "https://media.api-sports.io/football/teams/12805.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1568173,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 783,
+        "name": "III Liga - Group 4",
+        "country": "Poland",
+        "logo": "https://media.api-sports.io/football/leagues/783.png",
+        "flag": "https://media.api-sports.io/flags/pl.svg",
+        "round": "Group IV - 9"
+      },
+      "home": {
+        "id": 17403,
+        "name": "Czarni Połaniec",
+        "logo": "https://media.api-sports.io/football/teams/17403.png",
+        "winner": null
+      },
+      "away": {
+        "id": 26184,
+        "name": "Naprzód",
+        "logo": "https://media.api-sports.io/football/teams/26184.png",
         "winner": null
       },
       "goals": {
@@ -47078,6 +47174,38 @@
       }
     },
     {
+      "fixture_id": 1612504,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 640,
+        "name": "Kansallinen Liiga",
+        "country": "Finland",
+        "logo": "https://media.api-sports.io/football/leagues/640.png",
+        "flag": "https://media.api-sports.io/flags/fi.svg",
+        "round": "Relegation Play-Off - 6"
+      },
+      "home": {
+        "id": 25564,
+        "name": "VIFK W",
+        "logo": "https://media.api-sports.io/football/teams/25564.png",
+        "winner": null
+      },
+      "away": {
+        "id": 28085,
+        "name": "HJS Akatemia W",
+        "logo": "https://media.api-sports.io/football/teams/28085.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1612727,
       "date": "2026-09-19T15:00:00+01:00",
       "timestamp": 1789826400,
@@ -47270,6 +47398,230 @@
       }
     },
     {
+      "fixture_id": 1619430,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 14398,
+        "name": "2 Korriku",
+        "logo": "https://media.api-sports.io/football/teams/14398.png",
+        "winner": null
+      },
+      "away": {
+        "id": 14402,
+        "name": "Liria Prizren",
+        "logo": "https://media.api-sports.io/football/teams/14402.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619431,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 22815,
+        "name": "Dinamo Ferizaj",
+        "logo": "https://media.api-sports.io/football/teams/22815.png",
+        "winner": null
+      },
+      "away": {
+        "id": 22817,
+        "name": "Suhareka",
+        "logo": "https://media.api-sports.io/football/teams/22817.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619432,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 15572,
+        "name": "Istogu",
+        "logo": "https://media.api-sports.io/football/teams/15572.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3885,
+        "name": "Trepça'89",
+        "logo": "https://media.api-sports.io/football/teams/3885.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619433,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 15574,
+        "name": "Kika",
+        "logo": "https://media.api-sports.io/football/teams/15574.png",
+        "winner": null
+      },
+      "away": {
+        "id": 27238,
+        "name": "KF Lepenci",
+        "logo": "https://media.api-sports.io/football/teams/27238.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619434,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 26099,
+        "name": "Mitrovica",
+        "logo": "https://media.api-sports.io/football/teams/26099.png",
+        "winner": null
+      },
+      "away": {
+        "id": 25421,
+        "name": "FC Besa Peja",
+        "logo": "https://media.api-sports.io/football/teams/25421.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619435,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 15579,
+        "name": "Ramiz Sadiku",
+        "logo": "https://media.api-sports.io/football/teams/15579.png",
+        "winner": null
+      },
+      "away": {
+        "id": 22816,
+        "name": "Prishtina e Re",
+        "logo": "https://media.api-sports.io/football/teams/22816.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1619436,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 1195,
+        "name": "Liga E Pare",
+        "country": "Kosovo",
+        "logo": "https://media.api-sports.io/football/leagues/1195.png",
+        "flag": "https://media.api-sports.io/flags/xk.svg",
+        "round": "Regular Season - 6"
+      },
+      "home": {
+        "id": 20689,
+        "name": "Rilindja 1974",
+        "logo": "https://media.api-sports.io/football/teams/20689.png",
+        "winner": null
+      },
+      "away": {
+        "id": 20690,
+        "name": "Vjosa",
+        "logo": "https://media.api-sports.io/football/teams/20690.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1621032,
       "date": "2026-09-19T15:00:00+01:00",
       "timestamp": 1789826400,
@@ -47294,6 +47646,38 @@
         "id": 7194,
         "name": "Fulham U21",
         "logo": "https://media.api-sports.io/football/teams/7194.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1623573,
+      "date": "2026-09-19T15:00:00+01:00",
+      "timestamp": 1789826400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 706,
+        "name": "Campionato Primavera - 2",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/706.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "round": "Regular Season - 3"
+      },
+      "home": {
+        "id": 19855,
+        "name": "Monopoli U19",
+        "logo": "https://media.api-sports.io/football/teams/19855.png",
+        "winner": null
+      },
+      "away": {
+        "id": 15673,
+        "name": "Pescara U19",
+        "logo": "https://media.api-sports.io/football/teams/15673.png",
         "winner": null
       },
       "goals": {
@@ -51366,6 +51750,38 @@
       }
     },
     {
+      "fixture_id": 1640533,
+      "date": "2026-09-19T15:15:00+01:00",
+      "timestamp": 1789827300,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 847,
+        "name": "Premier League",
+        "country": "Eswatini",
+        "logo": "https://media.api-sports.io/football/leagues/847.png",
+        "flag": "https://media.api-sports.io/flags/sz.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 16821,
+        "name": "Moneni Pirates",
+        "logo": "https://media.api-sports.io/football/teams/16821.png",
+        "winner": null
+      },
+      "away": {
+        "id": 20372,
+        "name": "Nsingizini Hotspurs",
+        "logo": "https://media.api-sports.io/football/teams/20372.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1506535,
       "date": "2026-09-19T15:30:00+01:00",
       "timestamp": 1789828200,
@@ -52518,294 +52934,6 @@
       }
     },
     {
-      "fixture_id": 1619430,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 14398,
-        "name": "2 Korriku",
-        "logo": "https://media.api-sports.io/football/teams/14398.png",
-        "winner": null
-      },
-      "away": {
-        "id": 14402,
-        "name": "Liria Prizren",
-        "logo": "https://media.api-sports.io/football/teams/14402.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619431,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 22815,
-        "name": "Dinamo Ferizaj",
-        "logo": "https://media.api-sports.io/football/teams/22815.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22817,
-        "name": "Suhareka",
-        "logo": "https://media.api-sports.io/football/teams/22817.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619432,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 15572,
-        "name": "Istogu",
-        "logo": "https://media.api-sports.io/football/teams/15572.png",
-        "winner": null
-      },
-      "away": {
-        "id": 3885,
-        "name": "Trepça'89",
-        "logo": "https://media.api-sports.io/football/teams/3885.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619433,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 15574,
-        "name": "Kika",
-        "logo": "https://media.api-sports.io/football/teams/15574.png",
-        "winner": null
-      },
-      "away": {
-        "id": 27238,
-        "name": "KF Lepenci",
-        "logo": "https://media.api-sports.io/football/teams/27238.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619434,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 26099,
-        "name": "Mitrovica",
-        "logo": "https://media.api-sports.io/football/teams/26099.png",
-        "winner": null
-      },
-      "away": {
-        "id": 25421,
-        "name": "FC Besa Peja",
-        "logo": "https://media.api-sports.io/football/teams/25421.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619435,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 15579,
-        "name": "Ramiz Sadiku",
-        "logo": "https://media.api-sports.io/football/teams/15579.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22816,
-        "name": "Prishtina e Re",
-        "logo": "https://media.api-sports.io/football/teams/22816.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619436,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 20689,
-        "name": "Rilindja 1974",
-        "logo": "https://media.api-sports.io/football/teams/20689.png",
-        "winner": null
-      },
-      "away": {
-        "id": 20690,
-        "name": "Vjosa",
-        "logo": "https://media.api-sports.io/football/teams/20690.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619437,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 14403,
-        "name": "Trepça Mitrovicë",
-        "logo": "https://media.api-sports.io/football/teams/14403.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26793,
-        "name": "Tefik Canga",
-        "logo": "https://media.api-sports.io/football/teams/26793.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1619438,
-      "date": "2026-09-19T15:30:00+01:00",
-      "timestamp": 1789828200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1195,
-        "name": "Liga E Pare",
-        "country": "Kosovo",
-        "logo": "https://media.api-sports.io/football/leagues/1195.png",
-        "flag": "https://media.api-sports.io/flags/xk.svg",
-        "round": "Regular Season - 6"
-      },
-      "home": {
-        "id": 15582,
-        "name": "Vëllaznimi",
-        "logo": "https://media.api-sports.io/football/teams/15582.png",
-        "winner": null
-      },
-      "away": {
-        "id": 14394,
-        "name": "Ferizaj",
-        "logo": "https://media.api-sports.io/football/teams/14394.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1619737,
       "date": "2026-09-19T15:30:00+01:00",
       "timestamp": 1789828200,
@@ -53150,6 +53278,38 @@
         "id": 10595,
         "name": "AS Agareb",
         "logo": "https://media.api-sports.io/football/teams/10595.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640536,
+      "date": "2026-09-19T15:30:00+01:00",
+      "timestamp": 1789828200,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 710,
+        "name": "Nacional B",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/710.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Regular Season - 5"
+      },
+      "home": {
+        "id": 15695,
+        "name": "Deportivo FATIC",
+        "logo": "https://media.api-sports.io/football/teams/15695.png",
+        "winner": null
+      },
+      "away": {
+        "id": 28290,
+        "name": "Atletico Sucre",
+        "logo": "https://media.api-sports.io/football/teams/28290.png",
         "winner": null
       },
       "goals": {
@@ -53566,38 +53726,6 @@
         "id": 17162,
         "name": "Livyi Bereh",
         "logo": "https://media.api-sports.io/football/teams/17162.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1568173,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 783,
-        "name": "III Liga - Group 4",
-        "country": "Poland",
-        "logo": "https://media.api-sports.io/football/leagues/783.png",
-        "flag": "https://media.api-sports.io/flags/pl.svg",
-        "round": "Group IV - 9"
-      },
-      "home": {
-        "id": 17403,
-        "name": "Czarni Połaniec",
-        "logo": "https://media.api-sports.io/football/teams/17403.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26184,
-        "name": "Naprzód",
-        "logo": "https://media.api-sports.io/football/teams/26184.png",
         "winner": null
       },
       "goals": {
@@ -55046,6 +55174,38 @@
       }
     },
     {
+      "fixture_id": 1623570,
+      "date": "2026-09-19T16:00:00+01:00",
+      "timestamp": 1789830000,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 706,
+        "name": "Campionato Primavera - 2",
+        "country": "Italy",
+        "logo": "https://media.api-sports.io/football/leagues/706.png",
+        "flag": "https://media.api-sports.io/flags/it.svg",
+        "round": "Regular Season - 3"
+      },
+      "home": {
+        "id": 26372,
+        "name": "Lecco U19",
+        "logo": "https://media.api-sports.io/football/teams/26372.png",
+        "winner": null
+      },
+      "away": {
+        "id": 22405,
+        "name": "Renate U19",
+        "logo": "https://media.api-sports.io/football/teams/22405.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1628313,
       "date": "2026-09-19T16:00:00+01:00",
       "timestamp": 1789830000,
@@ -55398,38 +55558,6 @@
       }
     },
     {
-      "fixture_id": 1630782,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 26795,
-        "name": "Dormaa",
-        "logo": "https://media.api-sports.io/football/teams/26795.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22780,
-        "name": "Techiman Liberty",
-        "logo": "https://media.api-sports.io/football/teams/22780.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1630783,
       "date": "2026-09-19T16:00:00+01:00",
       "timestamp": 1789830000,
@@ -55494,70 +55622,6 @@
       }
     },
     {
-      "fixture_id": 1630785,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 12246,
-        "name": "Eleven Wonders",
-        "logo": "https://media.api-sports.io/football/teams/12246.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26802,
-        "name": "Mighty Royals",
-        "logo": "https://media.api-sports.io/football/teams/26802.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630786,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 12247,
-        "name": "Elmina Sharks",
-        "logo": "https://media.api-sports.io/football/teams/12247.png",
-        "winner": null
-      },
-      "away": {
-        "id": 28286,
-        "name": "Fettehman United",
-        "logo": "https://media.api-sports.io/football/teams/28286.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1630787,
       "date": "2026-09-19T16:00:00+01:00",
       "timestamp": 1789830000,
@@ -55590,102 +55654,6 @@
       }
     },
     {
-      "fixture_id": 1630788,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 12248,
-        "name": "Great Olympics",
-        "logo": "https://media.api-sports.io/football/teams/12248.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22761,
-        "name": "Attram de Visser",
-        "logo": "https://media.api-sports.io/football/teams/22761.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630789,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 22768,
-        "name": "Home Stars",
-        "logo": "https://media.api-sports.io/football/teams/22768.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26799,
-        "name": "Hakla SC",
-        "logo": "https://media.api-sports.io/football/teams/26799.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630790,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 26800,
-        "name": "KAC Soccer",
-        "logo": "https://media.api-sports.io/football/teams/26800.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26809,
-        "name": "Yapei",
-        "logo": "https://media.api-sports.io/football/teams/26809.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1630791,
       "date": "2026-09-19T16:00:00+01:00",
       "timestamp": 1789830000,
@@ -55710,70 +55678,6 @@
         "id": 22764,
         "name": "Berekum City",
         "logo": "https://media.api-sports.io/football/teams/22764.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630792,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 12252,
-        "name": "King Faisal",
-        "logo": "https://media.api-sports.io/football/teams/12252.png",
-        "winner": null
-      },
-      "away": {
-        "id": 22776,
-        "name": "Rospak",
-        "logo": "https://media.api-sports.io/football/teams/22776.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630793,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 20020,
-        "name": "Kotoku Royals",
-        "logo": "https://media.api-sports.io/football/teams/20020.png",
-        "winner": null
-      },
-      "away": {
-        "id": 12250,
-        "name": "Inter Allies",
-        "logo": "https://media.api-sports.io/football/teams/12250.png",
         "winner": null
       },
       "goals": {
@@ -55846,38 +55750,6 @@
       }
     },
     {
-      "fixture_id": 1630796,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 26803,
-        "name": "Okwawu",
-        "logo": "https://media.api-sports.io/football/teams/26803.png",
-        "winner": null
-      },
-      "away": {
-        "id": 26801,
-        "name": "Koforidua",
-        "logo": "https://media.api-sports.io/football/teams/26801.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1630797,
       "date": "2026-09-19T16:00:00+01:00",
       "timestamp": 1789830000,
@@ -55934,70 +55806,6 @@
         "id": 13885,
         "name": "Real Tamale",
         "logo": "https://media.api-sports.io/football/teams/13885.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630799,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 21090,
-        "name": "Skyy",
-        "logo": "https://media.api-sports.io/football/teams/21090.png",
-        "winner": null
-      },
-      "away": {
-        "id": 12245,
-        "name": "Ebusua Dwarfs",
-        "logo": "https://media.api-sports.io/football/teams/12245.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1630800,
-      "date": "2026-09-19T16:00:00+01:00",
-      "timestamp": 1789830000,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1196,
-        "name": "Division One League",
-        "country": "Ghana",
-        "logo": "https://media.api-sports.io/football/leagues/1196.png",
-        "flag": "https://media.api-sports.io/flags/gh.svg",
-        "round": "Regular Season - 1"
-      },
-      "home": {
-        "id": 22777,
-        "name": "Soccer Intellectuals",
-        "logo": "https://media.api-sports.io/football/teams/22777.png",
-        "winner": null
-      },
-      "away": {
-        "id": 21089,
-        "name": "Sefwi All Stars",
-        "logo": "https://media.api-sports.io/football/teams/21089.png",
         "winner": null
       },
       "goals": {
@@ -56606,6 +56414,134 @@
         "id": 9896,
         "name": "Almansa",
         "logo": "https://media.api-sports.io/football/teams/9896.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640521,
+      "date": "2026-09-19T16:30:00+01:00",
+      "timestamp": 1789831800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 423,
+        "name": "Ligue 1",
+        "country": "Burkina-Faso",
+        "logo": "https://media.api-sports.io/football/leagues/423.png",
+        "flag": "https://media.api-sports.io/flags/bf.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 8563,
+        "name": "ASFA-Yennenga",
+        "logo": "https://media.api-sports.io/football/teams/8563.png",
+        "winner": null
+      },
+      "away": {
+        "id": 25180,
+        "name": "Comoé",
+        "logo": "https://media.api-sports.io/football/teams/25180.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640522,
+      "date": "2026-09-19T16:30:00+01:00",
+      "timestamp": 1789831800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 423,
+        "name": "Ligue 1",
+        "country": "Burkina-Faso",
+        "logo": "https://media.api-sports.io/football/leagues/423.png",
+        "flag": "https://media.api-sports.io/flags/bf.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 22017,
+        "name": "Sporting Cascades",
+        "logo": "https://media.api-sports.io/football/teams/22017.png",
+        "winner": null
+      },
+      "away": {
+        "id": 26633,
+        "name": "CFFEB",
+        "logo": "https://media.api-sports.io/football/teams/26633.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640526,
+      "date": "2026-09-19T16:30:00+01:00",
+      "timestamp": 1789831800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 423,
+        "name": "Ligue 1",
+        "country": "Burkina-Faso",
+        "logo": "https://media.api-sports.io/football/leagues/423.png",
+        "flag": "https://media.api-sports.io/flags/bf.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 28437,
+        "name": "FocuSport",
+        "logo": "https://media.api-sports.io/football/teams/28437.png",
+        "winner": null
+      },
+      "away": {
+        "id": 13978,
+        "name": "Douanes",
+        "logo": "https://media.api-sports.io/football/teams/13978.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640527,
+      "date": "2026-09-19T16:30:00+01:00",
+      "timestamp": 1789831800,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 423,
+        "name": "Ligue 1",
+        "country": "Burkina-Faso",
+        "logo": "https://media.api-sports.io/football/leagues/423.png",
+        "flag": "https://media.api-sports.io/flags/bf.svg",
+        "round": "Regular Season - 1"
+      },
+      "home": {
+        "id": 28438,
+        "name": "Maya",
+        "logo": "https://media.api-sports.io/football/teams/28438.png",
+        "winner": null
+      },
+      "away": {
+        "id": 8570,
+        "name": "USFA",
+        "logo": "https://media.api-sports.io/football/teams/8570.png",
         "winner": null
       },
       "goals": {
@@ -60230,6 +60166,38 @@
       }
     },
     {
+      "fixture_id": 1640447,
+      "date": "2026-09-19T17:00:00+01:00",
+      "timestamp": 1789833600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 771,
+        "name": "COSAFA U20 Championship",
+        "country": "World",
+        "logo": "https://media.api-sports.io/football/leagues/771.png",
+        "flag": null,
+        "round": "Group Stage - C"
+      },
+      "home": {
+        "id": 16196,
+        "name": "Comoros U20",
+        "logo": "https://media.api-sports.io/football/teams/16196.png",
+        "winner": null
+      },
+      "away": {
+        "id": 11020,
+        "name": "Botswana U20",
+        "logo": "https://media.api-sports.io/football/teams/11020.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1558637,
       "date": "2026-09-19T17:15:00+01:00",
       "timestamp": 1789834500,
@@ -61414,6 +61382,38 @@
       }
     },
     {
+      "fixture_id": 1506677,
+      "date": "2026-09-19T18:00:00+01:00",
+      "timestamp": 1789837200,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 366,
+        "name": "1. Deild",
+        "country": "Faroe-Islands",
+        "logo": "https://media.api-sports.io/football/leagues/366.png",
+        "flag": "https://media.api-sports.io/flags/fo.svg",
+        "round": "Regular Season - 24"
+      },
+      "home": {
+        "id": 4185,
+        "name": "B36 II",
+        "logo": "https://media.api-sports.io/football/teams/4185.png",
+        "winner": null
+      },
+      "away": {
+        "id": 4181,
+        "name": "NSÍ II",
+        "logo": "https://media.api-sports.io/football/teams/4181.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
       "fixture_id": 1525985,
       "date": "2026-09-19T18:00:00+01:00",
       "timestamp": 1789837200,
@@ -61694,70 +61694,6 @@
         "id": 11114,
         "name": "Limavady United",
         "logo": "https://media.api-sports.io/football/teams/11114.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1565259,
-      "date": "2026-09-19T18:00:00+01:00",
-      "timestamp": 1789837200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 283,
-        "name": "Liga I",
-        "country": "Romania",
-        "logo": "https://media.api-sports.io/football/leagues/283.png",
-        "flag": "https://media.api-sports.io/flags/ro.svg",
-        "round": "Regular Season - 10"
-      },
-      "home": {
-        "id": 6886,
-        "name": "Oţelul",
-        "logo": "https://media.api-sports.io/football/teams/6886.png",
-        "winner": null
-      },
-      "away": {
-        "id": 20034,
-        "name": "Corvinul Hunedoara",
-        "logo": "https://media.api-sports.io/football/teams/20034.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1565260,
-      "date": "2026-09-19T18:00:00+01:00",
-      "timestamp": 1789837200,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 283,
-        "name": "Liga I",
-        "country": "Romania",
-        "logo": "https://media.api-sports.io/football/leagues/283.png",
-        "flag": "https://media.api-sports.io/flags/ro.svg",
-        "round": "Regular Season - 10"
-      },
-      "home": {
-        "id": 2598,
-        "name": "Petrolul Ploiesti",
-        "logo": "https://media.api-sports.io/football/teams/2598.png",
-        "winner": null
-      },
-      "away": {
-        "id": 6230,
-        "name": "Csikszereda",
-        "logo": "https://media.api-sports.io/football/teams/6230.png",
         "winner": null
       },
       "goals": {
@@ -64966,70 +64902,6 @@
       }
     },
     {
-      "fixture_id": 1610834,
-      "date": "2026-09-19T19:00:00+01:00",
-      "timestamp": 1789840800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1037,
-        "name": "Paraibano 2",
-        "country": "Brazil",
-        "logo": "https://media.api-sports.io/football/leagues/1037.png",
-        "flag": "https://media.api-sports.io/flags/br.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 22363,
-        "name": "Guarabira",
-        "logo": "https://media.api-sports.io/football/teams/22363.png",
-        "winner": null
-      },
-      "away": {
-        "id": 28058,
-        "name": "Femar",
-        "logo": "https://media.api-sports.io/football/teams/28058.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
-      "fixture_id": 1610835,
-      "date": "2026-09-19T19:00:00+01:00",
-      "timestamp": 1789840800,
-      "status": "NS",
-      "status_long": "Not Started",
-      "elapsed": null,
-      "league": {
-        "id": 1037,
-        "name": "Paraibano 2",
-        "country": "Brazil",
-        "logo": "https://media.api-sports.io/football/leagues/1037.png",
-        "flag": "https://media.api-sports.io/flags/br.svg",
-        "round": "Regular Season - 3"
-      },
-      "home": {
-        "id": 22364,
-        "name": "Picuiense",
-        "logo": "https://media.api-sports.io/football/teams/22364.png",
-        "winner": null
-      },
-      "away": {
-        "id": 12911,
-        "name": "São Paulo Crystal",
-        "logo": "https://media.api-sports.io/football/teams/12911.png",
-        "winner": null
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      }
-    },
-    {
       "fixture_id": 1611398,
       "date": "2026-09-19T19:00:00+01:00",
       "timestamp": 1789840800,
@@ -66110,6 +65982,134 @@
         "id": 24912,
         "name": "Legião",
         "logo": "https://media.api-sports.io/football/teams/24912.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1606499,
+      "date": "2026-09-19T19:30:00+01:00",
+      "timestamp": 1789842600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/134.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "round": "Losers Stage - 9"
+      },
+      "home": {
+        "id": 467,
+        "name": "Boca Unidos",
+        "logo": "https://media.api-sports.io/football/teams/467.png",
+        "winner": null
+      },
+      "away": {
+        "id": 27572,
+        "name": "Defensores de Vilelas",
+        "logo": "https://media.api-sports.io/football/teams/27572.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1606504,
+      "date": "2026-09-19T19:30:00+01:00",
+      "timestamp": 1789842600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/134.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "round": "Losers Stage - 9"
+      },
+      "home": {
+        "id": 1960,
+        "name": "Independiente De Chivilcoy",
+        "logo": "https://media.api-sports.io/football/teams/1960.png",
+        "winner": null
+      },
+      "away": {
+        "id": 27571,
+        "name": "Atletico Escobar",
+        "logo": "https://media.api-sports.io/football/teams/27571.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1606506,
+      "date": "2026-09-19T19:30:00+01:00",
+      "timestamp": 1789842600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/134.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "round": "Losers Stage - 9"
+      },
+      "home": {
+        "id": 1953,
+        "name": "Sarmiento Resistencia",
+        "logo": "https://media.api-sports.io/football/teams/1953.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21041,
+        "name": "El Linqueño",
+        "logo": "https://media.api-sports.io/football/teams/21041.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1606507,
+      "date": "2026-09-19T19:30:00+01:00",
+      "timestamp": 1789842600,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "logo": "https://media.api-sports.io/football/leagues/134.png",
+        "flag": "https://media.api-sports.io/flags/ar.svg",
+        "round": "Losers Stage - 9"
+      },
+      "home": {
+        "id": 1950,
+        "name": "Sportivo Las Parejas",
+        "logo": "https://media.api-sports.io/football/teams/1950.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3945,
+        "name": "Gimnasia Concepción",
+        "logo": "https://media.api-sports.io/football/teams/3945.png",
         "winner": null
       },
       "goals": {
@@ -67294,6 +67294,134 @@
         "id": 1992,
         "name": "Orense SC",
         "logo": "https://media.api-sports.io/football/teams/1992.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640537,
+      "date": "2026-09-19T20:00:00+01:00",
+      "timestamp": 1789844400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 710,
+        "name": "Nacional B",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/710.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Regular Season - 5"
+      },
+      "home": {
+        "id": 17745,
+        "name": "Ciudad Nueva Santa Cruz",
+        "logo": "https://media.api-sports.io/football/teams/17745.png",
+        "winner": null
+      },
+      "away": {
+        "id": 26486,
+        "name": "Unión Tarija",
+        "logo": "https://media.api-sports.io/football/teams/26486.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640538,
+      "date": "2026-09-19T20:00:00+01:00",
+      "timestamp": 1789844400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 710,
+        "name": "Nacional B",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/710.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Regular Season - 5"
+      },
+      "home": {
+        "id": 15698,
+        "name": "EM Huanuni",
+        "logo": "https://media.api-sports.io/football/teams/15698.png",
+        "winner": null
+      },
+      "away": {
+        "id": 15715,
+        "name": "Libertad",
+        "logo": "https://media.api-sports.io/football/teams/15715.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640539,
+      "date": "2026-09-19T20:00:00+01:00",
+      "timestamp": 1789844400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 710,
+        "name": "Nacional B",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/710.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Regular Season - 5"
+      },
+      "home": {
+        "id": 15704,
+        "name": "Municipal Tiquipaya",
+        "logo": "https://media.api-sports.io/football/teams/15704.png",
+        "winner": null
+      },
+      "away": {
+        "id": 20254,
+        "name": "Universitario Beni",
+        "logo": "https://media.api-sports.io/football/teams/20254.png",
+        "winner": null
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      }
+    },
+    {
+      "fixture_id": 1640540,
+      "date": "2026-09-19T20:00:00+01:00",
+      "timestamp": 1789844400,
+      "status": "NS",
+      "status_long": "Not Started",
+      "elapsed": null,
+      "league": {
+        "id": 710,
+        "name": "Nacional B",
+        "country": "Bolivia",
+        "logo": "https://media.api-sports.io/football/leagues/710.png",
+        "flag": "https://media.api-sports.io/flags/bo.svg",
+        "round": "Regular Season - 5"
+      },
+      "home": {
+        "id": 24598,
+        "name": "Universitario Tarija",
+        "logo": "https://media.api-sports.io/football/teams/24598.png",
+        "winner": null
+      },
+      "away": {
+        "id": 26596,
+        "name": "CD IN San Juan FC",
+        "logo": "https://media.api-sports.io/football/teams/26596.png",
         "winner": null
       },
       "goals": {
